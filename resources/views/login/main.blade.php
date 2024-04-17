@@ -1,7 +1,7 @@
 @extends('../layouts/' . $layout)
 
 @section('head')
-    <title>Login - Rubick - Tailwind HTML Admin Template</title>
+    <title>Junta de Agua</title>
 @endsection
 
 @section('content')
@@ -23,7 +23,7 @@
                             src="{{ Vite::asset('resources/images/logo.svg') }}"
                             alt="Midone Tailwind HTML Admin Template"
                         />
-                        <span class="ml-3 text-lg text-white"> Rubick </span>
+                        <span class="ml-3 text-lg text-white"> Junta de Agua </span>
                     </a>
                     <div class="my-auto">
                         <img
@@ -58,8 +58,7 @@
                                     class="intro-x login__input block min-w-full px-4 py-3 xl:min-w-[350px]"
                                     id="email"
                                     type="text"
-                                    value="midone@left4code.com"
-                                    placeholder="Email"
+                                    placeholder="Usuario"
                                 />
                                 <div
                                     class="login__input-error mt-2 text-danger"
@@ -69,8 +68,7 @@
                                     class="intro-x login__input mt-4 block min-w-full px-4 py-3 xl:min-w-[350px]"
                                     id="password"
                                     type="password"
-                                    value="password"
-                                    placeholder="Password"
+                                    placeholder="Contraseña"
                                 />
                                 <div
                                     class="login__input-error mt-2 text-danger"

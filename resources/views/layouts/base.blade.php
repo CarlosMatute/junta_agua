@@ -9,7 +9,7 @@ Renew Support: https://themeforest.net/user/left4code/portfolio
 License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
 -->
 <html
-    class="{{ $darkMode ? 'dark' : '' }}{{ $colorScheme != 'default' ? ' ' . $colorScheme : '' }}"
+    class="{{ $darkMode ? 'dark' : '' }}{{ $colorScheme != 'default' ? ' ' . $colorScheme : 'theme-3' }}"
     lang="{{ str_replace('_', '-', app()->getLocale()) }}"
 >
 <!-- BEGIN: Head -->
