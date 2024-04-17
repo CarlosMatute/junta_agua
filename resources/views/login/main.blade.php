@@ -46,7 +46,7 @@
                     <div
                         class="mx-auto my-auto w-full rounded-md bg-white px-5 py-8 shadow-md dark:bg-darkmode-600 sm:w-3/4 sm:px-8 lg:w-2/4 xl:ml-20 xl:w-auto xl:bg-transparent xl:p-0 xl:shadow-none">
                         <h2 class="intro-x text-center text-2xl font-bold xl:text-left xl:text-3xl">
-                            Sign In
+                            Iniciar Sesión
                         </h2>
                         <div class="intro-x mt-2 text-center text-slate-400 xl:hidden">
                             A few more clicks to sign in to your account. Manage all your
@@ -76,7 +76,7 @@
                                 ></div>
                             </form>
                         </div>
-                        <div class="intro-x mt-4 flex text-xs text-slate-600 dark:text-slate-500 sm:text-sm">
+                        <!-- <div class="intro-x mt-4 flex text-xs text-slate-600 dark:text-slate-500 sm:text-sm">
                             <div class="mr-auto flex items-center">
                                 <x-base.form-check.input
                                     class="mr-2 border"
@@ -91,24 +91,24 @@
                                 </label>
                             </div>
                             <a href="">Forgot Password?</a>
-                        </div>
+                        </div> -->
                         <div class="intro-x mt-5 text-center xl:mt-8 xl:text-left">
                             <x-base.button
                                 class="w-full px-4 py-3 align-top xl:mr-3 xl:w-32"
                                 id="btn-login"
                                 variant="primary"
                             >
-                                Login
+                            Ingresar
                             </x-base.button>
-                            <x-base.button
+                            <!-- <x-base.button
                                 class="mt-3 w-full px-4 py-3 align-top xl:mt-0 xl:w-32"
                                 variant="outline-secondary"
                             >
                                 Register
-                            </x-base.button>
+                            </x-base.button> -->
                         </div>
                         <div class="intro-x mt-10 text-center text-slate-600 dark:text-slate-500 xl:mt-24 xl:text-left">
-                            By signin up, you agree to our
+                            <!-- By signin up, you agree to our
                             <a
                                 class="text-primary dark:text-slate-200"
                                 href=""
@@ -121,7 +121,8 @@
                                 href=""
                             >
                                 Privacy Policy
-                            </a>
+                            </a> -->
+                            <p>JUNTA DE AGUA &copy; {{ date('Y') }}. Todos los derechos reservados.</p>
                         </div>
                     </div>
                 </div>
