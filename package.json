@@ -26,6 +26,7 @@
         "leaflet.markercluster": "^1.5.3",
         "litepicker": "^2.0.12",
         "lucide": "^0.90.0",
+        "npm-install": "^1.10.1",
         "pristinejs": "^1.0.0",
         "simplebar": "^5.3.9",
         "tabulator-tables": "^5.3.4",
