@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\DarkModeController;
 use App\Http\Controllers\ColorSchemeController;
+use App\Http\Controllers\ClientesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,4 +103,7 @@ Route::middleware('auth')->group(function () {
         Route::get('slider-page', 'slider')->name('slider');
         Route::get('image-zoom-page', 'imageZoom')->name('image-zoom');
     });
+    //Inicia Junta de agua
+        Route::get('/clientes', [ClientesController::class, 'ver_clientes'])->name('clientes');
+    //Finaliza Junta de agua
 });

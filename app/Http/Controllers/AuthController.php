@@ -26,11 +26,13 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request): void
     {
+        $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        
         if (!Auth::attempt([
-            'email' => $request->email,
+            $fieldType => $request->email,
             'password' => $request->password
         ])) {
-            throw new \Exception('Wrong email or password.');
+            throw new \Exception('Usuario o contraseña inválidos.');
         }
     }
 

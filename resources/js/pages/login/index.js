@@ -27,7 +27,7 @@
             })
             .catch((err) => {
                 $("#btn-login").html("Login");
-                if (err.response.data.message != "Wrong email or password.") {
+                if (err.response.data.message != "Usuario o contraseña inválidos.") {
                     for (const [key, val] of Object.entries(
                         err.response.data.errors
                     )) {

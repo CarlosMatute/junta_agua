@@ -10,6 +10,14 @@ class SideMenu
     public static function menu(): array
     {
         return [
+            'Clientes' => [
+                'icon' => 'users',
+                'route_name' => 'clientes',
+                'params' => [
+                    'layout' => 'side-menu'
+                ],
+                'title' => 'Clientes'
+            ],
             'dashboard' => [
                 'icon' => 'home',
                 'title' => 'Dashboard',

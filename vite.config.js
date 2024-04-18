@@ -115,6 +115,7 @@ export default defineConfig({
     resolve: {
         alias: {
             "tailwind-config": path.resolve(__dirname, "./tailwind.config.js"),
+            '$': 'jQuery'
         },
     },
 });
