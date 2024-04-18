@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\DarkModeController;
 use App\Http\Controllers\ColorSchemeController;
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\DepartamentosMunicipiosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,5 +106,6 @@ Route::middleware('auth')->group(function () {
     });
     //Inicia Junta de agua
         Route::get('/clientes', [ClientesController::class, 'ver_clientes'])->name('clientes');
+        Route::post('/departamentos-municipios', [DepartamentosMunicipiosController::class, 'ver_departamento_municipios']);
     //Finaliza Junta de agua
 });
