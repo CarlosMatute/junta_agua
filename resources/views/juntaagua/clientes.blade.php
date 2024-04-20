@@ -36,7 +36,7 @@
                 <div class="p-5">
                     <h3 class="text-2xl font-medium leading-none"><div class="flex items-center">
                         <i data-lucide="List" class="w-6 h-6 mr-1"></i>
-                            <span class="text-white-700"> Lista de Zonas</span>
+                            <span class="text-white-700"> Lista de Clientes</span>
                         </div></h3>
                 </div>
             </div>
@@ -58,18 +58,49 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Zona</th>
-                        <th>Descripción</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Identidad</th>
+                        <th>Celular</th>
+                        <th>Correo Electrónico</th>
+                        <th>Género</th>
+                        <th>Domicilio</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach($clientes as $row)
                     <tr>
-                        <td>{{$row->created_at}}</td>
-                        <td>{{$row->created_at}}</td>
-                        <td>{{$row->created_at}}</td>
-                        <td>{{$row->created_at}}</td>
+                        <td>{{$row->id}}</td>
+                        <td>{{$row->primer_nombre}} {{$row->segundo_nombre}}</td>
+                        <td>{{$row->primer_apellido}} {{$row->segundo_apellido}}</td>
+                        <td>{{$row->identidad}}</td>
+                        <td>{{$row->celular}}</td>
+                        <td>{{$row->correo_electronico}}</td>
+                        <td>{{$row->genero}}</td>
+                        <td>{{$row->departamento}}, {{$row->municipio}}, {{$row->domicilio}}</td>
+                        <td>
+                            <x-base.button
+                                class="mb-2 mr-1 editar"
+                                variant="warning"
+                                size="sm"
+                            >
+                                <x-base.lucide
+                                    class="h-4 w-4"
+                                    icon="Edit"
+                                />
+                            </x-base.button>
+                            <x-base.button
+                                class="mb-2 mr-1 eliminar"
+                                variant="danger"
+                                size="sm"
+                            >
+                                <x-base.lucide
+                                    class="h-4 w-4"
+                                    icon="Trash"
+                                />
+                            </x-base.button>
+                        </td>
                         <!-- Aquí puedes agregar más columnas según tus necesidades -->
                     </tr>
                     @endforeach
@@ -129,11 +160,17 @@
                         </x-base.form-label>
                         <x-base.form-input id="modal_input_celular" type="number" placeholder="Escriba el Celular" />
                     </div>
-                    <div class="col-span-12 md:col-span-12 lg:col-span-6">
+                    <div class="col-span-12 md:col-span-12 lg:col-span-3">
                         <x-base.form-label class="font-extrabold" for="modal_input_correo">
                             Correo Electrónico
                         </x-base.form-label>
                         <x-base.form-input id="modal_input_correo" type="email" placeholder="Escriba el Correo Electrónico" />
+                    </div>
+                    <div class="col-span-12 md:col-span-12 lg:col-span-3">
+                        <x-base.form-label class="font-extrabold" for="modal_input_identidad">
+                            Identidad
+                        </x-base.form-label>
+                        <x-base.form-input id="modal_input_identidad" type="number" placeholder="Escriba la identidad" />
                     </div>
                     <div class="col-span-12 md:col-span-12 lg:col-span-6">
                         <x-base.form-label class="font-extrabold" for="modal_input_departamento">
@@ -212,7 +249,7 @@
                     <x-base.lucide class="mx-auto mt-3 h-16 w-16 text-danger" icon="XCircle" />
                     <div class="mt-5 text-3xl">¡Advertencia!</div>
                     <div class="mt-2 text-slate-500">
-                        ¿Realmente desea eliminar esta Zona?<br />
+                        ¿Realmente desea eliminar este Cliente?<br />
                         <div id="id_registro"></div>
                     </div>
                 </div>
@@ -267,6 +304,7 @@
             var genero = null;
             var celular = null;
             var correo = null;
+            var identidad = null;
             var departamento = null;
             var municipio = null;
             var domicilio = null;
@@ -278,6 +316,7 @@
             var titleMsg = null;
             var textMsg = null;
             var typeMsg = null;
+            var numerofila = null;
 
             $(document).ready(function () {
                 $.ajaxSetup({
@@ -321,9 +360,45 @@
                     consultar_municipios(id_departamento);
             });
 
+            $('#sdatatable tbody').on('click', '.editar', function() {
+                var fila = $('#sdatatable').DataTable().row($(this).parents('tr'));
+                var data = fila.data();
+                accion = 2;
+                numerofila = fila.index(); 
+                id = data[0];
+                $("#modal_input_primer_nombre").val(data[1]);
+                $("#modal_input_segundo_nombre").val(data[2]);
+                $("#modal_input_primer_apellido").val(data[3]);
+                $("#modal_input_segundo_apellido").val(data[4]);
+                const el = document.querySelector("#modal_nuevo_cliente");
+                const modal = tailwind.Modal.getOrCreateInstance(el);
+                modal.show();
+            });
+
+
+            $('#sdatatable tbody').on('click', '.eliminar', function() {
+                var fila = $('#sdatatable').DataTable().row($(this).parents('tr'));
+                var data = fila.data();
+                accion = 3;
+                numerofila = fila.index();
+                id = data[0];
+                const el = document.querySelector("#modal_eliminar");
+                const modal = tailwind.Modal.getOrCreateInstance(el);
+                modal.show(); 
+            });
+
             $("#btn_nuevo_cliente").on("click", function (event) {
                 $("#modal_input_primer_nombre").val('');
                 $("#modal_input_segundo_nombre").val('');
+                $("#modal_input_primer_apellido").val('');
+                $("#modal_input_segundo_apellido").val('');
+                //$("#modal_input_genero").val('');
+                $("#modal_input_celular").val('');
+                $("#modal_input_correo").val('');
+                $("#modal_input_identidad").val('');
+                //$("#modal_input_departamento").val('');
+                //$("#modal_input_municipio").val('');
+                $("#modal_input_domicilio").val('');
                 accion = 1;
                 const el = document.querySelector("#modal_nuevo_cliente");
                 const modal = tailwind.Modal.getOrCreateInstance(el);
@@ -343,54 +418,78 @@
                 genero = $("#modal_input_genero").val();
                 celular = $("#modal_input_celular").val();
                 correo = $("#modal_input_correo").val();
+                identidad = $("#modal_input_identidad").val();
                 departamento = $("#modal_input_departamento").val();
                 municipio = $("#modal_input_municipio").val();
                 domicilio = $("#modal_input_domicilio").val();
                 accion = 1;
                 
-                // if(primer_nombre == null || primer_nombre == ''){
-                //     titleMsg = 'Valor Requerido'
-                //     textMsg = 'Debe especificar un valor para Primer Nombre.';
-                //     typeMsg = 'error';
-                //     notificacion()
-                //     return false;
-                // }
+                if(primer_nombre == null || primer_nombre == ''){
+                    titleMsg = 'Valor Requerido'
+                    textMsg = 'Debe especificar un valor para Primer Nombre.';
+                    typeMsg = 'error';
+                    notificacion()
+                    return false;
+                }
 
-                // if(primer_apellido == null || primer_apellido == ''){
-                //     titleMsg = 'Valor Requerido'
-                //     textMsg = 'Debe especificar un valor para Primer Apellido.';
-                //     typeMsg = 'error';
-                //     notificacion()
-                //     return false;
-                // }
+                if(primer_apellido == null || primer_apellido == ''){
+                    titleMsg = 'Valor Requerido'
+                    textMsg = 'Debe especificar un valor para Primer Apellido.';
+                    typeMsg = 'error';
+                    notificacion()
+                    return false;
+                }
 
-                // if(celular == null || celular == ''){
-                //     titleMsg = 'Valor Requerido'
-                //     textMsg = 'Debe especificar un valor para Celular.';
-                //     typeMsg = 'error';
-                //     notificacion()
-                //     return false;
-                // }
+                if(genero == null || genero == ''){
+                    titleMsg = 'Valor Requerido'
+                    textMsg = 'Debe especificar un valor para Género.';
+                    typeMsg = 'error';
+                    notificacion()
+                    return false;
+                }
 
-                // if(correo == null || correo == ''){
-                //     titleMsg = 'Valor Requerido'
-                //     textMsg = 'Debe especificar un valor para Correo Electrónico.';
-                //     typeMsg = 'error';
-                //     notificacion()
-                //     return false;
-                // }
+                if(celular == null || celular == ''){
+                    titleMsg = 'Valor Requerido'
+                    textMsg = 'Debe especificar un valor para Celular.';
+                    typeMsg = 'error';
+                    notificacion()
+                    return false;
+                }
 
-                // if(domicilio == null || domicilio == ''){
-                //     titleMsg = 'Valor Requerido'
-                //     textMsg = 'Debe especificar un valor para Domicilio.';
-                //     typeMsg = 'error';
-                //     notificacion()
-                //     return false;
-                // }
+                if(correo == null || correo == ''){
+                    titleMsg = 'Valor Requerido'
+                    textMsg = 'Debe especificar un valor para Correo Electrónico.';
+                    typeMsg = 'error';
+                    notificacion()
+                    return false;
+                }
+
+                if(identidad == null || identidad == ''){
+                    titleMsg = 'Valor Requerido'
+                    textMsg = 'Debe especificar un valor para Identidad.';
+                    typeMsg = 'error';
+                    notificacion()
+                    return false;
+                }
+
+                if(domicilio == null || domicilio == ''){
+                    titleMsg = 'Valor Requerido'
+                    textMsg = 'Debe especificar un valor para Domicilio.';
+                    typeMsg = 'error';
+                    notificacion()
+                    return false;
+                }
                 
-                //if(!accion_guardar){
+                if(!accion_guardar){
                     guardar_clientes();
-                //}
+                }
+            });
+
+            $("#btn_eliminar").on("click", function () {
+                guardar_clientes();
+                const el = document.querySelector("#modal_eliminar");
+                const modal = tailwind.Modal.getOrCreateInstance(el);
+                modal.hide();
             });
 
             function guardar_clientes() {
@@ -405,6 +504,7 @@
                         'segundo_nombre' : segundo_nombre,
                         'primer_apellido' : primer_apellido,
                         'segundo_apellido' : segundo_apellido,
+                        'identidad' : identidad,
                         'genero' : genero,
                         'celular' : celular,
                         'correo' : correo,
@@ -423,10 +523,12 @@
                             textMsg = data.msgSuccess;
                             typeMsg = "success";
                             if(accion != 3){
-                                var row = data.zona_list;
+                                var row = data.clientes_list;
                                 var nuevoFila = [
-                                    row.id, row.nombre, row.descripcion, '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>'+
-                                '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'
+                                    row.id, row.primer_nombre+' '+row.segundo_nombre, row.primer_apellido+' '+row.primer_apellido,
+                                    row.identidad, row.celular, row.correo_electronico, row.genero, row.departamento+', '+row.municipio+', '+row.domicilio,
+                                    '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>'+
+                                    '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'
                                 ]; 
                             }
                             if (accion == 1) { 
