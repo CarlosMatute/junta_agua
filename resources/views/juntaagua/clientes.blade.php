@@ -84,6 +84,18 @@
                                 class="mb-2 mr-1 editar"
                                 variant="warning"
                                 size="sm"
+                                data-id="{{$row->id}}" 
+                                data-primer_nombre="{{$row->primer_nombre}}" 
+                                data-segundo_nombre="{{$row->segundo_nombre}}" 
+                                data-primer_apellido="{{$row->primer_apellido}}" 
+                                data-segundo_apellido="{{$row->segundo_apellido}}" 
+                                data-identidad="{{$row->identidad}}"
+                                data-celular="{{$row->celular}}"
+                                data-correo_electronico="{{$row->correo_electronico}}"
+                                data-genero="{{$row->id_genero}}"
+                                data-departamento="{{$row->id_departamento}}"
+                                data-municipio="{{$row->id_municipio}}"
+                                data-domicilio="{{$row->domicilio}}"
                             >
                                 <x-base.lucide
                                     class="h-4 w-4"
@@ -94,6 +106,18 @@
                                 class="mb-2 mr-1 eliminar"
                                 variant="danger"
                                 size="sm"
+                                data-id="{{$row->id}}" 
+                                data-primer_nombre="{{$row->primer_nombre}}" 
+                                data-segundo_nombre="{{$row->segundo_nombre}}" 
+                                data-primer_apellido="{{$row->primer_apellido}}" 
+                                data-segundo_apellido="{{$row->segundo_apellido}}" 
+                                data-identidad="{{$row->identidad}}"
+                                data-celular="{{$row->celular}}"
+                                data-correo_electronico="{{$row->correo_electronico}}"
+                                data-genero="{{$row->id_genero}}"
+                                data-departamento="{{$row->id_departamento}}"
+                                data-municipio="{{$row->id_municipio}}"
+                                data-domicilio="{{$row->domicilio}}"
                             >
                                 <x-base.lucide
                                     class="h-4 w-4"
@@ -148,11 +172,17 @@
                         <x-base.form-label class="font-extrabold" for="modal_input_genero">
                             Género
                         </x-base.form-label>
-                        <x-base.tom-select id="modal_input_genero" class="w-full" data-placeholder="Selección de Género">
+                        <x-base.form-select
+                                class="sm:mt-2 sm:mr-2"
+                                aria-label=".form-select-lg example"
+                                id="modal_input_genero" 
+                                class="w-full" 
+                                data-placeholder="Selección de Género"
+                            >
                             @foreach($generos as $row)
                             <option value="{{$row->id}}">{{$row->nombre}}</option>
                             @endforeach
-                        </x-base.tom-select>
+                            </x-base.form-select>
                     </div>
                     <div class="col-span-12 md:col-span-12 lg:col-span-3">
                         <x-base.form-label class="font-extrabold" for="modal_input_celular">
@@ -176,19 +206,31 @@
                         <x-base.form-label class="font-extrabold" for="modal_input_departamento">
                             Departamento
                         </x-base.form-label>
-                        <x-base.tom-select id="modal_input_departamento" class="w-full" data-placeholder="Selección de Departamento">
+                        <x-base.form-select
+                                class="sm:mt-2 sm:mr-2"
+                                aria-label=".form-select-lg example"
+                                id="modal_input_departamento" 
+                                class="w-full" 
+                                data-placeholder="Selección de Género"
+                            >
                             @foreach($departamentos as $row)
                             <option value="{{$row->id}}">{{$row->nombre}}</option>
                             @endforeach
-                        </x-base.tom-select>
+                            </x-base.form-select>
                     </div>
                     <div class="col-span-12 md:col-span-12 lg:col-span-6">
                         <x-base.form-label class="font-extrabold" for="modal_input_municipio">
                             Municipio
                         </x-base.form-label>
-                        <select id="modal_input_municipio" class="w-full" data-placeholder="Selección de Municipio">
+                        <x-base.form-select
+                                class="sm:mt-2 sm:mr-2"
+                                aria-label=".form-select-lg example"
+                                id="modal_input_municipio" 
+                                class="w-full" 
+                                data-placeholder="Selección de Género"
+                            >
                             <option id="opc"></option>
-                        </select>
+                        </x-base.form-select>
                     </div>
                     <div class="col-span-12 md:col-span-12 lg:col-span-12">
                         <x-base.form-label class="font-extrabold" for="modal_input_domicilio">
@@ -317,6 +359,9 @@
             var textMsg = null;
             var typeMsg = null;
             var numerofila = null;
+            var table = null;
+            var rowNumber = null;
+            var id_seleccionar = localStorage.getItem("sdatatable_id_seleccionar");
 
             $(document).ready(function () {
                 $.ajaxSetup({
@@ -328,7 +373,7 @@
 
                 //$.fn.dataTable.isDataTable('#sdatatable')
                     // Inicializa el DataTable
-                    $('#sdatatable').DataTable({
+                    table = $('#sdatatable').DataTable({
                         language: { 
                             "decimal": ",", 
                             "thousands": ".", 
@@ -357,24 +402,49 @@
                     });
 
                     id_departamento = $("#modal_input_departamento").val();
-                    consultar_municipios(id_departamento);
+                    //consultar_municipios(id_departamento);
             });
 
+            $("#sdatatable tbody").on( "click", "tr", function () { 
+                                     rowNumber=parseInt(table.row( this ).index()); 
+                                     table.$('tr.selected').removeClass('selected'); 
+                                     $(this).addClass('selected'); 
+                                     localStorage.setItem("sdatatable_id_seleccionar",table.row( this ).data()[0]); 
+                                     }); 
+
             $('#sdatatable tbody').on('click', '.editar', function() {
-                var fila = $('#sdatatable').DataTable().row($(this).parents('tr'));
-                var data = fila.data();
                 accion = 2;
-                numerofila = fila.index(); 
-                id = data[0];
-                $("#modal_input_primer_nombre").val(data[1]);
-                $("#modal_input_segundo_nombre").val(data[2]);
-                $("#modal_input_primer_apellido").val(data[3]);
-                $("#modal_input_segundo_apellido").val(data[4]);
+                id = $(this).data('id');
+                primer_nombre = $(this).data('primer_nombre');
+                segundo_nombre = $(this).data('segundo_nombre');
+                primer_apellido = $(this).data('primer_apellido');
+                segundo_apellido = $(this).data('segundo_apellido');
+                genero = $(this).data('genero');
+                celular = $(this).data('celular');
+                correo = $(this).data('correo_electronico');
+                identidad = $(this).data('identidad');
+                departamento = $(this).data('departamento');
+                municipio = $(this).data('municipio');
+                domicilio = $(this).data('domicilio');
+                consultar_municipios(departamento);
+            });
+
+            function datos_inputs(){
+                $("#modal_input_primer_nombre").val(primer_nombre);
+                $("#modal_input_segundo_nombre").val(segundo_nombre);
+                $("#modal_input_primer_apellido").val(primer_apellido);
+                $("#modal_input_segundo_apellido").val(segundo_apellido);
+                $("#modal_input_genero").val(genero);
+                $("#modal_input_celular").val(celular);
+                $("#modal_input_correo").val(correo);
+                $("#modal_input_identidad").val(identidad);
+                $("#modal_input_departamento").val(departamento);
+                $("#modal_input_municipio").val(municipio);
+                $("#modal_input_domicilio").val(domicilio);
                 const el = document.querySelector("#modal_nuevo_cliente");
                 const modal = tailwind.Modal.getOrCreateInstance(el);
                 modal.show();
-            });
-
+            }
 
             $('#sdatatable tbody').on('click', '.eliminar', function() {
                 var fila = $('#sdatatable').DataTable().row($(this).parents('tr'));
@@ -396,9 +466,10 @@
                 $("#modal_input_celular").val('');
                 $("#modal_input_correo").val('');
                 $("#modal_input_identidad").val('');
-                //$("#modal_input_departamento").val('');
+                $("#modal_input_departamento").val(id_departamento);
                 //$("#modal_input_municipio").val('');
                 $("#modal_input_domicilio").val('');
+                consultar_municipios(id_departamento);
                 accion = 1;
                 const el = document.querySelector("#modal_nuevo_cliente");
                 const modal = tailwind.Modal.getOrCreateInstance(el);
@@ -422,7 +493,6 @@
                 departamento = $("#modal_input_departamento").val();
                 municipio = $("#modal_input_municipio").val();
                 domicilio = $("#modal_input_domicilio").val();
-                accion = 1;
                 
                 if(primer_nombre == null || primer_nombre == ''){
                     titleMsg = 'Valor Requerido'
@@ -525,18 +595,45 @@
                             if(accion != 3){
                                 var row = data.clientes_list;
                                 var nuevoFila = [
-                                    row.id, row.primer_nombre+' '+row.segundo_nombre, row.primer_apellido+' '+row.primer_apellido,
+                                    row.id, row.primer_nombre+' '+row.segundo_nombre, row.primer_apellido+' '+row.segundo_apellido,
                                     row.identidad, row.celular, row.correo_electronico, row.genero, row.departamento+', '+row.municipio+', '+row.domicilio,
-                                    '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>'+
-                                    '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'
+                                    '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"'+
+                                        'data-id="'+row.id+'"'+ 
+                                        'data-primer_nombre="'+row.primer_nombre+'"'+ 
+                                        'data-segundo_nombre="'+row.segundo_nombre+'"'+ 
+                                        'data-primer_apellido="'+row.primer_apellido+'"'+ 
+                                        'data-segundo_apellido="'+row.segundo_apellido+'"'+ 
+                                        'data-identidad="'+row.identidad+'"'+
+                                        'data-celular="'+row.celular+'"'+
+                                        'data-correo_electronico="'+row.correo_electronico+'"'+
+                                        'data-genero="'+row.id_genero+'"'+
+                                        'data-departamento="'+row.id_departamento+'"'+
+                                        'data-municipio="'+row.id_municipio+'"'+
+                                        'data-domicilio="'+row.domicilio+'"'+
+                                    '><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">'+
+                                    '</path></svg></button>'+
+                                    '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"'+
+                                        'data-id="'+row.id+'"'+ 
+                                        'data-primer_nombre="'+row.primer_nombre+'"'+ 
+                                        'data-segundo_nombre="'+row.segundo_nombre+'"'+ 
+                                        'data-primer_apellido="'+row.primer_apellido+'"'+ 
+                                        'data-segundo_apellido="'+row.segundo_apellido+'"'+ 
+                                        'data-identidad="'+row.identidad+'"'+
+                                        'data-celular="'+row.celular+'"'+
+                                        'data-correo_electronico="'+row.correo_electronico+'"'+
+                                        'data-genero="'+row.id_genero+'"'+
+                                        'data-departamento="'+row.id_departamento+'"'+
+                                        'data-municipio="'+row.id_municipio+'"'+
+                                        'data-domicilio="'+row.domicilio+'"'+
+                                    '><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'
                                 ]; 
                             }
                             if (accion == 1) { 
                                 $('#sdatatable').DataTable().row.add(nuevoFila).draw();
                             } else if (accion == 2) { 
-                                $('#sdatatable').DataTable().row(numerofila).data(nuevoFila);
+                                $('#sdatatable').DataTable().row(rowNumber).data(nuevoFila);
                             } else if (accion == 3) {
-                                $('#sdatatable').DataTable().row(numerofila).remove().draw();
+                                $('#sdatatable').DataTable().row(rowNumber).remove().draw();
                             }
                             
                         }
@@ -550,10 +647,10 @@
             }
 
             function consultar_municipios(id_departamento) {
-                if (onTomSelect) {
-                    tomSelect.disable();
-                }
-                accion_guardar = true;
+                // if (onTomSelect) {
+                //     tomSelect.disable();
+                // }
+                $('#modal_input_municipio').prop('disabled', true);
                 $.ajax({
                     type: "POST",
                     url: url_consultar_municipios,
@@ -563,26 +660,29 @@
                     success: function(data) {
                         var municipios = data.departamento_municipios;
                         
-                        if (onTomSelect) {
-                            tomSelect.destroy();
-                            onTomSelect = false;
-                        }
+                        // if (onTomSelect) {
+                        //     tomSelect.destroy();
+                        //     onTomSelect = false;
+                        // }
 
                         $('#modal_input_municipio').html('');
 
                         for (let i = 0; i < municipios.length; i++) {
                             $('#modal_input_municipio').append('<option value="'+municipios[i].id_municipio+'">'+municipios[i].nombre+'</option>');
                         }
-
-                        var $select = $('#modal_input_municipio');
-                        if(!onTomSelect){
-                            tomSelect = new TomSelect($select.get(0), {
-                                placeholder: 'Selecciona un Municipio'
-                            }); 
-                            tomSelect.enable();
-                            onTomSelect = true;
+                        $('#modal_input_municipio').prop('disabled', false);
+                        if(accion == 2){
+                            datos_inputs();
                         }
-                        tomSelect.wrapper.classList.add('x-base', 'tom-select');
+                        // var $select = $('#modal_input_municipio');
+                        // if(!onTomSelect){
+                        //     tomSelect = new TomSelect($select.get(0), {
+                        //         placeholder: 'Selecciona un Municipio'
+                        //     }); 
+                        //     tomSelect.enable();
+                        //     onTomSelect = true;
+                        // }
+                        // tomSelect.wrapper.classList.add('x-base', 'tom-select');
                         
                     },
                 });

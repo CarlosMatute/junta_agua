@@ -1,7 +1,7 @@
 @extends('../layouts/' . $layout)
 
 @section('head')
-    <title>Junta de Agua</title>
+    <title>Cobro Móvil</title>
 @endsection
 
 @section('content')
@@ -23,7 +23,7 @@
                             src="{{ Vite::asset('resources/images/logo.svg') }}"
                             alt="Midone Tailwind HTML Admin Template"
                         />
-                        <span class="ml-3 text-lg text-white"> Junta de Agua </span>
+                        <span class="ml-3 text-lg text-white"> Cobro Móvil </span>
                     </a>
                     <div class="my-auto">
                         <img
@@ -122,7 +122,7 @@
                             >
                                 Privacy Policy
                             </a> -->
-                            <p>JUNTA DE AGUA &copy; {{ date('Y') }}. Todos los derechos reservados.</p>
+                            <p>Cobro Móvil &copy; {{ date('Y') }}. Todos los derechos reservados.</p>
                         </div>
                     </div>
                 </div>
