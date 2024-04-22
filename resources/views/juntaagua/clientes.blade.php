@@ -580,8 +580,7 @@
                         'correo' : correo,
                         'departamento' : departamento,
                         'municipio' : municipio,
-                        'domicilio' : domicilio,
-                        'id_departamento' : id_departamento
+                        'domicilio' : domicilio
                     },
                     success: function(data) {
                         if (data.msgError) {

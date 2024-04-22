@@ -82,7 +82,6 @@ class ClientesController extends Controller
         $departamento=$request->departamento;
         $municipio=$request->municipio;
         $domicilio=$request->domicilio;
-        $id_departamento=$request->id_departamento;
         $clientes_list = null;
         $msgSuccess = null;
         $msgError = null;
@@ -100,7 +99,7 @@ class ClientesController extends Controller
                     returning id;",
                     ["identidad" => $identidad, "primer_nombre" => $primer_nombre, "segundo_nombre" => $segundo_nombre, 
                     "primer_apellido" => $primer_apellido, "segundo_apellido" => $segundo_apellido, "id_genero" => $genero, 
-                    "celular" => $celular, "domicilio" => $domicilio, "id_departamento" => $id_departamento, 
+                    "celular" => $celular, "domicilio" => $domicilio, "id_departamento" => $departamento, 
                     "id_municipio" => $municipio, "correo_electronico" => $correo]))->first();
 
                 $id = $cliente->id;
@@ -113,7 +112,7 @@ class ClientesController extends Controller
                     WHERE id = :id;",
                     ["id" => $id, "identidad" => $identidad, "primer_nombre" => $primer_nombre, "segundo_nombre" => $segundo_nombre, 
                     "primer_apellido" => $primer_apellido, "segundo_apellido" => $segundo_apellido, "id_genero" => $genero, 
-                    "celular" => $celular, "domicilio" => $domicilio, "id_departamento" => $id_departamento, 
+                    "celular" => $celular, "domicilio" => $domicilio, "id_departamento" => $departamento, 
                     "id_municipio" => $municipio, "correo_electronico" => $correo]);
                 $msgSuccess = "Cliente ".$id." editado exitosamente.";
             }else if ($accion == 3) {
