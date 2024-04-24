@@ -13,18 +13,53 @@ class ClientesController extends Controller
 {
     public function ver_clientes()
     {
-        $clientes = DB::select("SELECT tc.id, tc.identidad, tc.primer_nombre, tc.segundo_nombre, tc.primer_apellido, 
-            tc.segundo_apellido, tc.id_genero, tg.nombre genero, tc.celular, tc.domicilio, tc.id_departamento, 
-            td.nombre departamento, tc.id_municipio, tm.nombre municipio, tc.correo_electronico, tc.created_at
-        FROM public.tbl_clientes tc
-        join public.tbl_generos tg on tc.id_genero = tg.id
-        join public.tbl_departamentos td on tc.id_departamento = td.id
-        join public.tbl_municipios tm on tc.id_municipio = tm.id
-            where tc.deleted_at is null;");
+        $clientes = DB::select("SELECT
+                TC.ID,
+                TC.IDENTIDAD,
+                TC.PRIMER_NOMBRE,
+                COALESCE(TC.SEGUNDO_NOMBRE, '') SEGUNDO_NOMBRE,
+                TC.PRIMER_APELLIDO,
+                COALESCE(TC.SEGUNDO_APELLIDO, '') SEGUNDO_APELLIDO,
+                TC.ID_GENERO,
+                TG.NOMBRE GENERO,
+                TC.CELULAR,
+                TC.DOMICILIO,
+                TC.ID_DEPARTAMENTO,
+                TD.NOMBRE DEPARTAMENTO,
+                TC.ID_MUNICIPIO,
+                TM.NOMBRE MUNICIPIO,
+                TC.CORREO_ELECTRONICO,
+                TC.CREATED_AT
+            FROM
+                PUBLIC.TBL_CLIENTES TC
+                JOIN PUBLIC.TBL_GENEROS TG ON TC.ID_GENERO = TG.ID
+                JOIN PUBLIC.TBL_DEPARTAMENTOS TD ON TC.ID_DEPARTAMENTO = TD.ID
+                JOIN PUBLIC.TBL_MUNICIPIOS TM ON TC.ID_MUNICIPIO = TM.ID
+            WHERE
+                TC.DELETED_AT IS NULL
+            ORDER BY
+                TC.PRIMER_NOMBRE,
+                TC.SEGUNDO_NOMBRE,
+                TC.PRIMER_APELLIDO,
+                TC.SEGUNDO_APELLIDO");
 
-        $generos = DB::select('SELECT id, nombre from public.tbl_generos where deleted_at is null');
+        $generos = DB::select('SELECT
+                ID,
+                NOMBRE
+            FROM
+                PUBLIC.TBL_GENEROS
+            WHERE
+                DELETED_AT IS NULL');
 
-        $departamentos = DB::select('SELECT id, nombre from public.tbl_departamentos where deleted_at is null order by nombre');
+        $departamentos = DB::select('SELECT
+                ID,
+                NOMBRE
+            FROM
+                PUBLIC.TBL_DEPARTAMENTOS
+            WHERE
+                DELETED_AT IS NULL
+            ORDER BY
+                NOMBRE');
 
         return view('juntaagua.clientes')
             ->with('clientes', $clientes)
@@ -47,7 +82,6 @@ class ClientesController extends Controller
         $departamento=$request->departamento;
         $municipio=$request->municipio;
         $domicilio=$request->domicilio;
-        $id_departamento=$request->id_departamento;
         $clientes_list = null;
         $msgSuccess = null;
         $msgError = null;
@@ -65,27 +99,58 @@ class ClientesController extends Controller
                     returning id;",
                     ["identidad" => $identidad, "primer_nombre" => $primer_nombre, "segundo_nombre" => $segundo_nombre, 
                     "primer_apellido" => $primer_apellido, "segundo_apellido" => $segundo_apellido, "id_genero" => $genero, 
-                    "celular" => $celular, "domicilio" => $domicilio, "id_departamento" => $id_departamento, 
+                    "celular" => $celular, "domicilio" => $domicilio, "id_departamento" => $departamento, 
                     "id_municipio" => $municipio, "correo_electronico" => $correo]))->first();
 
                 $id = $cliente->id;
                 $msgSuccess = "Cliente ".$id." registrado exitosamente.";
             }else if ($accion == 2) {
-
+                DB::select("UPDATE public.tbl_clientes
+                    SET identidad=:identidad, primer_nombre=:primer_nombre, segundo_nombre=:segundo_nombre, primer_apellido=:primer_apellido, 
+                    segundo_apellido=:segundo_apellido, id_genero=:id_genero, celular=:celular, domicilio=:domicilio, 
+                    id_departamento=:id_departamento, id_municipio=:id_municipio, correo_electronico=:correo_electronico, updated_at=now()
+                    WHERE id = :id;",
+                    ["id" => $id, "identidad" => $identidad, "primer_nombre" => $primer_nombre, "segundo_nombre" => $segundo_nombre, 
+                    "primer_apellido" => $primer_apellido, "segundo_apellido" => $segundo_apellido, "id_genero" => $genero, 
+                    "celular" => $celular, "domicilio" => $domicilio, "id_departamento" => $departamento, 
+                    "id_municipio" => $municipio, "correo_electronico" => $correo]);
+                $msgSuccess = "Cliente ".$id." editado exitosamente.";
             }else if ($accion == 3) {
                 DB::select("UPDATE public.tbl_clientes SET deleted_at = now() WHERE id = :id;", ["id" => $id]);
                 $msgSuccess = "Cliente ".$id." eliminado exitosamente.";
             }else{
                 $msgError = "Acción inválida";
             }
-                $clientes_list = collect(\DB::select("SELECT tc.id, tc.identidad, tc.primer_nombre, tc.segundo_nombre, tc.primer_apellido, 
-                    tc.segundo_apellido, tc.id_genero, tg.nombre genero, tc.celular, tc.domicilio, tc.id_departamento, 
-                    td.nombre departamento, tc.id_municipio, tm.nombre municipio, tc.correo_electronico, tc.created_at
-                FROM public.tbl_clientes tc
-                join public.tbl_generos tg on tc.id_genero = tg.id
-                join public.tbl_departamentos td on tc.id_departamento = td.id
-                join public.tbl_municipios tm on tc.id_municipio = tm.id
-                    where tc.deleted_at is null and tc.id = :id;", ["id" => $id]))->first();
+                $clientes_list = collect(\DB::select("SELECT
+                        TC.ID,
+                        TC.IDENTIDAD,
+                        TC.PRIMER_NOMBRE,
+                        COALESCE(TC.SEGUNDO_NOMBRE, '') SEGUNDO_NOMBRE,
+                        TC.PRIMER_APELLIDO,
+                        COALESCE(TC.SEGUNDO_APELLIDO, '') SEGUNDO_APELLIDO,
+                        TC.ID_GENERO,
+                        TG.NOMBRE GENERO,
+                        TC.CELULAR,
+                        TC.DOMICILIO,
+                        TC.ID_DEPARTAMENTO,
+                        TD.NOMBRE DEPARTAMENTO,
+                        TC.ID_MUNICIPIO,
+                        TM.NOMBRE MUNICIPIO,
+                        TC.CORREO_ELECTRONICO,
+                        TC.CREATED_AT
+                    FROM
+                        PUBLIC.TBL_CLIENTES TC
+                        JOIN PUBLIC.TBL_GENEROS TG ON TC.ID_GENERO = TG.ID
+                        JOIN PUBLIC.TBL_DEPARTAMENTOS TD ON TC.ID_DEPARTAMENTO = TD.ID
+                        JOIN PUBLIC.TBL_MUNICIPIOS TM ON TC.ID_MUNICIPIO = TM.ID
+                    WHERE
+                        TC.DELETED_AT IS NULL
+                        AND TC.ID =:id
+                    ORDER BY
+                        TC.PRIMER_NOMBRE,
+                        TC.SEGUNDO_NOMBRE,
+                        TC.PRIMER_APELLIDO,
+                        TC.SEGUNDO_APELLIDO;", ["id" => $id]))->first();
         } catch (Exception $e) {
             $msgError = $e->getMessage();
         }
