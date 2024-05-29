@@ -6,6 +6,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\DarkModeController;
 use App\Http\Controllers\ColorSchemeController;
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\UbicacionesController;
 use App\Http\Controllers\DepartamentosMunicipiosController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\EmpleadosController;
@@ -108,6 +109,8 @@ Route::middleware('auth')->group(function () {
     //Inicia Junta de agua
         Route::get('/clientes', [ClientesController::class, 'ver_clientes'])->name('clientes');
         Route::post('/clientes/guardar', [ClientesController::class, 'guardar_clientes']);
+        Route::get('/ubicaciones', [UbicacionesController::class, 'ver_ubicaciones'])->name('ubicaciones');
+        Route::post('/ubicaciones/guardar', [UbicacionesController::class, 'guardar_ubicaciones']);
         Route::post('/departamentos-municipios', [DepartamentosMunicipiosController::class, 'ver_departamento_municipios']);
         Route::get('/reportes', [ReportesController::class, 'imprimir_reporte']);
 
