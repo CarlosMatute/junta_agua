@@ -18,6 +18,14 @@ class SideMenu
                 ],
                 'title' => 'Clientes'
             ],
+            'Contratos' => [
+                'icon' => 'FileText',
+                'route_name' => 'ver_contrato',
+                'params' => [
+                    'layout' => 'side-menu'
+                ],
+                'title' => 'Contratos'
+            ],
             'dashboard' => [
                 'icon' => 'home',
                 'title' => 'Dashboard',
