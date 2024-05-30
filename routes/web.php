@@ -10,6 +10,7 @@ use App\Http\Controllers\UbicacionesController;
 use App\Http\Controllers\DepartamentosMunicipiosController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\EmpleadosController;
+use App\Http\Controllers\ContratoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -116,5 +117,16 @@ Route::middleware('auth')->group(function () {
 
         Route::get("/per-empleado",[EmpleadosController::class, "ver_per_empleado"]);
         Route::post("/per-empleado/guardar",[EmpleadosController::class, "guardar_per_empleado"]);
+
+        //Modulo Contrato
+        Route::get('/contrato',[ContratoController::class,'index'])->name('ver_contrato');
+        Route::get('/contrato/crear',[ContratoController::class,'crear'])->name('crear');
+        Route::post('/contrato/guardar',[ContratoController::class, 'guardar'])->name('guardar_contrato');
+        Route::get('/contrato/editar/{id}',[ContratoController::class,'editar'])->name('editar_contrato');
+        Route::post('/contrato/update',[ContratoController::class, 'update'])->name('update_contrato');
+        Route::get('/contrato/eliminar/{id}',[ContratoController::class, 'eliminar'])->name('eliminar_contrato');
+
+        //Finaliza Modulo Contrato
+
     //Finaliza Junta de agua
 });
