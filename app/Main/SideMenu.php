@@ -18,6 +18,14 @@ class SideMenu
                 ],
                 'title' => 'Clientes'
             ],
+            'Ubicaciones' => [
+                'icon' => 'home',
+                'route_name' => 'ubicaciones',
+                'params' => [
+                    'layout' => 'side-menu'
+                ],
+                'title' => 'Ubicaciones'
+            ],
             'dashboard' => [
                 'icon' => 'home',
                 'title' => 'Dashboard',
