@@ -8,14 +8,10 @@
 <div class="px-5 pt-5 mt-5 intro-y box">
     <div class="flex flex-col pb-5 -mx-5 border-b border-slate-200/60 dark:border-darkmode-400 lg:flex-row">
         <div class="flex items-center justify-center flex-1 px-5 lg:justify-start">
-
-
-                    <x-base.lucide
-                        class="w-40 h-40"
-                        icon="FileText"
-                    />
-
-
+                <x-base.lucide
+                    class="w-40 h-40"
+                    icon="FileText"
+                />
             <div class="ml-5">
                 <div class="text-lg font-medium truncate w-240 sm:w-80 sm:whitespace-normal">
 

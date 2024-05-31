@@ -12,9 +12,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ContratoController extends Controller
 {
-    public function __construct()
-    {
-      $this->middleware('auth');
+    public function __construct(){
+        $this->middleware('auth');
     }
     //Funciones de Modulo de Contratos
 
@@ -80,7 +79,7 @@ class ContratoController extends Controller
             $saveContrato = collect(\DB::SELECT("
             INSERT INTO public.tbl_contrato(
                 id_cliente, id_ubicacion, id_servicio, fecha_inicio, fecha_fin, created_at, updated_at)
-               VALUES (:id_cliente, :id_ubicacion, :id_servicio, :fecha_inicio, :fecha_fin, now(), now())
+            VALUES (:id_cliente, :id_ubicacion, :id_servicio, :fecha_inicio, :fecha_fin, now(), now())
             returning id;
             ",["id_cliente"=>$id_cliente, "id_ubicacion"=>$id_ubicacion, "id_servicio"=>$id_servicio, "fecha_inicio"=>$fecha_inicio, "fecha_fin"=>$fecha_fin]))->first();
 
