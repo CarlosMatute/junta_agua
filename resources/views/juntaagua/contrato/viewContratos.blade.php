@@ -35,13 +35,10 @@
         </div>
         <div class="col-span-6 text-right intro-y lg:col-span-6">
             <div class="p-5">
-                    <x-base.button
-                        class="mb-2 mr-1"
-                        variant="primary"
-                        id="btn_nuevo_contrato"
-                    ><i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
-                         Registrar Nuevo Contrato
-                    </x-base.button>
+                <a class="bg-primary  text-white font-bold py-2 px-4 rounded" 
+                href="{{ Route('crear_contrato') }}">
+                    Agregar Nuevo Contrato
+                </a>
 
             </div>
         </div>

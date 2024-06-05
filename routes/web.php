@@ -120,7 +120,7 @@ Route::middleware('auth')->group(function () {
 
         //Modulo Contrato
         Route::get('/contrato',[ContratoController::class,'index'])->name('ver_contrato');
-        Route::get('/contrato/crear',[ContratoController::class,'crear'])->name('crear');
+        Route::get('/contrato/crear',[ContratoController::class,'crear'])->name('crear_contrato');
         Route::post('/contrato/guardar',[ContratoController::class, 'guardar'])->name('guardar_contrato');
         Route::get('/contrato/editar/{id}',[ContratoController::class,'editar'])->name('editar_contrato');
         Route::post('/contrato/update',[ContratoController::class, 'update'])->name('update_contrato');
