@@ -83,6 +83,7 @@ class UbicacionesController extends Controller
         $departamento=$request->departamento;
         $municipio=$request->municipio;
         $activo=$request->activo;
+        $ubicacion_casa = $request->ubicacion_casa;
         $ubicaciones_list = null;
         $msgSuccess = null;
         $msgError = null;
@@ -124,7 +125,7 @@ class UbicacionesController extends Controller
                         "cliente_habita" => $cliente_habita,
                         "fecha_cobro" => $fecha_cobro,
                         "pais" => $pais,
-                        "coordenadas" => $coordenadas,
+                        "coordenadas" => $ubicacion_casa,
                         "casa_propia" => $casa_propia,
                         "id_departamento" => $departamento,
                         "id_municipio" => $municipio,
@@ -148,7 +149,7 @@ class UbicacionesController extends Controller
                         "cliente_habita" => $cliente_habita,
                         "fecha_cobro" => $fecha_cobro,
                         "pais" => $pais,
-                        "coordenadas" => $coordenadas,
+                        "coordenadas" => $ubicacion_casa,
                         "casa_propia" => $casa_propia,
                         "id_departamento" => $departamento,
                         "id_municipio" => $municipio,

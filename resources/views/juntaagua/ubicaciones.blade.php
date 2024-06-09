@@ -2,6 +2,16 @@
 
 @section('subhead')
     <title>Ubicaciones</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 300px; /* Altura del mapa */
+            width: 100%; /* Ancho del mapa */
+            border: 1px solid #ccc; /* Borde opcional para el mapa */
+            margin-top: 20px; /* Margen superior opcional */
+        }
+    </style>
 @endsection
 
 @section('subcontent')
@@ -325,6 +335,12 @@
                         <x-base.form-textarea rows="5" class="form-control" id="modal_input_direccion" name="comment" placeholder="Escriba la dirección exacta."></x-base.form-textarea>
                     </div>
 
+                    <div class="col-span-12 md:col-span-12 lg:col-span-12">
+                        <div id="map"></div>
+                    </div>
+
+                    
+
                     
                     
                     <!-- Agrega más campos según tu modelo de datos -->
@@ -453,6 +469,9 @@
             var numerofila = null;
             var table = null;
             var rowNumber = null;
+            var map = null;
+            var marker = null;
+            var ubicacion_casa = null;
             var id_seleccionar = localStorage.getItem("sdatatable_id_seleccionar");
 
             $(document).ready(function () {
@@ -498,6 +517,41 @@
                     
             });
 
+            document.addEventListener('DOMContentLoaded', function() {
+                    // Inicializa el mapa
+                    map = L.map('map').setView([15.199999, -86.241905], 6);
+
+                    // Añade una capa de mapa (OpenStreetMap en este caso)
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+
+                     // Establece la ruta de las imágenes de Leaflet
+                    L.Icon.Default.imagePath = "/build/assets/";
+
+
+                    // Añade un evento de clic al mapa
+                    map.on('click', function(e) {
+                        // Obtén las coordenadas del clic
+                        var coords = e.latlng;
+                        
+                        // Si ya hay un marcador, actualiza su posición
+                        if (marker) {
+                            marker.setLatLng(coords);
+                            //{"lat": 14.119429333513594,"lng": -87.18672752380373}
+                        } else {
+                            // Si no hay marcador, crea uno nuevo
+                            marker = L.marker(coords).addTo(map);
+                        }
+
+                        ubicacion_casa = coords;
+                        ubicacion_casa = '{"lat": '+ubicacion_casa.lat.toString() + ', "lng": ' + ubicacion_casa.lng.toString()+'}';
+                        //console.log(ubicacion_casa);
+                        // Actualiza el contenido del elemento span con las coordenadas
+                        //document.getElementById('coords').textContent = `Lat: ${coords.lat}, Lng: ${coords.lng}`;
+                    });
+                });
+
             window.addEventListener('DOMContentLoaded', (event) => {
         const table = document.getElementById('sdatatable');
         if (table) {
@@ -513,6 +567,8 @@
                                      }); 
 
             $('#sdatatable tbody').on('click', '.editar', function() {
+                map.setView([15.199999, -86.241905], 6);
+
                 accion = 2;
                 id = $(this).data('id');
                 descripcion_casa = $(this).data('descripcion_casa');
@@ -527,6 +583,17 @@
                 municipio = $(this).data('municipio');
                 activo = $(this).data('activo');
                 consultar_municipios(departamento);
+
+                if (marker) {
+                    marker.setLatLng(coordenadas);
+                } else {
+                    marker = L.marker(coordenadas).addTo(map);
+                }
+                ubicacion_casa = '{"lat": '+coordenadas.lat.toString() + ', "lng": ' + coordenadas.lng.toString()+'}';
+                const el = document.querySelector("#modal_nuevo_cliente");
+                const modal = tailwind.Modal.getOrCreateInstance(el);
+                modal.show();
+
             });
 
             function datos_inputs(){
@@ -558,6 +625,12 @@
             });
 
             $("#btn_nueva_ubicacion").on("click", function (event) {
+                map.setView([15.199999, -86.241905], 6);
+                if (marker) {
+                    map.removeLayer(marker);
+                    marker = null;
+                }
+
                 $("#modal_input_descripcion_casa").val('');
                 $("#modal_input_direccion").val('');
                 $("#modal_input_monto").val('');
@@ -715,7 +788,8 @@
                         'casa_propia' : casa_propia,
                         'departamento' : departamento,
                         'municipio' : municipio,
-                        'activo' : activo
+                        'activo' : activo,
+                        'ubicacion_casa':ubicacion_casa
                     },
                     success: function(data) {
                         if (data.msgError) {
