@@ -18,7 +18,6 @@ class SideMenu
                 ],
                 'title' => 'Clientes'
             ],
-<<<<<<< HEAD
             'Ubicaciones' => [
                 'icon' => 'home',
                 'route_name' => 'ubicaciones',
@@ -26,7 +25,7 @@ class SideMenu
                     'layout' => 'side-menu'
                 ],
                 'title' => 'Ubicaciones'
-=======
+            ],
             'Contratos' => [
                 'icon' => 'FileText',
                 'route_name' => 'ver_contrato',
@@ -34,7 +33,6 @@ class SideMenu
                     'layout' => 'side-menu'
                 ],
                 'title' => 'Contratos'
->>>>>>> c2029cc40b2d98855ff4759d40c08cb74210f6ab
             ],
             'dashboard' => [
                 'icon' => 'home',
