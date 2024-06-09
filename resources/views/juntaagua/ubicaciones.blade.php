@@ -247,17 +247,6 @@
                             <option id="opc"></option>
                         </x-base.form-select>
                     </div>
-
-                    <div class="col-span-12 md:col-span-12 lg:col-span-6">
-                        <x-base.form-label class="font-extrabold" for="modal_input_coordenadas">
-                            Coordenadas
-                        </x-base.form-label>
-                        <x-base.form-input
-                            id="modal_input_coordenadas"
-                            type="text" 
-                            placeholder="Escriba las coordenadas"
-                        />
-                    </div>
                     
 
                     <div class="col-span-12 md:col-span-12 lg:col-span-6">
@@ -691,13 +680,6 @@
                     return false;
                 }
 
-                if(coordenadas == null || coordenadas == ''){
-                    titleMsg = 'Valor Requerido'
-                    textMsg = 'Debe especificar un valor para coordenadas.';
-                    typeMsg = 'error';
-                    notificacion()
-                    return false;
-                }
 
                 if(descripcion_casa == null || descripcion_casa == ''){
                     titleMsg = 'Valor Requerido'

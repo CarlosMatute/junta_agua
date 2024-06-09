@@ -39,7 +39,8 @@ class UbicacionesController extends Controller
                 WHERE U.DELETED_AT IS NULL
                 AND P.DELETED_AT IS NULL
                 AND D.DELETED_AT IS NULL
-                AND M.DELETED_AT IS NULL");
+                AND M.DELETED_AT IS NULL
+                ");
             
             $paises = DB::select('SELECT
             ID,
@@ -48,6 +49,7 @@ class UbicacionesController extends Controller
             PUBLIC.TBL_PAISES
             WHERE
             DELETED_AT IS NULL
+            AND ID = 102
             ORDER BY
             NOMBRE');
 
