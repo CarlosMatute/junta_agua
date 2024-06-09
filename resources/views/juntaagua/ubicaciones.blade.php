@@ -86,7 +86,6 @@
                         <th>Dirección</th>
                         <th>Foto</th>
                         <th>Ubicación</th>
-                        <th>Coordenadas</th>
                         <th>Monto</th>
                         <th>Fecha Cobro</th>
                         <th>QR</th>
@@ -110,7 +109,6 @@
                         <td>{{$row->direccion}}</td>
                         <td>{{$row->foto}}</td>
                         <td>{{$row->ubicacion}}</td>
-                        <td>{{$row->coordenadas}}</td>
                         <td>{{$row->monto}}</td>
                         <td>{{$row->fecha_cobro}}</td>
                         <td>{{$row->qr}}</td>
@@ -251,7 +249,7 @@
 
                     <div class="col-span-12 md:col-span-12 lg:col-span-6">
                         <x-base.form-label class="font-extrabold" for="modal_input_descripcion_casa">
-                            Descripción
+                            Descripción de la Casa
                         </x-base.form-label>
                         <x-base.form-input id="modal_input_descripcion_casa" type="text" placeholder="Escriba una descripción de la casa" />
                     </div>
@@ -573,6 +571,8 @@
                 activo = $(this).data('activo');
                 consultar_municipios(departamento);
 
+                
+
                 if (marker) {
                     marker.setLatLng(coordenadas);
                 } else {
@@ -798,32 +798,32 @@
 
                                 if (row.cliente_habita) {
                                     cliente_habita_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="Check" data-lucide="Check" class="lucide lucide-Check w-4 h-4 text-green-500" style="color: #10B981;"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-                                    //cliente_habita_icono = 'SI';
+                                    row.cliente_habita = 1;
                                 }else{
                                     cliente_habita_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="X" data-lucide="X" class="lucide lucide-X w-4 h-4 text-red-500" style="color: #EF4444;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-                                    //cliente_habita_icono = 'NO';
+                                    row.cliente_habita = 0;
                                 }
 
                                 if (row.activo) {
                                      activo_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="Check" data-lucide="Check" class="lucide lucide-Check w-4 h-4 text-green-500" style="color: #10B981;"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-                                     //activo_icono = 'SI';
+                                     row.activo = 1;
                                 }else{
                                     activo_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="X" data-lucide="X" class="lucide lucide-X w-4 h-4 text-red-500" style="color: #EF4444;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-                                    //activo_icono = 'NO';
+                                    row.activo = 0;
                                 }
 
                                 if (row.casa_propia) {
                                     casa_propia_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="Check" data-lucide="Check" class="lucide lucide-Check w-4 h-4 text-green-500" style="color: #10B981;"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-                                    //casa_propia_icono = 'SI';
+                                    row.casa_propia = 1;
                                 }else{
                                     casa_propia_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="X" data-lucide="X" class="lucide lucide-X w-4 h-4 text-red-500" style="color: #EF4444;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-                                    //casa_propia_icono = 'NO';
+                                    row.casa_propia = 0;
                                 }
 
                                 
                                 var objetoUbicacion = JSON.parse(row.coordenadas); 
                                 var nuevoFila = [
-                                    row.id, row.descripcion_casa,cliente_habita_icono ,row.direccion, row.foto, row.ubicacion, row.coordenadas,
+                                    row.id, row.descripcion_casa,cliente_habita_icono ,row.direccion, row.foto, row.ubicacion,
                                      row.monto,row.fecha_cobro,row.qr, activo_icono , casa_propia_icono, 
                                     '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"'+
                                         'data-id="'+row.id+'"'+ 
