@@ -839,7 +839,7 @@
                                 }
 
                                 
-
+                                var objetoUbicacion = JSON.parse(row.coordenadas); 
                                 var nuevoFila = [
                                     row.id, row.descripcion_casa,cliente_habita_icono ,row.direccion, row.foto, row.ubicacion, row.coordenadas,
                                      row.monto,row.fecha_cobro,row.qr, activo_icono , casa_propia_icono, 
@@ -850,7 +850,7 @@
                                         'data-monto="'+row.monto+'"'+ 
                                         'data-cliente_habita="'+row.cliente_habita+'"'+ 
                                         'data-fecha_cobro="'+row.fecha_cobro+'"'+
-                                        'data-coordenadas="'+row.coordenadas+'"'+
+                                        'data-coordenadas="'+"{&quot;lat&quot;: "+objetoUbicacion.lat+", &quot;lng&quot;: "+objetoUbicacion.lng+"}"+'"'+ 
                                         'data-casa_propia="'+row.casa_propia+'"'+
                                         'data-pais="'+row.id_pais+'"'+
                                         'data-departamento="'+row.id_departamento+'"'+
@@ -865,7 +865,7 @@
                                         'data-monto="'+row.monto+'"'+ 
                                         'data-cliente_habita="'+row.cliente_habita+'"'+ 
                                         'data-fecha_cobro="'+row.fecha_cobro+'"'+
-                                        'data-coordenadas="'+row.coordenadas+'"'+
+                                        'data-coordenadas="'+"{&quot;lat&quot;: "+objetoUbicacion.lat+", &quot;lng&quot;: "+objetoUbicacion.lng+"}"+'"'+ 
                                         'data-casa_propia="'+row.casa_propia+'"'+
                                         'data-pais="'+row.id_pais+'"'+
                                         'data-departamento="'+row.id_departamento+'"'+
