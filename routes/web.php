@@ -126,6 +126,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/contrato/update',[ContratoController::class, 'update'])->name('update_contrato');
         Route::get('/contrato/eliminar/{id}',[ContratoController::class, 'eliminar'])->name('eliminar_contrato');
 
+        Route::get('/ubicaciones/{id_cliente}', [ContratoController::class, 'getUbicaciones'])->name('getUbicaciones');
+
         //Finaliza Modulo Contrato
 
     //Finaliza Junta de agua

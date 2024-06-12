@@ -55,13 +55,51 @@ class ContratoController extends Controller
 
     public function crear(){
         //Redirige al formulario crear contrato
+        $listClientes=DB::SELECT("
+        select 
+        c.id,
+        TRIM(
+            COALESCE(TRIM(c.primer_nombre)||' ','')||
+            COALESCE(TRIM(c.segundo_nombre)||' ','')||
+            COALESCE(TRIM(c.primer_apellido)||' ','')||
+            COALESCE(TRIM(c.segundo_apellido||' '),'')
+            ) as cliente
+        from 
+            tbl_clientes c
+        where 
+            c.deleted_at is null
+        ");
 
-        return view("juntaagua.contrato.viewCrearContrato");
+        //
+        $listServicios = DB::SELECT("
+        select
+            s.id,
+            ts.nombre as tipo,
+            s.descripcion as servicio
+        from tbl_servicio s
+        join tbl_tipo_servicio ts on s.id_tipo = ts.id
+        where s.deleted_at is null
+            and ts.deleted_at is null
+        ");
+
+        return view("juntaagua.contrato.viewCrearContrato")
+            ->with("clientes", $listClientes)
+            ->with("servicios", $listServicios);
 
     }
 
     public function guardar(Request $request){
+        
         //Guardar el contrato
+
+        //Validacion datos 
+        $request->validate([
+            'id_cliente' => 'required|integer',
+            'id_ubicacion' => 'required|integer',
+            'id_servicio' => 'required|integer',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+        ]);
 
         //declarar variables
         $msgError = null;
@@ -74,7 +112,7 @@ class ContratoController extends Controller
         $id_servicio = $request->id_servicio;
         $fecha_inicio = $request->fecha_inicio;
         $fecha_fin = $request->fecha_fin;
-
+        //dd($request);
         try{
             $saveContrato = collect(\DB::SELECT("
             INSERT INTO public.tbl_contrato(
@@ -210,5 +248,13 @@ class ContratoController extends Controller
             ->with('msgError', $msgError)
             ->with('msgSuccess',$msgSuccess)
             ->with('msgWarning',$msgWarning);
+    }
+
+    public function getUbicaciones($id_cliente)
+    {
+        $ubicaciones = DB::SELECT("
+        select * from tbl_ubicacion where id_cliente =:id_cliente and deleted_at is null
+        ", ["id_cliente"=>$id_cliente]);
+        return response()->json($ubicaciones);
     }
 }
