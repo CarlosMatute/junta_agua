@@ -60,14 +60,17 @@
             </thead>
             <tbody>
                 @foreach ($listarContratos as $item)
+                <tr>    
                     <td>{{$item->id}}</td>
                     <td>{{$item->servicio}}</td>
                     <td>{{$item->nombre_cliente}}</td>
                     <td>{{$item->descripcion_casa}}</td>
-                    <td>{{$item->fehca_inicio}}</td>
+                    <td>{{$item->fecha_inicio}}</td>
                     <td>{{$item->fecha_fin}}</td>
                     <td>{{$item->created_at}}</td>
                     <td>{{$item->updated_at}}</td>
+                    <td></td>
+                </tr>
                 @endforeach
             </tbody>
         </table>

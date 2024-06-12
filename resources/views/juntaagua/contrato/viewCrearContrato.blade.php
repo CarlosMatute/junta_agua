@@ -47,40 +47,67 @@
             </div>
         </div>
     </div>           
-    
+    @if($errors->any())
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+    @endif
     <form action="{{ route('guardar_contrato') }}" method="POST">
         @csrf
-        <div class="mb-4">
-            <label for="id_cliente" class="block text-gray-700">Cliente</label>
-            <select id="id_cliente" name="id_cliente" class="w-full p-2 border border-gray-300 rounded mt-1">
-                <option value="" selected>Seleccione un cliente</option>
-                @foreach($clientes as $cliente)
-                    <option value="{{ $cliente->id }}">{{ $cliente->cliente }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="mb-4">
-            <label for="id_ubicacion" class="block text-gray-700">Ubicación</label>
-            <select id="id_ubicacion" name="id_ubicacion" class="w-full p-2 border border-gray-300 rounded mt-1">
-                <option value="">Seleccione una ubicación</option>
-            </select>
-        </div>
-        <div class="mb-4">
-            <label for="id_servicio" class="block text-gray-700">Servicio</label>
-            <select id="id_servicio" name="id_servicio" class="w-full p-2 border border-gray-300 rounded mt-1">
-                <option value="" selected>Seleccione un servicio</option>
-                @foreach($servicios as $servicios)
-                    <option value="{{ $servicios->id }}">{{ $servicios->tipo }} - {{ $servicios->servicio }} </option>
-                @endforeach
-            </select>
-        </div>
-        <div class="mb-4">
-            <label for="fecha_inicio" class="block text-gray-700">Fecha de Inicio</label>
-            <input type="date" id="fecha_inicio" name="fecha_inicio" class="w-full p-2 border border-gray-300 rounded mt-1">
-        </div>
-        <div class="mb-4">
-            <label for="fecha_fin" class="block text-gray-700">Fecha de Fin</label>
-            <input type="date" id="fecha_fin" name="fecha_fin" class="w-full p-2 border border-gray-300 rounded mt-1">
+        <div class="grid grid-cols-2 gap-x-4">
+            <div class="mb-4 col-span-2">
+                <label for="id_cliente" class="block text-gray-700">Cliente</label>
+                <select id="id_cliente" name="id_cliente" class="w-full p-2 border {{ $errors->has('id_cliente') ? 'border-red-500' : 'border-gray-300' }} rounded mt-1">
+                    <option value="" selected>Seleccione un cliente</option>
+                    @foreach($clientes as $cliente)
+                        <option value="{{ $cliente->id }}" {{ old('id_cliente') == $cliente->id ? 'selected' : '' }}>{{ $cliente->cliente }}</option>
+                    @endforeach
+                </select>
+                @error('id_cliente')
+                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label for="id_ubicacion" class="block text-gray-700">Ubicación</label>
+                <select id="id_ubicacion" name="id_ubicacion" class="w-full p-2 border {{ $errors->has('id_ubicacion') ? 'border-red-500' : 'border-gray-300' }} rounded mt-1">
+                    <option value="">Seleccione una ubicación</option>
+                </select>
+                @error('id_ubicacion')
+                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label for="id_servicio" class="block text-gray-700">Servicio</label>
+                <select id="id_servicio" name="id_servicio" class="w-full p-2 border {{ $errors->has('id_servicio') ? 'border-red-500' : 'border-gray-300' }} rounded mt-1">
+                    <option value="" selected>Seleccione un servicio</option>
+                    @foreach($servicios as $servicio)
+                        <option value="{{ $servicio->id }}" {{ old('id_servicio') == $servicio->id ? 'selected' : '' }}>
+                            {{ $servicio->tipo }} - {{ $servicio->servicio }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('id_servicio')
+                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label for="fecha_inicio" class="block text-gray-700">Fecha de Inicio</label>
+                <input type="date" id="fecha_inicio" name="fecha_inicio" value="{{ old('fecha_inicio') }}" class="w-full p-2 border {{ $errors->has('fecha_inicio') ? 'border-red-500' : 'border-gray-300' }} rounded mt-1">
+                @error('fecha_inicio')
+                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label for="fecha_fin" class="block text-gray-700">Fecha de Fin</label>
+                <input type="date" id="fecha_fin" name="fecha_fin" value="{{ old('fecha_fin') }}" class="w-full p-2 border {{ $errors->has('fecha_fin') ? 'border-red-500' : 'border-gray-300' }} rounded mt-1">
+                @error('fecha_fin')
+                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                @enderror
+            </div>
         </div>
         <button type="submit" class="w-full bg-primary text-white p-2 rounded mt-4">Enviar</button>
     </form>

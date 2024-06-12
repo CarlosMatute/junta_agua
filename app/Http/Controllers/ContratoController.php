@@ -99,6 +99,12 @@ class ContratoController extends Controller
             'id_servicio' => 'required|integer',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+        ], [], [
+            'id_cliente' => 'cliente',
+            'id_ubicacion' => 'ubicación',
+            'id_servicio' => 'servicio',
+            'fecha_inicio' => 'fecha de inicio',
+            'fecha_fin' => 'fecha de fin',
         ]);
 
         //declarar variables
@@ -138,29 +144,19 @@ class ContratoController extends Controller
     public function editar(Request $request){
         //Redirige al formulario editar contrato
 
+        
         //declarar variables
         $id_contrato = $request->id;
 
-        $listarContrato = DB::select("
+        $listarContrato = collect(\DB::select("
         SELECT
             tc.id,
             tc.id_cliente,
-            TRIM(
-                COALESCE(TRIM(c.primer_nombre)||' ','')||
-                COALESCE(TRIM(c.segundo_nombre)||' ','')||
-                COALESCE(TRIM(c.primer_apellido)||' ','')||
-                COALESCE(TRIM(c.segundo_apellido||' '),'')
-
-            ) as nombre_cliente,
             tc.id_ubicacion,
             tu.descripcion_casa,
             tc.id_servicio,
-            ts.descripcion as servicio,
-            tc.fecha_inicio,
-            tc.fecha_fin,
-            tc.created_at,
-            tc.updated_at,
-            tc.deleted_at
+            tc.fecha_inicio::date,
+            tc.fecha_fin::date
         FROM public.tbl_contrato tc
         JOIN tbl_clientes c on tc.id_cliente = c.id
         JOIN tbl_ubicacion tu on tc.id_ubicacion = tu.id
@@ -170,27 +166,70 @@ class ContratoController extends Controller
             and c.deleted_at is null
             and tu.deleted_at is null
             and ts.deleted_at is null
-            and tc.id = :id_contrato",["id_contrato" =>$id_contrato]);
+            and tc.id = :id_contrato",["id_contrato" =>$id_contrato]))->first();
 
+            $listClientes=DB::SELECT("
+            select 
+            c.id,
+            TRIM(
+                COALESCE(TRIM(c.primer_nombre)||' ','')||
+                COALESCE(TRIM(c.segundo_nombre)||' ','')||
+                COALESCE(TRIM(c.primer_apellido)||' ','')||
+                COALESCE(TRIM(c.segundo_apellido||' '),'')
+                ) as cliente
+            from 
+                tbl_clientes c
+            where 
+                c.deleted_at is null
+            ");
+    
+            //
+            $listServicios = DB::SELECT("
+            select
+                s.id,
+                ts.nombre as tipo,
+                s.descripcion as servicio
+            from tbl_servicio s
+            join tbl_tipo_servicio ts on s.id_tipo = ts.id
+            where s.deleted_at is null
+                and ts.deleted_at is null
+            ");
+    
         return view("juntaagua.contrato.viewEditarContrato")
-            ->with("listarContrato",$listarContrato);
+            ->with("listarContrato",$listarContrato)
+            ->with("clientes", $listClientes)
+            ->with("servicios", $listServicios);
     }
 
     public function update(Request $request){
         //Actualiza el contrato seleccionado
 
+        //Validacion datos 
+        $request->validate([
+            'id_cliente' => 'required|integer',
+            'id_ubicacion' => 'required|integer',
+            'id_servicio' => 'required|integer',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+        ], [], [
+            'id_cliente' => 'cliente',
+            'id_ubicacion' => 'ubicación',
+            'id_servicio' => 'servicio',
+            'fecha_inicio' => 'fecha de inicio',
+            'fecha_fin' => 'fecha de fin',
+        ]);
         //declarar variables
         $msgError = null;
         $msgSuccess = null;
         $msgWarning = null;
 
-        $id = $request->id;
+        $id = $request->id_contrato;
         $id_cliente = $request->id_cliente;
         $id_ubicacion = $request->id_ubicacion;
         $id_servicio = $request->id_servicio;
         $fecha_inicio = $request->fecha_inicio;
         $fecha_fin = $request->fecha_fin;
-
+        //dd($request);
         try{
             $editContrato = DB::SELECT("
             UPDATE public.tbl_contrato
@@ -202,7 +241,7 @@ class ContratoController extends Controller
                     fecha_fin=:fecha_fin,
                     updated_at=now()
             WHERE
-                id=id_contrato;
+                id=:id_contrato;
             ",["id_contrato"=>$id,"id_cliente"=>$id_cliente, "id_ubicacion"=>$id_ubicacion, "id_servicio"=>$id_servicio, "fecha_inicio"=>$fecha_inicio, "fecha_fin"=>$fecha_fin]);
 
 
