@@ -273,7 +273,7 @@ class ContratoController extends Controller
                 SET
                     deleted_at=now()
             WHERE
-                id=id_contrato;
+                id=:id_contrato;
             ",["id_contrato"=>$id]);
 
 

@@ -4,6 +4,33 @@
 @endsection
 
 @section('subcontent')
+{{-- Mostrar Mensajes Flash --}}
+        @if(session('msgSuccess'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                {{ session('msgSuccess') }}
+            </div>
+        @endif
+
+        @if(session('msgError'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                {{ session('msgError') }}
+            </div>
+        @endif
+
+        @if(session('msgWarning'))
+            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4">
+                {{ session('msgWarning') }}
+            </div>
+        @endif
+        @if($errors->any())
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 {{--Encabezado--}}
 <div class="px-5 pt-5 mt-5 intro-y box">
     <div class="flex flex-col pb-5 -mx-5 border-b border-slate-200/60 dark:border-darkmode-400 lg:flex-row">
@@ -69,7 +96,26 @@
                     <td>{{$item->fecha_fin}}</td>
                     <td>{{$item->created_at}}</td>
                     <td>{{$item->updated_at}}</td>
-                    <td></td>
+                    <td class="px-6 py-4 whitespace-nowrap flex space-x-2">
+                        <!-- Botón Editar -->
+                        <a href="{{ route('editar_contrato', $item->id) }}" class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
+                            <x-base.lucide
+                                class="h-4 w-4"
+                                icon="Edit"
+                            />
+                        </a>
+
+                        <!-- Formulario para Eliminar -->
+                        <form action="{{ route('eliminar_contrato', $item->id) }}" method="GET" class="inline-block">
+                            @csrf
+                            <button type="submit" class="bg-danger hover:bg-red-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
+                                <x-base.lucide
+                                    class="h-4 w-4"
+                                    icon="Trash"
+                                />
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
