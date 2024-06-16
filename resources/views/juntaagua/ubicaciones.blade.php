@@ -86,9 +86,7 @@
                         <th>Dirección</th>
                         <th>Foto</th>
                         <th>Ubicación</th>
-                        <th>Monto</th>
                         <th>Fecha Cobro</th>
-                        <th>QR</th>
                         <th>Activo</th>
                         <th>Casa Propia</th>
                         <th>Acciones</th>
@@ -109,9 +107,7 @@
                         <td>{{$row->direccion}}</td>
                         <td>{{$row->foto}}</td>
                         <td>{{$row->ubicacion}}</td>
-                        <td>{{$row->monto}}</td>
                         <td>{{$row->fecha_cobro}}</td>
-                        <td>{{$row->qr}}</td>
                         <td class="text-center">
                             @if($row->activo)
                                 <i data-lucide="Check" class="w-4 h-4 text-green-500" style="color: #10B981;"></i>
@@ -140,9 +136,7 @@
                                 data-departamento="{{$row->id_departamento}}"
                                 data-municipio="{{$row->id_municipio}}"
                                 data-coordenadas="{{$row->coordenadas}}"
-                                data-monto="{{$row->monto}}"
                                 data-fecha_cobro="{{$row->fecha_cobro}}"
-                                data-qr="{{$row->qr}}"
                                 data-activo="{{$row->activo ? '1' : '0'}}"
                                 data-casa_propia="{{$row->casa_propia ? '1' : '0'}}"
                             >
@@ -164,9 +158,7 @@
                                 data-departamento="{{$row->id_departamento}}"
                                 data-municipio="{{$row->id_municipio}}"
                                 data-coordenadas="{{$row->coordenadas}}"
-                                data-monto="{{$row->monto}}"
                                 data-fecha_cobro="{{$row->fecha_cobro}}"
-                                data-qr="{{$row->qr}}"
                                 data-activo="{{$row->activo ? '1' : '0'}}"
                                 data-casa_propia="{{$row->casa_propia ? '1' : '0'}}"
                             >
@@ -292,17 +284,6 @@
                         </x-base.form-select>
                     </div>
 
-                    <div class="col-span-12 md:col-span-12 lg:col-span-6">
-                        <x-base.form-label class="font-extrabold" for="modal_input_monto">
-                            Monto
-                        </x-base.form-label>
-                        <x-base.form-input
-                            id="modal_input_monto"
-                            type="number"
-                            step="0.01"
-                            placeholder="Escriba el monto a pagar."
-                        />
-                    </div>
 
                     <div class="col-span-12 md:col-span-12 lg:col-span-6">
                         <x-base.form-label class="font-extrabold" for="modal_input_fecha_cobro">
@@ -436,7 +417,6 @@
             var id = null;
             var descripcion_casa = null;
             var direccion = null;
-            var monto = null;
             var cliente_habita = null;
             var pais = null;
             var coordenadas = null;
@@ -560,7 +540,6 @@
                 id = $(this).data('id');
                 descripcion_casa = $(this).data('descripcion_casa');
                 direccion = $(this).data('direccion');
-                monto = $(this).data('monto');
                 cliente_habita = $(this).data('cliente_habita');
                 pais = $(this).data('pais');
                 coordenadas = $(this).data('coordenadas');
@@ -588,7 +567,6 @@
             function datos_inputs(){
                 $("#modal_input_descripcion_casa").val(descripcion_casa);
                 $("#modal_input_direccion").val(direccion);
-                $("#modal_input_monto").val(monto);
                 $("#modal_input_cliente_habita").val(cliente_habita);
                 $("#modal_input_pais").val(pais);
                 $("#modal_input_coordenadas").val(coordenadas);
@@ -622,7 +600,6 @@
 
                 $("#modal_input_descripcion_casa").val('');
                 $("#modal_input_direccion").val('');
-                $("#modal_input_monto").val('');
                 $("#modal_input_cliente_habita").val('');
                 //$("#modal_input_pais").val('');
                 $("#modal_input_coordenadas").val('');
@@ -646,7 +623,6 @@
             $("#modal_btn_guardar_ubicaciones").on("click", function () {
                 descripcion_casa = $("#modal_input_descripcion_casa").val();
                 direccion = $("#modal_input_direccion").val();
-                monto = $("#modal_input_monto").val();
                 cliente_habita = $("#modal_input_cliente_habita").val();
                 pais = $("#modal_input_pais").val();
                 coordenadas = $("#modal_input_coordenadas").val();
@@ -713,14 +689,6 @@
                     return false;
                 }
 
-                if(monto == null || monto == ''){
-                    titleMsg = 'Valor Requerido'
-                    textMsg = 'Debe especificar un valor para monto.';
-                    typeMsg = 'error';
-                    notificacion()
-                    return false;
-                }
-
 
                 if(fecha_cobro == null || fecha_cobro == ''){
                     titleMsg = 'Valor Requerido'
@@ -762,7 +730,6 @@
                         'id' : id,
                         'descripcion_casa' : descripcion_casa,
                         'direccion' : direccion,
-                        'monto' : monto,
                         'cliente_habita' : cliente_habita,
                         'fecha_cobro' : fecha_cobro,
                         'pais' : pais,
@@ -792,9 +759,7 @@
                                     row.foto = "Prueba";
                                 }
 
-                                if (row.qr == null || row.qr == '') {
-                                    row.foto = "Prueba";
-                                }
+                               
 
                                 if (row.cliente_habita) {
                                     cliente_habita_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="Check" data-lucide="Check" class="lucide lucide-Check w-4 h-4 text-green-500" style="color: #10B981;"><polyline points="20 6 9 17 4 12"></polyline></svg>';
@@ -824,12 +789,11 @@
                                 var objetoUbicacion = JSON.parse(row.coordenadas); 
                                 var nuevoFila = [
                                     row.id, row.descripcion_casa,cliente_habita_icono ,row.direccion, row.foto, row.ubicacion,
-                                     row.monto,row.fecha_cobro,row.qr, activo_icono , casa_propia_icono, 
+                                    row.fecha_cobro, activo_icono , casa_propia_icono, 
                                     '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"'+
                                         'data-id="'+row.id+'"'+ 
                                         'data-descripcion_casa="'+row.descripcion_casa+'"'+ 
                                         'data-direccion="'+row.direccion+'"'+ 
-                                        'data-monto="'+row.monto+'"'+ 
                                         'data-cliente_habita="'+row.cliente_habita+'"'+ 
                                         'data-fecha_cobro="'+row.fecha_cobro+'"'+
                                         'data-coordenadas="'+"{&quot;lat&quot;: "+objetoUbicacion.lat+", &quot;lng&quot;: "+objetoUbicacion.lng+"}"+'"'+ 
@@ -844,7 +808,6 @@
                                         'data-id="'+row.id+'"'+ 
                                         'data-descripcion_casa="'+row.descripcion_casa+'"'+ 
                                         'data-direccion="'+row.direccion+'"'+ 
-                                        'data-monto="'+row.monto+'"'+ 
                                         'data-cliente_habita="'+row.cliente_habita+'"'+ 
                                         'data-fecha_cobro="'+row.fecha_cobro+'"'+
                                         'data-coordenadas="'+"{&quot;lat&quot;: "+objetoUbicacion.lat+", &quot;lng&quot;: "+objetoUbicacion.lng+"}"+'"'+ 
