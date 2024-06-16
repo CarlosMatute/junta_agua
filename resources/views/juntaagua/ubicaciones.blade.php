@@ -81,7 +81,9 @@
                 <thead>
                     <tr class="bg-primary text-white">
                         <th>ID</th>
+                        <th>Cliente</th>
                         <th>Descripción Casa</th>
+                       
                         <th>Cliente Habita</th>
                         <th>Dirección</th>
                         <th>Foto</th>
@@ -96,7 +98,9 @@
                 @foreach($ubicaciones as $row)
                     <tr>
                         <td>{{$row->id}}</td>
+                        <td>{{$row->cliente}}</td>
                         <td>{{$row->descripcion_casa}}</td>
+                        
                         <td class="text-center">
                             @if($row->cliente_habita)
                                 <i data-lucide="Check" class="w-4 h-4 text-green-500" style="color: #10B981;"></i>
@@ -129,6 +133,7 @@
                                 size="sm"
                                 data-id="{{$row->id}}" 
                                 data-descripcion_casa="{{$row->descripcion_casa}}" 
+                                data-cliente="{{$row->id_cliente}}" 
                                 data-cliente_habita="{{$row->cliente_habita ? '1' : '0'}}" 
                                 data-direccion="{{$row->direccion}}" 
                                 data-foto="{{$row->foto}}" 
@@ -150,6 +155,7 @@
                                 variant="danger"
                                 size="sm"
                                 data-id="{{$row->id}}" 
+                                data-cliente="{{$row->id_cliente}}" 
                                 data-descripcion_casa="{{$row->descripcion_casa}}" 
                                 data-cliente_habita="{{$row->cliente_habita ? '1' : '0'}}" 
                                 data-direccion="{{$row->direccion}}" 
@@ -236,6 +242,23 @@
                             >
                             <option id="opc"></option>
                         </x-base.form-select>
+                    </div>
+
+                    <div class="col-span-12 md:col-span-12 lg:col-span-6">
+                        <x-base.form-label class="font-extrabold" for="modal_input_cliente">
+                            Cliente
+                        </x-base.form-label>
+                        <x-base.form-select
+                                class="sm:mt-2 sm:mr-2"
+                                aria-label=".form-select-lg example"
+                                id="modal_input_cliente" 
+                                class="w-full" 
+                                data-placeholder="Selección de cliente"
+                            >
+                            @foreach($clientes as $row)
+                            <option value="{{$row->id}}">{{$row->cliente}}</option>
+                            @endforeach
+                            </x-base.form-select>
                     </div>
                     
 
@@ -423,6 +446,8 @@
             var casa_propia = null;
             var fecha_cobro = null;
             var departamento = null;
+            var id_cliente = null;
+            var cliente = null;
             var municipio = null;
             var activo = null;
             var id_departamento = null;
@@ -480,6 +505,7 @@
                     });
 
                     id_departamento = $("#modal_input_departamento").val();
+                    id_cliente = $("#modal_input_cliente").val();
                     
                     
             });
@@ -546,6 +572,7 @@
                 casa_propia = $(this).data('casa_propia');
                 fecha_cobro = $(this).data('fecha_cobro');
                 departamento = $(this).data('departamento');
+                cliente = $(this).data('cliente');
                 municipio = $(this).data('municipio');
                 activo = $(this).data('activo');
                 consultar_municipios(departamento);
@@ -573,6 +600,7 @@
                 $("#modal_input_casa_propia").val(casa_propia);
                 $("#modal_input_fecha_cobro").val(fecha_cobro);
                 $("#modal_input_departamento").val(departamento);
+                $("#modal_input_cliente").val(cliente);
                 $("#modal_input_municipio").val(municipio);
                 $("#modal_input_activo").val(activo);
                 const el = document.querySelector("#modal_nuevo_cliente");
@@ -606,6 +634,7 @@
                 $("#modal_input_casa_propia").val('');
                 $("#modal_input_fecha_cobro").val('');
                 $("#modal_input_departamento").val(id_departamento);
+                $("#modal_input_cliente").val(id_cliente);
                 //$("#modal_input_municipio").val('');
                 $("#modal_input_activo").val('');
                 consultar_municipios(id_departamento);
@@ -629,6 +658,7 @@
                 casa_propia = $("#modal_input_casa_propia").val();
                 fecha_cobro = $("#modal_input_fecha_cobro").val();
                 departamento = $("#modal_input_departamento").val();
+                cliente = $("#modal_input_cliente").val();
                 municipio = $("#modal_input_municipio").val();
                 activo = $("#modal_input_activo").val();
                 
@@ -648,6 +678,8 @@
                     return false;
                 }
 
+               
+
                 if(municipio == null || municipio == ''){
                     titleMsg = 'Valor Requerido'
                     textMsg = 'Debe especificar un valor para municipio.';
@@ -656,7 +688,14 @@
                     return false;
                 }
 
-
+                if(cliente == null || cliente == ''){
+                    titleMsg = 'Valor Requerido'
+                    textMsg = 'Debe especificar un Cliente.';
+                    typeMsg = 'error';
+                    notificacion()
+                    return false;
+                }
+                
                 if(descripcion_casa == null || descripcion_casa == ''){
                     titleMsg = 'Valor Requerido'
                     textMsg = 'Debe especificar un valor para Descripcion.';
@@ -736,6 +775,7 @@
                         'coordenadas' : coordenadas,
                         'casa_propia' : casa_propia,
                         'departamento' : departamento,
+                        'cliente' : cliente,
                         'municipio' : municipio,
                         'activo' : activo,
                         'ubicacion_casa':ubicacion_casa
@@ -788,10 +828,11 @@
                                 
                                 var objetoUbicacion = JSON.parse(row.coordenadas); 
                                 var nuevoFila = [
-                                    row.id, row.descripcion_casa,cliente_habita_icono ,row.direccion, row.foto, row.ubicacion,
+                                    row.id, row.cliente,row.descripcion_casa,cliente_habita_icono ,row.direccion, row.foto, row.ubicacion,
                                     row.fecha_cobro, activo_icono , casa_propia_icono, 
                                     '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"'+
                                         'data-id="'+row.id+'"'+ 
+                                        'data-cliente="'+row.id_cliente+'"'+ 
                                         'data-descripcion_casa="'+row.descripcion_casa+'"'+ 
                                         'data-direccion="'+row.direccion+'"'+ 
                                         'data-cliente_habita="'+row.cliente_habita+'"'+ 
@@ -814,6 +855,7 @@
                                         'data-casa_propia="'+row.casa_propia+'"'+
                                         'data-pais="'+row.id_pais+'"'+
                                         'data-departamento="'+row.id_departamento+'"'+
+                                        'data-cliente="'+row.id_cliente+'"'+
                                         'data-municipio="'+row.id_municipio+'"'+
                                         'data-activo="'+row.activo+'"'+
                                     '><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'

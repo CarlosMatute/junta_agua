@@ -13,32 +13,57 @@ class UbicacionesController extends Controller
 {
     public function ver_ubicaciones()
     {
-        $ubicaciones = DB::select("SELECT 
-            U.ID,
-            U.DESCRIPCION_CASA,
-            U.CLIENTE_HABITA,
-            U.DIRECCION,
-            U.FOTO,
-            UPPER(P.NOMBRE) PAIS,
-            D.NOMBRE DEPARTAMENTO,
-            M.NOMBRE MUNICIPIO,
-            U.COORDENADAS,
-            U.FECHA_COBRO,
-            U.ACTIVO,
-            U.CASA_PROPIA,
-            U.ID_PAIS,
-            U.ID_DEPARTAMENTO,
-            U.ID_MUNICIPIO,
-            UPPER(P.NOMBRE)||', '||D.NOMBRE||', '||M.NOMBRE UBICACION
-        FROM TBL_UBICACION U
-            JOIN TBL_PAISES P ON P.id = U.ID_PAIS 
-            JOIN TBL_DEPARTAMENTOS D ON D.ID = U.ID_DEPARTAMENTO
-            JOIN TBL_MUNICIPIOS M ON M.ID = U.ID_MUNICIPIO
-                WHERE U.DELETED_AT IS NULL
-                AND P.DELETED_AT IS NULL
-                AND D.DELETED_AT IS NULL
-                AND M.DELETED_AT IS NULL
+        $ubicaciones = DB::select("SELECT U.ID,
+        U.DESCRIPCION_CASA,
+        U.ID_CLIENTE,
+        UPPER(TRIM(COALESCE(TRIM(C.PRIMER_NOMBRE) || ' ',
+    
+                                                        '') || COALESCE(TRIM(C.SEGUNDO_NOMBRE) || ' ',
+    
+                                                                                        '') || COALESCE(TRIM(C.PRIMER_APELLIDO) || ' ',
+    
+                                                                                                                        '') || COALESCE(TRIM(C.SEGUNDO_APELLIDO || ' '),
+    
+                                                                                                                                                        ''))) CLIENTE,
+        U.CLIENTE_HABITA,
+        U.DIRECCION,
+        U.FOTO,
+        UPPER(P.NOMBRE) PAIS,
+        D.NOMBRE DEPARTAMENTO,
+        M.NOMBRE MUNICIPIO,
+        U.COORDENADAS,
+        U.FECHA_COBRO,
+        U.ACTIVO,
+        U.CASA_PROPIA,
+        U.ID_PAIS,
+        U.ID_DEPARTAMENTO,
+        U.ID_MUNICIPIO,
+        UPPER(P.NOMBRE) || ', ' || D.NOMBRE || ', ' || M.NOMBRE UBICACION
+    FROM TBL_UBICACION U
+    JOIN TBL_PAISES P ON P.ID = U.ID_PAIS
+    JOIN TBL_DEPARTAMENTOS D ON D.ID = U.ID_DEPARTAMENTO
+    JOIN TBL_MUNICIPIOS M ON M.ID = U.ID_MUNICIPIO
+    JOIN TBL_CLIENTES C ON C.ID = U.ID_CLIENTE
+    WHERE U.DELETED_AT IS NULL
+        AND P.DELETED_AT IS NULL
+        AND D.DELETED_AT IS NULL
+        AND M.DELETED_AT IS NULL
+        AND C.DELETED_AT IS NULL
                 ");
+
+            $clientes = DB::SELECT("SELECT C.ID,
+            UPPER(TRIM(COALESCE(TRIM(PRIMER_NOMBRE) || ' ',
+        
+                                                            '') || COALESCE(TRIM(SEGUNDO_NOMBRE) || ' ',
+        
+                                                                                            '') || COALESCE(TRIM(PRIMER_APELLIDO) || ' ',
+        
+                                                                                                                            '') || COALESCE(TRIM(SEGUNDO_APELLIDO || ' '),
+        
+                                                                                                                                                            ''))) CLIENTE
+        FROM TBL_CLIENTES C
+        WHERE C.DELETED_AT IS NULL
+        ORDER BY 2");    
             
             $paises = DB::select('SELECT
             ID,
@@ -65,7 +90,9 @@ class UbicacionesController extends Controller
         return view('juntaagua.ubicaciones')
             ->with('ubicaciones', $ubicaciones)
             ->with('paises', $paises)
-            ->with('departamentos', $departamentos);
+            ->with('departamentos', $departamentos)
+            ->with('clientes', $clientes)
+            ;
     }
 
     public function guardar_ubicaciones(Request $request)
@@ -80,6 +107,7 @@ class UbicacionesController extends Controller
         $coordenadas=$request->coordenadas;
         $casa_propia=$request->casa_propia;
         $departamento=$request->departamento;
+        $cliente=$request->cliente;
         $municipio=$request->municipio;
         $activo=$request->activo;
         $ubicacion_casa = $request->ubicacion_casa;
@@ -114,10 +142,11 @@ class UbicacionesController extends Controller
             //throw New Exception($identidad, true);
             if ($accion == 1) {
                 $ubicacion = collect(\DB::select("INSERT INTO public.tbl_ubicacion(
-                    descripcion_casa, direccion, cliente_habita, fecha_cobro, id_pais, coordenadas, casa_propia, id_departamento, id_municipio, activo)
-                    VALUES (:descripcion_casa, :direccion,  :cliente_habita, :fecha_cobro, :pais, :coordenadas, :casa_propia, :id_departamento, :id_municipio, :activo)
+                    id_cliente,descripcion_casa, direccion, cliente_habita, fecha_cobro, id_pais, coordenadas, casa_propia, id_departamento, id_municipio, activo)
+                    VALUES (:id_cliente, :descripcion_casa, :direccion,  :cliente_habita, :fecha_cobro, :pais, :coordenadas, :casa_propia, :id_departamento, :id_municipio, :activo)
                     returning id;",
                     [
+                        "id_cliente" => $cliente,
                         "descripcion_casa" => $descripcion_casa,
                         "direccion" => $direccion,
                         "cliente_habita" => $cliente_habita,
@@ -135,12 +164,13 @@ class UbicacionesController extends Controller
                 $msgSuccess = "Ubicación ".$id." registrada exitosamente.";
             }else if ($accion == 2) {
                 DB::select("UPDATE public.tbl_ubicacion
-                    SET descripcion_casa=:descripcion_casa, direccion=:direccion, cliente_habita=:cliente_habita, 
+                    SET id_cliente = :id_cliente ,descripcion_casa=:descripcion_casa, direccion=:direccion, cliente_habita=:cliente_habita, 
                     fecha_cobro=:fecha_cobro, id_pais=:pais, coordenadas=:coordenadas, casa_propia=:casa_propia, 
                     id_departamento=:id_departamento, id_municipio=:id_municipio, activo=:activo, updated_at=now()
                     WHERE id = :id;",
                     [
                         "id" => $id,
+                        "id_cliente" => $cliente,
                         "descripcion_casa" => $descripcion_casa,
                         "direccion" => $direccion,
                         "cliente_habita" => $cliente_habita,
@@ -160,9 +190,18 @@ class UbicacionesController extends Controller
             }else{
                 $msgError = "Acción inválida";
             }
-                $ubicaciones_list = collect(\DB::select("SELECT 
-                U.ID,
+                $ubicaciones_list = collect(\DB::select("SELECT U.ID,
                 U.DESCRIPCION_CASA,
+                U.ID_CLIENTE,
+                UPPER(TRIM(COALESCE(TRIM(C.PRIMER_NOMBRE) || ' ',
+            
+                                                                '') || COALESCE(TRIM(C.SEGUNDO_NOMBRE) || ' ',
+            
+                                                                                                '') || COALESCE(TRIM(C.PRIMER_APELLIDO) || ' ',
+            
+                                                                                                                                '') || COALESCE(TRIM(C.SEGUNDO_APELLIDO || ' '),
+            
+                                                                                                                                                                ''))) CLIENTE,
                 U.CLIENTE_HABITA,
                 U.DIRECCION,
                 U.FOTO,
@@ -176,15 +215,17 @@ class UbicacionesController extends Controller
                 U.ID_PAIS,
                 U.ID_DEPARTAMENTO,
                 U.ID_MUNICIPIO,
-                UPPER(P.NOMBRE)||', '||D.NOMBRE||', '||M.NOMBRE UBICACION
+                UPPER(P.NOMBRE) || ', ' || D.NOMBRE || ', ' || M.NOMBRE UBICACION
             FROM TBL_UBICACION U
-                JOIN TBL_PAISES P ON P.id = U.ID_PAIS 
-                JOIN TBL_DEPARTAMENTOS D ON D.ID = U.ID_DEPARTAMENTO
-                JOIN TBL_MUNICIPIOS M ON M.ID = U.ID_MUNICIPIO
-                    WHERE U.DELETED_AT IS NULL
-                    AND P.DELETED_AT IS NULL
-                    AND D.DELETED_AT IS NULL
-                    AND M.DELETED_AT IS NULL
+            JOIN TBL_PAISES P ON P.ID = U.ID_PAIS
+            JOIN TBL_DEPARTAMENTOS D ON D.ID = U.ID_DEPARTAMENTO
+            JOIN TBL_MUNICIPIOS M ON M.ID = U.ID_MUNICIPIO
+            JOIN TBL_CLIENTES C ON C.ID = U.ID_CLIENTE
+            WHERE U.DELETED_AT IS NULL
+                AND P.DELETED_AT IS NULL
+                AND D.DELETED_AT IS NULL
+                AND M.DELETED_AT IS NULL
+                AND C.DELETED_AT IS NULL
                     AND U.ID =:id", ["id" => $id]))->first();
         } catch (Exception $e) {
             $msgError = $e->getMessage();
