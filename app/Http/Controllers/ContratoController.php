@@ -296,4 +296,104 @@ class ContratoController extends Controller
         ", ["id_cliente"=>$id_cliente]);
         return response()->json($ubicaciones);
     }
+    
+    public function ver_tbl_movimientos( $idContrato ) {
+    $tipo_movimiento_list = DB::select("select id, nombre as movimiento from public.tbl_tipo_movimiento where deleted_at is null");
+    $tbl_movimientos_list = DB::select("
+    select tm.id, tm.fecha_hora, tm.concepto, tm.debe, tm.haber, tm.id_tipo_movimiento, ttm.nombre as tipo_movimiento, tm.id_contrato, tm.id_cobrador, u.name as cobrador 
+   from public.tbl_movimientos tm 
+   join public.tbl_clientes ct on ct.id = tm.id_cliente 
+   join public.tbl_contrato tc on tc.id = tm.id_contrato 
+   join public.tbl_tipo_movimiento ttm on ttm.id = tm.id_tipo_movimiento 
+   left join public.users u on u.id = tm.id_cobrador
+   where tm.deleted_at is null
+   and tm.id_contrato = :id_contrato
+   order by 1 desc
+   ",[
+       'id_contrato'=>$idContrato
+   ]);
+    
+   return view("juntaagua.movimientos.movimientos")
+            ->with("tbl_movimientos_list", $tbl_movimientos_list)
+            ->with("tipo_movimiento_list", $tipo_movimiento_list)
+   ;
+   
+   }
+
+   public function guardar_tbl_movimientos(Request $request) {
+   $id=$request->id;
+   $fecha_hora=$request->fecha_hora;
+   $concepto=$request->concepto;
+   $debe=$request->debe;
+   $haber=$request->haber;
+   $id_tipo_movimiento=$request->id_tipo_movimiento;
+   $msgError=null;
+   $msgSuccess=null;
+   $accion=$request->accion;
+   $tbl_movimientos_list=null;
+   if($id==null && $accion==2){
+               $accion=1;
+           }
+   try{ 
+
+   if($accion==1){
+   $sql_tbl_movimientos = DB::select("insert INTO public.tbl_movimientos (
+   concepto,debe,fecha_hora,haber,id_tipo_movimiento
+   , created_at) values (
+   :concepto,:debe,:fecha_hora,:haber,:id_tipo_movimiento
+   , now() )
+   RETURNING  id
+   ", ['concepto'=>$concepto,'debe'=>$debe,'fecha_hora'=>$fecha_hora,'haber'=>$haber,'id_tipo_movimiento'=>$id_tipo_movimiento
+   ]
+   );
+   foreach($sql_tbl_movimientos as $r){
+   $id=$r->id;
+   }
+   $msgSuccess="Registro creado con el código: ".$id;
+   }else if($accion==2){
+   $sql_tbl_movimientos = DB::select("update public.tbl_movimientos set  updated_at = now(),
+   concepto=:concepto,debe=:debe,fecha_hora=:fecha_hora,haber=:haber,id_tipo_movimiento=:id_tipo_movimiento
+   where id=:id
+   "
+   , ['concepto'=>$concepto,'debe'=>$debe,'fecha_hora'=>$fecha_hora,'haber'=>$haber,'id'=>$id,'id_tipo_movimiento'=>$id_tipo_movimiento]
+   );
+   $msgSuccess="Registro ".$id." actualizado";
+
+   }else if($accion==3){
+
+   $sql_tbl_movimientos = DB::select("update public.tbl_movimientos set deleted_at=now() where
+   id=:id
+   "
+   , ['id'=>$id]
+   );
+   $msgSuccess="Registro ".$id." eliminado";
+
+   }else{
+                           $msgError="Accion invalida";
+                   }
+   if($msgError==null){
+    $tbl_movimientos_list = DB::select("select * from (
+    select tm.id, tm.fecha_hora, tm.concepto, tm.debe, tm.haber, tm.id_tipo_movimiento, ttm.nombre as tipo_movimiento, tm.id_contrato, tm.id_cobrador, u.name as cobrador 
+   from public.tbl_movimientos tm 
+   join public.tbl_clientes ct on ct.id = tm.id_cliente 
+   join public.tbl_contrato tc on tc.id = tm.id_contrato 
+   join public.tbl_tipo_movimiento ttm on ttm.id = tm.id_tipo_movimiento 
+   left join public.users u on u.id = tm.id_cobrador
+   where tm.deleted_at is null
+   and tm.id_contrato = :id_contrato
+   order by 1 desc
+
+   ) x where id=:id
+   ",[
+   "id"=>$id
+   ]);
+   }
+   }catch (Exception $e){
+               $msgError=$e->getMessage();
+           }
+   return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError, "tbl_movimientos_list"=>$tbl_movimientos_list]);
+   }
+
+
+
 }

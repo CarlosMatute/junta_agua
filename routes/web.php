@@ -11,6 +11,7 @@ use App\Http\Controllers\DepartamentosMunicipiosController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\EmpleadosController;
 use App\Http\Controllers\ContratoController;
+use App\Http\Controllers\ServicioController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -115,7 +116,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/departamentos-municipios', [DepartamentosMunicipiosController::class, 'ver_departamento_municipios']);
         Route::get('/reportes', [ReportesController::class, 'imprimir_reporte']);
 
-        Route::get("/per-empleado",[EmpleadosController::class, "ver_per_empleado"]);
+        Route::get("/per-empleado",[EmpleadosController::class, "ver_per_empleado"])->name('per-empleado');
         Route::post("/per-empleado/guardar",[EmpleadosController::class, "guardar_per_empleado"]);
 
         //Modulo Contrato
@@ -129,6 +130,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/ubicaciones/{id_cliente}', [ContratoController::class, 'getUbicaciones'])->name('getUbicaciones');
 
         //Finaliza Modulo Contrato
+        
+        Route::get('/servicio', [ServicioController::class, 'ver_servicio'])->name('servicio');
+        Route::post('/servicio/guardar', [ServicioController::class, 'guardar_servicio']);
+        
+        Route::get("/movimientos/{idContrato}",[ContratoController::class, "ver_tbl_movimientos"]);
+        Route::post("/movimientos/guardar",[ContratoController::class, "guardar_tbl_movimientos"]);
+
+
+        
 
     //Finaliza Junta de agua
 });
