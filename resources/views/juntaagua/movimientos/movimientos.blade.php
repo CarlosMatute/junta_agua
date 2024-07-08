@@ -34,13 +34,21 @@
         </div>
         <div class="intro-y col-span-6 lg:col-span-6 text-right">
             <div class="p-5">    
-                <x-base.button
+<!--                <x-base.button
                     class="mb-2 mr-1"
                     variant="primary"
                     id="btn_nuevo_tbl_movimientos"
                     data-tw-toggle="modal" data-tw-target="#modal_tbl_tbl_movimientos"
                 ><i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
                         Registrar Nuevo Movimientos - cobros
+                </x-base.button>                                               -->
+                <x-base.button
+                    class="mb-2 mr-1"
+                    variant="primary"
+                    id="btn_pago_tbl_movimientos"
+                    data-tw-toggle="modal" data-tw-target="#modal_pago_tbl_movimientos"
+                ><i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
+                        Registrar Pago Movimientos - cobros
                 </x-base.button>                                               
             </div>
         </div>
@@ -49,12 +57,12 @@
 <table class="jambo_table table table-hover" id="tbl_tbl_movimientos" border=1>
 	<thead>
 		<tr style="color: black; background-color: buttonhighlight; font-size: large    ">
-			<th scope="col">id</th>
-			<th scope="col">fecha_hora</th>
-			<th scope="col">concepto</th>
-			<th scope="col">debe</th>
-			<th scope="col">haber</th>
-			<th scope="col">id_tipo_movimiento</th>
+			<th scope="col">Id</th>
+			<th scope="col">Fecha</th>
+			<th scope="col">Servicio</th>
+			<th scope="col">Debe</th>
+			<th scope="col">Haber</th>
+			<th scope="col">Movimiento</th>
 			<th scope="col">Opciones</th>
 		</tr>
 	</thead>
@@ -110,18 +118,18 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
         </x-base.dialog.title>
         <x-base.dialog.description class="grid grid-cols-12 gap-4 gap-y-3">
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
-                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">fecha_hora</x-base.form-label><x-base.form-input placeholder="Escriba un dato para fecha_hora" type="text" class="timestamp" id="fecha_hora" name="fecha_hora"/></div>
+                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Fecha</x-base.form-label><x-base.form-input placeholder="Escriba un dato para fecha_hora" type="text" class="timestamp" id="fecha_hora" name="fecha_hora"/></div>
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
-                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">concepto</x-base.form-label><x-base.form-input placeholder="Escriba un dato para concepto" type="text" id="concepto" name="concepto"/></div>
+                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Concepto</x-base.form-label><x-base.form-input placeholder="Escriba un dato para concepto" type="text" id="concepto" name="concepto"/></div>
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
-                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">debe</x-base.form-label><x-base.form-input placeholder="Escriba un dato para debe" type="text" id="debe" name="debe"/></div>
+                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Debe</x-base.form-label><x-base.form-input placeholder="Escriba un dato para debe" type="text" id="debe" name="debe"/></div>
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
-                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">haber</x-base.form-label><x-base.form-input placeholder="Escriba un dato para haber" type="text" id="haber" name="haber"/></div>
+                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Haber</x-base.form-label><x-base.form-input placeholder="Escriba un dato para haber" type="text" id="haber" name="haber"/></div>
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
-                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">id_tipo_movimiento</x-base.form-label><x-base.tom-select id="id_tipo_movimiento" name="id_tipo_movimiento" class="w-full" >
+                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Movimiento</x-base.form-label><x-base.tom-select id="id_tipo_movimiento" name="id_tipo_movimiento" class="w-full" >
 				<option></option>
 				@foreach ($tipo_movimiento_list as $tipo_movimiento)
-					<option value="{{$tipo_movimiento->id}}">{{$tipo_movimiento->nombre as movimiento}}</option>
+					<option value="{{$tipo_movimiento->id}}">{{$tipo_movimiento->movimiento}}</option>
 				@endforeach
 			</x-base.tom-select></div>
             
@@ -129,6 +137,34 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
         <x-base.dialog.footer class="bg-dark modal-footer">
             <x-base.button size="sm" class="mr-1 w-20" data-tw-dismiss="modal" type="button" variant="danger">Cancelar</x-base.button>
             <x-base.button size="sm" class="w-20" type="button" variant="primary" id="modal_btn_guardar_tbl_movimientos">Guardar</x-base.button>
+        </x-base.dialog.footer>
+    </x-base.dialog.panel>
+</x-base.dialog>
+<!-- END: Modal Content -->
+
+
+<!-- BEGIN: Modal Content -->
+<x-base.dialog id="modal_pago_tbl_movimientos" size="xl">
+    <x-base.dialog.panel>
+        <x-base.dialog.title class="bg-primary">
+            <h2 class="mr-auto text-white font-medium">
+                <div class="flex items-center">
+                <i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
+                    <span class="text-white-700"> Registrar Pago Movimientos - cobros
+                </div>
+            </h2>
+        </x-base.dialog.title>
+        <x-base.dialog.description class="grid grid-cols-12 gap-4 gap-y-3">
+
+          
+                
+                <div class="col-span-12 md:col-span-12 lg:col-span-6">
+                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Monto pago</x-base.form-label><x-base.form-input placeholder="Escriba un dato para haber" type="text" id="haber_pago" name="haber_pago"/></div>
+
+        </x-base.dialog.description>
+        <x-base.dialog.footer class="bg-dark modal-footer">
+            <x-base.button size="sm" class="mr-1 w-20" data-tw-dismiss="modal" type="button" variant="danger">Cancelar</x-base.button>
+            <x-base.button size="sm" class="w-20" type="button" variant="primary" id="modal_btn_guardar_pago_tbl_movimientos">Guardar</x-base.button>
         </x-base.dialog.footer>
     </x-base.dialog.panel>
 </x-base.dialog>
@@ -175,7 +211,7 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 @endsection
 @once
 	@push('scripts')
-				@vite(['resources/css/app.css', 'resources/js/app.js'])
+                        @vite(['resources/css/app.css', 'resources/js/app.js'])
 		        @vite('resources/js/pages/modal/index.js')
 		        @vite('resources/js/vendor/toastify/index.js')
 		        @vite('resources/js/pages/notification/index.js')
@@ -191,6 +227,7 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 	var url_guardar_tbl_movimientos= "{{url('/movimientos')}}/guardar";
 	var table=null;
 	var rowNumber=null;
+        var id_contrato = {{$id_contrato}};
 	
 			var titleMsg = null;
             var textMsg = null;
@@ -235,23 +272,28 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 				accion = 3;
 				$("#modal_eliminar_tbl_movimientos").show();
 			}); 
+ 	
+        $("#btn_pago_tbl_movimientos").on("click", function (event) {                        
+				accion = 4;
+				$("#modal_pago_tbl_movimientos").show();
+			}); 
 
-	$('.timestamp').daterangepicker({
-                    singleDatePicker: true,
-                    showDropdowns: true,
-                    timePicker: true,
-                    timePicker24Hour: true,
-                    minYear: 1901,                    
-                    "locale": {
-                        "monthNames": monthNames,
-                        "daysOfWeek": daysOfWeek,
-                        "applyLabel": "Aplicar",
-                        "cancelLabel": "Cancelar",
-                        "fromLabel": "Desde",
-                        "toLabel": "Hasta",
-						format: 'YYYY-MM-DD HH:mm'
-                    },
-                  });
+//	$('.timestamp').daterangepicker({
+//                    singleDatePicker: true,
+//                    showDropdowns: true,
+//                    timePicker: true,
+//                    timePicker24Hour: true,
+//                    minYear: 1901,                    
+//                    "locale": {
+//                        "monthNames": monthNames,
+//                        "daysOfWeek": daysOfWeek,
+//                        "applyLabel": "Aplicar",
+//                        "cancelLabel": "Cancelar",
+//                        "fromLabel": "Desde",
+//                        "toLabel": "Hasta",
+//                        format: 'YYYY-MM-DD HH:mm'
+//                    },
+//                  });
 
 table=$("#tbl_tbl_movimientos" ).DataTable({
 	'language':languageOptionsDatatables,
@@ -340,6 +382,21 @@ id_tipo_movimiento=$("#id_tipo_movimiento").val();
 	
 	preguardar_tbl_movimientos();
 });
+
+$(".modal-footer").on("click", "#modal_btn_guardar_pago_tbl_movimientos", function () {
+
+    haber=$("#haber_pago").val();
+
+    if(haber== null || haber == ''){
+        mensage({"msgError":'Ingrese un dato para haber!'});
+        return false;
+    }
+
+    preguardar_tbl_movimientos();
+});
+
+
+
 });
 $(".modal-footer").on("click", "#btn_eliminar_tbl_movimientos", function () {
 	guardar_tbl_movimientos();
@@ -368,15 +425,18 @@ function guardar_tbl_movimientos(){
  		"debe": debe,
  		"haber": haber,
  		"id_tipo_movimiento": id_tipo_movimiento,
+ 		"id_contrato": id_contrato,
 		accion:accion
 	},
 success: function (data) {
 	if(data.msgError!=null){
 		if(accion==1 || accion==2){
-					$("#modal_tbl_tbl_movimientos").show();
-				}else if(accion==3){
-					$("#modal_eliminar_tbl_movimientos").show();
-				}
+                    $("#modal_tbl_tbl_movimientos").show();
+                }else if(accion==3){
+                    $("#modal_eliminar_tbl_movimientos").show();
+                }else if(accion==4){
+                    $("#modal_pago_tbl_movimientos").show();
+                }
 	mensage({"msgError":'Error, datos no guardados!'});
 	}else{
 		$("#modal_tbl_tbl_movimientos").hide();
@@ -404,15 +464,15 @@ row.id,row.fecha_hora,row.concepto,row.debe,row.haber,row.tipo_movimiento
  'title="Eliminar" variant="danger" size="sm" id="btn_eliminar_tbl_movimientos" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+ 
 ''
 ];
-if(accion==1) {
-	$("#modal_tbl_tbl_movimientos").hide();
-		table.row.add(nuevaFilaDT).draw();
+        if(accion==1) {
+            $("#modal_tbl_tbl_movimientos").hide();
+            table.row.add(nuevaFilaDT).draw();
 	}else if (accion==2) {
-		$("#modal_tbl_tbl_movimientos").hide();
-		table.row(rowNumber).data(nuevaFilaDT);
+            $("#modal_tbl_tbl_movimientos").hide();
+            table.row(rowNumber).data(nuevaFilaDT);
 	}else if (accion==4) {
-		$("#modal_activar_tbl_movimientos").hide();
-		table.row(rowNumber).data(nuevaFilaDT);
+            $("#modal_pago_tbl_movimientos").hide();
+            table.row(rowNumber).data(nuevaFilaDT);
 	}
 }
  if (accion == 3){
