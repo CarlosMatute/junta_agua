@@ -94,6 +94,15 @@ data-haber="{{$row->haber}}"
 data-id_tipo_movimiento="{{$row->id_tipo_movimiento}}"
 data-tipo_movimiento="{{$row->tipo_movimiento}}"
 title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_tbl_movimientos"><x-base.lucide class="h-4 w-4" icon="Trash"/></x-base.button>
+&nbsp&nbsp&nbsp
+@if( $row->id_tipo_movimiento == 2)
+<a href="{{url('/movimientos/'.$row->id.'/pago/factura')}}" class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
+                            <x-base.lucide
+                                class="h-4 w-4"
+                                icon="FileText"
+                            />
+                        </a>
+@endif
 </td>
 </tr>
 @endforeach

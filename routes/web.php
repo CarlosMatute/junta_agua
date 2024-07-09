@@ -136,7 +136,7 @@ Route::middleware('auth')->group(function () {
         
         Route::get("/movimientos/{idContrato}",[ContratoController::class, "ver_tbl_movimientos"]);
         Route::post("/movimientos/guardar",[ContratoController::class, "guardar_tbl_movimientos"]);
-
+        Route::get("/movimientos/{idMovimiento}/pago/factura",[ReportesController::class, "factura_junta_agua"]);
 
         
 
