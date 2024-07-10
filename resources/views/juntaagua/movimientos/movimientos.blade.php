@@ -76,6 +76,8 @@
 <td scope="row">{{$row->haber}}</td>
 <td scope="row">{{$row->tipo_movimiento}}</td>
 <td>
+    
+@if( $row->id_tipo_movimiento == 2)
 <x-base.button class="btn btn-primary" data-tw-toggle="modal" data-tw-target="#modal_tbl_tbl_movimientos"
 data-id="{{$row->id}}"
 data-fecha_hora="{{$row->fecha_hora}}"
@@ -85,6 +87,7 @@ data-haber="{{$row->haber}}"
 data-id_tipo_movimiento="{{$row->id_tipo_movimiento}}"
 data-tipo_movimiento="{{$row->tipo_movimiento}}"
 title="Editar" class="mb-2 mr-1" variant="primary" size="sm" id="btn_editar_tbl_movimientos"><x-base.lucide class="h-4 w-4" icon="Edit"/></x-base.button>
+@endif
 &nbsp&nbsp&nbsp<x-base.button class="btn btn-danger" data-tw-toggle="modal" data-tw-target="#modal_eliminar_tbl_movimientos"
 data-id="{{$row->id}}"
 data-fecha_hora="{{$row->fecha_hora}}"
@@ -97,11 +100,11 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 &nbsp&nbsp&nbsp
 @if( $row->id_tipo_movimiento == 2)
 <a href="{{url('/movimientos/'.$row->id.'/pago/factura')}}" class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
-                            <x-base.lucide
-                                class="h-4 w-4"
-                                icon="FileText"
-                            />
-                        </a>
+    <x-base.lucide
+        class="h-4 w-4"
+        icon="FileText"
+    />
+</a>
 @endif
 </td>
 </tr>
@@ -135,12 +138,14 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
                 <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Haber</x-base.form-label><x-base.form-input placeholder="Escriba un dato para haber" type="text" id="haber" name="haber"/></div>
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
-                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Movimiento</x-base.form-label><x-base.tom-select id="id_tipo_movimiento" name="id_tipo_movimiento" class="w-full" >
-				<option></option>
-				@foreach ($tipo_movimiento_list as $tipo_movimiento)
-					<option value="{{$tipo_movimiento->id}}">{{$tipo_movimiento->movimiento}}</option>
-				@endforeach
-			</x-base.tom-select></div>
+    <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Movimiento</x-base.form-label>
+    <select id="id_tipo_movimiento" name="id_tipo_movimiento" data-tw-merge aria-label=".form-select-lg example" class="w-full disabled:bg-slate-100 disabled:cursor-not-allowed disabled:dark:bg-darkmode-800/50 [&amp;[readonly]]:bg-slate-100 [&amp;[readonly]]:cursor-not-allowed [&amp;[readonly]]:dark:bg-darkmode-800/50 transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md py-2 px-3 pr-8 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 mt-2 sm:mr-2 mt-2 sm:mr-2">
+        <option></option>
+        @foreach ($tipo_movimiento_list as $tipo_movimiento)
+            <option value="{{$tipo_movimiento->id}}">{{$tipo_movimiento->movimiento}}</option>
+        @endforeach
+    </select>
+</div>
             
         </x-base.dialog.description>
         <x-base.dialog.footer class="bg-dark modal-footer">
@@ -327,6 +332,8 @@ id_tipo_movimiento=$( this ).data("id_tipo_movimiento");
 	$("#debe").val(debe);
 	$("#haber").val(haber);
 	$("#id_tipo_movimiento").val(id_tipo_movimiento);
+        
+        //acceder al objeto hijo por medio del objeto padre $( "#id_tipo_movimiento-ts-control > input" ).val( "borderasdfasdfatrestset" );
 });
   
 $("#modal_eliminar_tbl_movimientos").on("click", "#btn_eliminar_tbl_movimientos", function (e) {

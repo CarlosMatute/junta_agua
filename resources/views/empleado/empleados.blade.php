@@ -137,13 +137,18 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_p
                 <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Identidad</x-base.form-label><x-base.form-input placeholder="Escriba un dato para Identidad" type="text" id="identidad" name="identidad"/></div>
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
                 <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">telefono</x-base.form-label><x-base.form-input placeholder="Escriba un dato para telefono" type="text" id="telefono" name="telefono"/></div>
+
+            
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
-                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Pais</x-base.form-label><x-base.tom-select id="id_pais" name="id_pais" class="w-full" >
-				<option></option>
-				@foreach ($pais_list as $pais)
-					<option value="{{$pais->id}}">{{$pais->pais}}</option>
-				@endforeach
-			</x-base.tom-select></div>
+    <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Pais</x-base.form-label>
+    <select id="id_pais" name="id_pais" data-tw-merge aria-label=".form-select-lg example" class="w-full disabled:bg-slate-100 disabled:cursor-not-allowed disabled:dark:bg-darkmode-800/50 [&amp;[readonly]]:bg-slate-100 [&amp;[readonly]]:cursor-not-allowed [&amp;[readonly]]:dark:bg-darkmode-800/50 transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md py-2 px-3 pr-8 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 mt-2 sm:mr-2 mt-2 sm:mr-2">
+        <option></option>
+        @foreach ($pais_list as $pais)
+            <option value="{{$pais->id}}">{{$pais->pais}}</option>
+        @endforeach
+    </select>
+</div>
+            
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
                 <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Domicilio</x-base.form-label><x-base.form-input placeholder="Escriba un dato para Domicilio" type="text" id="domicilio" name="domicilio"/></div>
 <div class="col-span-12 md:col-span-12 lg:col-span-6">

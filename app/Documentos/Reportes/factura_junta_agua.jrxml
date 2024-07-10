@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura_junta_agua" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6ea15550-32b5-4e74-9458-71b55d3bc4a9">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="junta_agua"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="paymov_junta_agua"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="id_movimiento" class="java.lang.Integer"/>
 	<queryString>
@@ -13,8 +13,8 @@
 	tts.nombre as concepto_pago_servicio,
 	tm.concepto as pago_servicio,
 	tm.haber as monto_pago,
-	tm.fecha_hora as fecha_hora_pago
-	
+	tm.fecha_hora as fecha_hora_pago,
+	u.name as cobrador
 from
 	public.tbl_movimientos tm
     join public.tbl_contrato tc on tc.id_cliente = tm.id_cliente and tc.id = tm.id_contrato
@@ -22,11 +22,10 @@ from
     join public.tbl_servicio ts on ts.id = tc.id_servicio
     join public.tbl_ubicacion tu on tu.id = tc.id_ubicacion
     join public.tbl_tipo_servicio tts on tts.id = ts.id_tipo
-	 
+	join users u on u.id = tm.id_cobrador 
 where
     tc.deleted_at is null
-    and tm.id =  $P{id_movimiento} 
-	]]>
+    and tm.id =  $P{id_movimiento}]]>
 	</queryString>
 	<field name="servicio" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="servicio"/>
@@ -66,109 +65,150 @@ where
 		<property name="com.jaspersoft.studio.field.label" value="fecha_hora_pago"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="tbl_movimientos"/>
 	</field>
+	<field name="cobrador" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cobrador"/>
+		<property name="com.jaspersoft.studio.field.label" value="cobrador"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="users"/>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="168" splitType="Stretch">
+		<band height="224" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="570" height="56" uuid="ee4ab2ac-9d2a-4795-a361-c3c75ebb4224"/>
+				<reportElement x="0" y="2" width="570" height="78" uuid="ee4ab2ac-9d2a-4795-a361-c3c75ebb4224"/>
 				<textElement textAlignment="Center">
-					<font size="42"/>
+					<font size="59"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{servicio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="59" width="570" height="50" uuid="9d01767e-2f58-416b-ace1-b67970dd6006"/>
+				<reportElement x="0" y="84" width="570" height="66" uuid="9d01767e-2f58-416b-ace1-b67970dd6006"/>
 				<textElement textAlignment="Center">
-					<font size="31"/>
+					<font size="40"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha_hora_genera}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="113" width="570" height="47" uuid="5d92ede3-c924-44dc-9ae1-a376a97d3e76"/>
+				<reportElement x="0" y="153" width="570" height="67" uuid="5d92ede3-c924-44dc-9ae1-a376a97d3e76"/>
 				<textElement textAlignment="Center">
-					<font size="31"/>
+					<font size="40"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="28" splitType="Stretch"/>
+		<band height="19" splitType="Stretch"/>
 	</pageHeader>
 	<detail>
-		<band height="252" splitType="Stretch">
+		<band height="430" splitType="Stretch">
 			<textField>
-				<reportElement x="250" y="10" width="320" height="37" uuid="fcf61c4d-8fd2-4280-973f-32c2ed22061c"/>
+				<reportElement x="1" y="30" width="570" height="40" uuid="fcf61c4d-8fd2-4280-973f-32c2ed22061c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="21"/>
+					<font size="25"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{contrato}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="250" y="53" width="320" height="43" uuid="ad5d52a1-a269-4181-8240-6a83f7913175"/>
+				<reportElement x="0" y="100" width="570" height="40" uuid="ad5d52a1-a269-4181-8240-6a83f7913175">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="21"/>
+					<font size="22"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{concepto_pago_servicio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="250" y="98" width="320" height="38" uuid="3c763e30-6444-47db-ac93-50d534e5216e"/>
+				<reportElement x="0" y="170" width="570" height="40" uuid="3c763e30-6444-47db-ac93-50d534e5216e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="18"/>
+					<font size="25"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pago_servicio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="250" y="148" width="320" height="39" uuid="2a73e63e-893b-4ff5-827c-7a6a6b64de87"/>
+				<reportElement x="0" y="240" width="570" height="40" uuid="2a73e63e-893b-4ff5-827c-7a6a6b64de87">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="21"/>
+					<font size="25"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{monto_pago}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="250" y="203" width="320" height="39" uuid="40443c5c-60c4-42b6-9e58-7a8f467dbde1"/>
+				<reportElement x="0" y="310" width="570" height="40" uuid="40443c5c-60c4-42b6-9e58-7a8f467dbde1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center">
-					<font size="21"/>
+					<font size="25"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha_hora_pago}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="10" width="250" height="37" uuid="8e9d6645-bcee-4638-9e31-4a5b3892ea9b"/>
+				<reportElement x="80" y="6" width="400" height="40" uuid="8e9d6645-bcee-4638-9e31-4a5b3892ea9b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement>
-					<font size="24"/>
+					<font size="26"/>
 				</textElement>
 				<text><![CDATA[Casa:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="53" width="250" height="43" uuid="9f0d97f0-198e-483e-b5f1-7062b2230f38"/>
+				<reportElement x="80" y="70" width="400" height="40" uuid="9f0d97f0-198e-483e-b5f1-7062b2230f38">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement>
-					<font size="24"/>
+					<font size="26"/>
 				</textElement>
 				<text><![CDATA[Servicio contratado:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="100" width="250" height="36" uuid="164777a9-2397-41d4-a8c2-db8420845675"/>
+				<reportElement x="80" y="140" width="400" height="40" uuid="164777a9-2397-41d4-a8c2-db8420845675">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement>
-					<font size="24"/>
+					<font size="26"/>
 				</textElement>
 				<text><![CDATA[Descripción del pago:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="147" width="250" height="40" uuid="03b0ac94-23b5-4541-805e-ce82f898391d"/>
+				<reportElement x="80" y="210" width="400" height="40" uuid="03b0ac94-23b5-4541-805e-ce82f898391d"/>
 				<textElement>
-					<font size="24"/>
+					<font size="26"/>
 				</textElement>
 				<text><![CDATA[Monto pagado L:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="201" width="250" height="41" uuid="5d718724-80d5-4fda-a7f4-e09cf77aae47"/>
+				<reportElement x="80" y="280" width="400" height="40" uuid="5d718724-80d5-4fda-a7f4-e09cf77aae47">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement>
-					<font size="24"/>
+					<font size="26"/>
 				</textElement>
 				<text><![CDATA[Fecha y hora del pago:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="80" y="349" width="400" height="40" uuid="b63d4b18-7f90-4f0c-ad7a-9044045d90c3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="26"/>
+				</textElement>
+				<text><![CDATA[Cobrador:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="380" width="570" height="40" uuid="9837d152-b889-4812-9b9a-e1a56cb62bef">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="25"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cobrador}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>

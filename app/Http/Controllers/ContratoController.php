@@ -333,6 +333,7 @@ class ContratoController extends Controller
     $msgSuccess=null;
     $accion=$request->accion;
     $tbl_movimientos_list=null;
+    $id_cobrador= Auth::user()->id;
     $id_haber = 2;
     if($id==null && $accion==2){
         $accion=1;
@@ -340,13 +341,10 @@ class ContratoController extends Controller
     try{ 
 
         if($accion==1){
-        $sql_tbl_movimientos = DB::select("insert INTO public.tbl_movimientos (
-        concepto,debe,fecha_hora,haber,id_tipo_movimiento
-        , created_at) values (
-        :concepto,:debe,:fecha_hora,:haber,:id_tipo_movimiento
-        , now() )
+        $sql_tbl_movimientos = DB::select("insert INTO public.tbl_movimientos (concepto,debe,fecha_hora,haber,id_tipo_movimiento, id_cobrador, created_at) 
+            values (:concepto,:debe,:fecha_hora,:haber,:id_tipo_movimiento, :id_cobrador , now() )
         RETURNING  id
-        ", ['concepto'=>$concepto,'debe'=>$debe,'fecha_hora'=>$fecha_hora,'haber'=>$haber,'id_tipo_movimiento'=>$id_tipo_movimiento
+        ", ['concepto'=>$concepto,'debe'=>$debe,'fecha_hora'=>$fecha_hora,'haber'=>$haber,'id_tipo_movimiento'=>$id_tipo_movimiento,'id_cobrador'=>$id_cobrador
         ]
         );
         foreach($sql_tbl_movimientos as $r){
@@ -355,10 +353,10 @@ class ContratoController extends Controller
         $msgSuccess="Registro creado con el código: ".$id;
         }else if($accion==2){
         $sql_tbl_movimientos = DB::select("update public.tbl_movimientos set  updated_at = now(),
-        concepto=:concepto,debe=:debe,fecha_hora=:fecha_hora,haber=:haber,id_tipo_movimiento=:id_tipo_movimiento
+        concepto=:concepto,debe=:debe,fecha_hora=:fecha_hora,haber=:haber,id_tipo_movimiento=:id_tipo_movimiento, id_cobrador=:id_cobrador
         where id=:id
         "
-        , ['concepto'=>$concepto,'debe'=>$debe,'fecha_hora'=>$fecha_hora,'haber'=>$haber,'id'=>$id,'id_tipo_movimiento'=>$id_tipo_movimiento]
+        , ['concepto'=>$concepto,'debe'=>$debe,'fecha_hora'=>$fecha_hora,'haber'=>$haber,'id'=>$id,'id_tipo_movimiento'=>$id_tipo_movimiento,'id_cobrador'=>$id_cobrador]
         );
         $msgSuccess="Registro ".$id." actualizado";
 
@@ -380,7 +378,8 @@ class ContratoController extends Controller
                 id_tipo_movimiento,
                 id_cliente,
                 id_contrato,
-                created_at
+                created_at,
+                id_cobrador
             )
             select
                     now() as fecha_hora,
@@ -389,7 +388,8 @@ class ContratoController extends Controller
                     :id_haber as id_tipo_movimiento,
                     tc.id_cliente,
                     tc.id as id_contrato,
-                    now() as created_at
+                    now() as created_at,
+                    :id_cobrador as id_cobrador
             from
                 public.tbl_contrato tc
                 join public.tbl_servicio ts on ts.id = tc.id_servicio    
@@ -400,7 +400,8 @@ class ContratoController extends Controller
                 and tc.id = :id_contrato",[
                         'id_contrato'=>$id_contrato,
                         'id_haber'=>$id_haber,
-                        'haber'=>$haber
+                        'haber'=>$haber,
+                        'id_cobrador'=>$id_cobrador
                     ]);
             
         }else{
