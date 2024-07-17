@@ -116,7 +116,7 @@
                             </button>
                         </form>
                         
-                        <a href="{{url('/movimientos/'.$item->id)}}" class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
+                        <a href="{{url('/movimientos/'.$item->id)}}" class="bg-warning hover:bg-green-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
                             <x-base.lucide
                                 class="h-4 w-4"
                                 icon="DollarSign"

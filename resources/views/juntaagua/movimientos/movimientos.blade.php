@@ -6,20 +6,30 @@
 
 <!-- BEGIN: Profile Info -->
 <div class="intro-y box mt-5 px-5 pt-5">
-    <div class="-mx-5 flex flex-col border-b border-slate-200/60 pb-5 dark:border-darkmode-400 lg:flex-row">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
         <div class="flex flex-1 items-center justify-center px-5 lg:justify-start">
-            <x-base.lucide class="h-40 w-40" icon="file"/>
-            <div class="ml-5">
-                <div class="w-240 truncate text-lg font-medium sm:w-80 sm:whitespace-normal">                        
-                    <h1 class="text-5xl font-medium leading-none"></h1>
-                </div>
-                <div class="text-slate-500">Pantalla de Movimientos - cobros</div>
-            </div>
+            
+        <lord-icon
+                src="https://cdn.lordicon.com/qtnfcnne.json"
+                trigger="loop"
+                delay="2000"
+                style="width:150px;height:150px">
+            </lord-icon>
+        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Pantalla de Saldos</h1>
         </div>
-    </div>
+        <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
+            <a href="{{url('/contrato')}}" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1">
+                <lord-icon
+                    src="https://cdn.lordicon.com/zutufmmf.json"
+                    trigger="hover"
+                    style="width:24px;height:24px">
+                </lord-icon>
+            </a>
+        </div>
+    </div>    
 </div>
 <!-- END: Profile Info -->
-
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
 
 <!-- BEGIN: Profile body -->
 <div class="intro-y box mt-5 p-5">
@@ -45,10 +55,17 @@
                 <x-base.button
                     class="mb-2 mr-1"
                     variant="primary"
+                    id="btn_cobro_tbl_movimientos"                   
+                ><i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
+                        Registrar cobro
+                </x-base.button>                                               
+                <x-base.button
+                    class="mb-2 mr-1"
+                    variant="primary"
                     id="btn_pago_tbl_movimientos"
                     data-tw-toggle="modal" data-tw-target="#modal_pago_tbl_movimientos"
                 ><i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
-                        Registrar Pago Movimientos - cobros
+                        Registrar Pago
                 </x-base.button>                                               
             </div>
         </div>
@@ -273,24 +290,24 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 			}
 	
 	$(document).ready(function () {
- 		$.ajaxSetup({
-                	headers: {
-                    	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                	}
-        		});	
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });	
  	$("#btn_nuevo_tbl_movimientos").on("click", function (event) {                        
-				accion = 1;
-				$("#modal_tbl_tbl_movimientos").show();
-			}); 
+            accion = 1;
+            $("#modal_tbl_tbl_movimientos").show();
+        }); 
  	$("#btn_eliminar_tbl_movimientos").on("click", function (event) {                        
-				accion = 3;
-				$("#modal_eliminar_tbl_movimientos").show();
-			}); 
+            accion = 3;
+            $("#modal_eliminar_tbl_movimientos").show();
+        }); 
  	
         $("#btn_pago_tbl_movimientos").on("click", function (event) {                        
-				accion = 4;
-				$("#modal_pago_tbl_movimientos").show();
-			}); 
+            accion = 4;
+            $("#modal_pago_tbl_movimientos").show();
+        }); 
 
 //	$('.timestamp').daterangepicker({
 //                    singleDatePicker: true,
@@ -319,45 +336,57 @@ table=$("#tbl_tbl_movimientos" ).DataTable({
 
 	
 $("#tbl_tbl_movimientos").on("click", "#btn_editar_tbl_movimientos", function (e) {
-	$("#modal_tbl_tbl_movimientos").show();
-id=$( this ).data("id");
-fecha_hora=$( this ).data("fecha_hora");
-concepto=$( this ).data("concepto");
-debe=$( this ).data("debe");
-haber=$( this ).data("haber");
-id_tipo_movimiento=$( this ).data("id_tipo_movimiento");
-	$("#id").val(id);
-	$("#fecha_hora").val(fecha_hora);
-	$("#concepto").val(concepto);
-	$("#debe").val(debe);
-	$("#haber").val(haber);
-	$("#id_tipo_movimiento").val(id_tipo_movimiento);
+    $("#modal_tbl_tbl_movimientos").show();
+    id=$( this ).data("id");
+    fecha_hora=$( this ).data("fecha_hora");
+    concepto=$( this ).data("concepto");
+    debe=$( this ).data("debe");
+    haber=$( this ).data("haber");
+    id_tipo_movimiento=$( this ).data("id_tipo_movimiento");
+    $("#id").val(id);
+    $("#fecha_hora").val(fecha_hora);
+    $("#concepto").val(concepto);
+    $("#debe").val(debe);
+    $("#haber").val(haber);
+    $("#id_tipo_movimiento").val(id_tipo_movimiento);
         
         //acceder al objeto hijo por medio del objeto padre $( "#id_tipo_movimiento-ts-control > input" ).val( "borderasdfasdfatrestset" );
 });
   
 $("#modal_eliminar_tbl_movimientos").on("click", "#btn_eliminar_tbl_movimientos", function (e) {
-	$("#modal_eliminar_tbl_movimientos").show();
-id=$( this ).data("id");
-fecha_hora=$( this ).data("fecha_hora");
-concepto=$( this ).data("concepto");
-debe=$( this ).data("debe");
-haber=$( this ).data("haber");
-id_tipo_movimiento=$( this ).data("id_tipo_movimiento");
-	$("#id").val(id);
-	$("#fecha_hora").val(fecha_hora);
-	$("#concepto").val(concepto);
-	$("#debe").val(debe);
-	$("#haber").val(haber);
-	$("#id_tipo_movimiento").val(id_tipo_movimiento);
-	accion=3;
+    $("#modal_eliminar_tbl_movimientos").show();
+    id=$( this ).data("id");
+    fecha_hora=$( this ).data("fecha_hora");
+    concepto=$( this ).data("concepto");
+    debe=$( this ).data("debe");
+    haber=$( this ).data("haber");
+    id_tipo_movimiento=$( this ).data("id_tipo_movimiento");
+    $("#id").val(id);
+    $("#fecha_hora").val(fecha_hora);
+    $("#concepto").val(concepto);
+    $("#debe").val(debe);
+    $("#haber").val(haber);
+    $("#id_tipo_movimiento").val(id_tipo_movimiento);
+    accion=3;
 });
   
+$("#btn_cobro_tbl_movimientos").on( "click", function () {
+    accion=5;
+    preguardar_tbl_movimientos();
+});
+
 $("#tbl_tbl_movimientos tbody").on( "click", "tr", function () {
 	rowNumber=parseInt(table.row( this ).index());
 	accion=2;
 	table.$('tr.selected').removeClass('selected');
 	$(this).addClass('selected');
+                
+        $("#fecha_hora").prop("readonly", true);
+        $("#concepto").prop("readonly", true);
+        $("#debe").prop("readonly", true);
+        //$("#id_tipo_movimiento").attr("readonly", true);
+        $("#id_tipo_movimiento").attr("disabled", "disabled"); 
+    
 });
   
 $(".modal-footer").on("click", "#modal_btn_guardar_tbl_movimientos", function () {
@@ -367,36 +396,39 @@ debe=$("#debe").val();
 haber=$("#haber").val();
 id_tipo_movimiento=$("#id_tipo_movimiento").val();
  
+    if(accion == 1){
 	if(fecha_hora== null || fecha_hora == ''){
 		mensage({"msgError":'Ingrese un dato para fecha_hora!'});
 		return false;
 	}
-	
- 
+	 
 	if(concepto== null || concepto == ''){
 		mensage({"msgError":'Ingrese un dato para concepto!'});
 		return false;
 	}
-	
- 
+	 
 	if(debe== null || debe == ''){
 		mensage({"msgError":'Ingrese un dato para debe!'});
 		return false;
 	}
-	
- 
+	 
 	if(haber== null || haber == ''){
 		mensage({"msgError":'Ingrese un dato para haber!'});
 		return false;
-	}
-	
+	}	
  
 	if(id_tipo_movimiento== null || id_tipo_movimiento == ''){
 		mensage({"msgError":'Ingrese un dato para id_tipo_movimiento!'});
 		return false;
 	}
-	
-	preguardar_tbl_movimientos();
+    }else if(accion == 2){
+        if(haber== null || haber == ''){
+		mensage({"msgError":'Ingrese un dato para haber!'});
+		return false;
+	}
+    }
+    
+    preguardar_tbl_movimientos();
 });
 
 $(".modal-footer").on("click", "#modal_btn_guardar_pago_tbl_movimientos", function () {
@@ -444,61 +476,68 @@ function guardar_tbl_movimientos(){
  		"id_contrato": id_contrato,
 		accion:accion
 	},
-success: function (data) {
+        success: function (data) {
+            //console.log(data)
 	if(data.msgError!=null){
-		if(accion==1 || accion==2){
-                    $("#modal_tbl_tbl_movimientos").show();
-                }else if(accion==3){
-                    $("#modal_eliminar_tbl_movimientos").show();
-                }else if(accion==4){
-                    $("#modal_pago_tbl_movimientos").show();
-                }
-	mensage({"msgError":'Error, datos no guardados!'});
+            if(accion==1 || accion==2){
+                $("#modal_tbl_tbl_movimientos").show();
+            }else if(accion==3){
+                $("#modal_eliminar_tbl_movimientos").show();
+            }else if(accion==4){
+                $("#modal_pago_tbl_movimientos").show();
+            }else if(accion==5){
+            
+            }
+            mensage({"msgError":data.msgError});
 	}else{
 		$("#modal_tbl_tbl_movimientos").hide();
 		for(var i = 0; i < data.tbl_movimientos_list.length; i++) {
 		var row= data.tbl_movimientos_list[i];
 		var nuevaFilaDT=[
-row.id,row.fecha_hora,row.concepto,row.debe,row.haber,row.tipo_movimiento
- ,'<button data-tw-toggle="modal" data-tw-target="#modal_tbl_tbl_movimientos" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1"'+ 
- 'data-id="'+row.id+'" '+ 
- 'data-fecha_hora="'+row.fecha_hora+'" '+ 
- 'data-concepto="'+row.concepto+'" '+ 
- 'data-debe="'+row.debe+'" '+ 
- 'data-haber="'+row.haber+'" '+ 
- 'data-id_tipo_movimiento="'+row.id_tipo_movimiento+'" '+ 
- 'data-tipo_movimiento="'+row.tipo_movimiento+'" '+ 
- 'title="Editar" variant="secondary" size="sm" id="btn_editar_tbl_movimientos" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>'+ 
- '&nbsp&nbsp&nbsp<button  data-tw-toggle="modal" data-tw-target="#modal_eliminar_tbl_movimientos" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"'+ 
- 'data-id="'+row.id+'" '+ 
- 'data-fecha_hora="'+row.fecha_hora+'" '+ 
- 'data-concepto="'+row.concepto+'" '+ 
- 'data-debe="'+row.debe+'" '+ 
- 'data-haber="'+row.haber+'" '+ 
- 'data-id_tipo_movimiento="'+row.id_tipo_movimiento+'" '+ 
- 'data-tipo_movimiento="'+row.tipo_movimiento+'" '+ 
- 'title="Eliminar" variant="danger" size="sm" id="btn_eliminar_tbl_movimientos" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+ 
-''
-];
-        if(accion==1) {
-            $("#modal_tbl_tbl_movimientos").hide();
-            table.row.add(nuevaFilaDT).draw();
-	}else if (accion==2) {
-            $("#modal_tbl_tbl_movimientos").hide();
+                row.id,row.fecha_hora,row.concepto,row.debe,row.haber,row.tipo_movimiento
+                 ,'<button data-tw-toggle="modal" data-tw-target="#modal_tbl_tbl_movimientos" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1"'+ 
+                 'data-id="'+row.id+'" '+ 
+                 'data-fecha_hora="'+row.fecha_hora+'" '+ 
+                 'data-concepto="'+row.concepto+'" '+ 
+                 'data-debe="'+row.debe+'" '+ 
+                 'data-haber="'+row.haber+'" '+ 
+                 'data-id_tipo_movimiento="'+row.id_tipo_movimiento+'" '+ 
+                 'data-tipo_movimiento="'+row.tipo_movimiento+'" '+ 
+                 'title="Editar" variant="secondary" size="sm" id="btn_editar_tbl_movimientos" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>'+ 
+                 '&nbsp&nbsp&nbsp<button  data-tw-toggle="modal" data-tw-target="#modal_eliminar_tbl_movimientos" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"'+ 
+                 'data-id="'+row.id+'" '+ 
+                 'data-fecha_hora="'+row.fecha_hora+'" '+ 
+                 'data-concepto="'+row.concepto+'" '+ 
+                 'data-debe="'+row.debe+'" '+ 
+                 'data-haber="'+row.haber+'" '+ 
+                 'data-id_tipo_movimiento="'+row.id_tipo_movimiento+'" '+ 
+                 'data-tipo_movimiento="'+row.tipo_movimiento+'" '+ 
+                 'title="Eliminar" variant="danger" size="sm" id="btn_eliminar_tbl_movimientos" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+ 
+                ''
+                ];
+            if(accion==1) {
+                $("#modal_tbl_tbl_movimientos").hide();
+                table.row.add(nuevaFilaDT).draw();
+            }else if (accion==2) {
+                $("#modal_tbl_tbl_movimientos").hide();
+                table.row(rowNumber).data(nuevaFilaDT);
+            }else if (accion==4) {
+                $("#modal_pago_tbl_movimientos").hide();
+                table.row(rowNumber).data(nuevaFilaDT);
+            }else if(accion==5){
+                table.row(rowNumber).data(nuevaFilaDT);
+            }
+        }
+        if (accion == 3){
+            $("#modal_eliminar_tbl_movimientos").hide();
             table.row(rowNumber).data(nuevaFilaDT);
-	}else if (accion==4) {
-            $("#modal_pago_tbl_movimientos").hide();
-            table.row(rowNumber).data(nuevaFilaDT);
-	}
-}
- if (accion == 3){
-     $("#modal_eliminar_tbl_movimientos").hide();
-     table.row(rowNumber).data(nuevaFilaDT);
-} 
-}
+        } 
+        
+        mensage({"msgExito":data.msgSuccess});
+    }
 
 
-	mensage({"msgExito":'Exito, datos guardados!'});
+    
 },
 error: function (xhr, status, error) {
 	alert(xhr.responseText);

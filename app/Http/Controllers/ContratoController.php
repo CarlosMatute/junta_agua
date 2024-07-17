@@ -333,6 +333,7 @@ class ContratoController extends Controller
     $msgSuccess=null;
     $accion=$request->accion;
     $tbl_movimientos_list=null;
+    $resultado=null;
     $id_cobrador= Auth::user()->id;
     $id_haber = 2;
     if($id==null && $accion==2){
@@ -341,33 +342,33 @@ class ContratoController extends Controller
     try{ 
 
         if($accion==1){
-        $sql_tbl_movimientos = DB::select("insert INTO public.tbl_movimientos (concepto,debe,fecha_hora,haber,id_tipo_movimiento, id_cobrador, created_at) 
-            values (:concepto,:debe,:fecha_hora,:haber,:id_tipo_movimiento, :id_cobrador , now() )
-        RETURNING  id
-        ", ['concepto'=>$concepto,'debe'=>$debe,'fecha_hora'=>$fecha_hora,'haber'=>$haber,'id_tipo_movimiento'=>$id_tipo_movimiento,'id_cobrador'=>$id_cobrador
-        ]
-        );
-        foreach($sql_tbl_movimientos as $r){
-        $id=$r->id;
-        }
-        $msgSuccess="Registro creado con el código: ".$id;
+            $sql_tbl_movimientos = DB::select("insert INTO public.tbl_movimientos (concepto,debe,fecha_hora,haber,id_tipo_movimiento, id_cobrador, created_at) 
+                values (:concepto,:debe,:fecha_hora,:haber,:id_tipo_movimiento, :id_cobrador , now() )
+            RETURNING  id
+            ", ['concepto'=>$concepto,'debe'=>$debe,'fecha_hora'=>$fecha_hora,'haber'=>$haber,'id_tipo_movimiento'=>$id_tipo_movimiento,'id_cobrador'=>$id_cobrador
+            ]
+            );
+            foreach($sql_tbl_movimientos as $r){
+                $id=$r->id;
+            }
+            $msgSuccess="Registro creado con el código: ".$id;
         }else if($accion==2){
-        $sql_tbl_movimientos = DB::select("update public.tbl_movimientos set  updated_at = now(),
-        concepto=:concepto,debe=:debe,fecha_hora=:fecha_hora,haber=:haber,id_tipo_movimiento=:id_tipo_movimiento, id_cobrador=:id_cobrador
-        where id=:id
-        "
-        , ['concepto'=>$concepto,'debe'=>$debe,'fecha_hora'=>$fecha_hora,'haber'=>$haber,'id'=>$id,'id_tipo_movimiento'=>$id_tipo_movimiento,'id_cobrador'=>$id_cobrador]
-        );
-        $msgSuccess="Registro ".$id." actualizado";
+            $sql_tbl_movimientos = DB::select("update public.tbl_movimientos set  updated_at = now(),
+            concepto=:concepto,debe=:debe,fecha_hora=:fecha_hora,haber=:haber,id_tipo_movimiento=:id_tipo_movimiento, id_cobrador=:id_cobrador
+            where id=:id
+            "
+            , ['concepto'=>$concepto,'debe'=>$debe,'fecha_hora'=>$fecha_hora,'haber'=>$haber,'id'=>$id,'id_tipo_movimiento'=>$id_tipo_movimiento,'id_cobrador'=>$id_cobrador]
+            );
+            $msgSuccess="Registro ".$id." actualizado";
 
         }else if($accion==3){
 
-        $sql_tbl_movimientos = DB::select("update public.tbl_movimientos set deleted_at=now() where
-        id=:id
-        "
-        , ['id'=>$id]
-        );
-        $msgSuccess="Registro ".$id." eliminado";
+            $sql_tbl_movimientos = DB::select("update public.tbl_movimientos set deleted_at=now() where
+            id=:id
+            "
+            , ['id'=>$id]
+            );
+            $msgSuccess="Registro ".$id." eliminado";
 
         }else if($accion == 4){
             
@@ -397,33 +398,53 @@ class ContratoController extends Controller
                 join public.cat_meses_anio cma on cma.id_mes_bd::int = to_char( current_date::date,'MM')::int
             where
                 tc.deleted_at is null    
-                and tc.id = :id_contrato",[
+                and tc.id = :id_contrato
+                RETURNING id
+                ",[
                         'id_contrato'=>$id_contrato,
                         'id_haber'=>$id_haber,
                         'haber'=>$haber,
                         'id_cobrador'=>$id_cobrador
                     ]);
             
+            foreach($sql_tbl_movimientos as $rt){
+                $id=$rt->id;
+            }
+            $msgSuccess="Registro de pago creado: ".$id;
+            
+        }else if ($accion == 5){
+            $sql_tbl_movimientos = collect(db::select("select cast(s.resultado as bool ) from public.f_registro_cobro_cliente_mes( :id_contrato ) as s(resultado)",[
+                'id_contrato'=>$id_contrato
+            ]))->first();
+            
+            $resultado = isset($sql_tbl_movimientos->resultado) ? $sql_tbl_movimientos->resultado : null;
+            
+            if($resultado){
+                $msgSuccess="Registro de cobro creado: ".$sql_tbl_movimientos->id_movimiento;
+            }else{
+                $msgError="No se encontraron registros de cobro a crear";
+            }
+                        
         }else{
-        $msgError="Accion invalida";
+            $msgError="Accion invalida";
         }
         if($msgError==null){
-         $tbl_movimientos_list = DB::select("select * from (
-         select tm.id, tm.fecha_hora, tm.concepto, tm.debe, tm.haber, tm.id_tipo_movimiento, ttm.nombre as tipo_movimiento, tm.id_contrato, tm.id_cobrador, u.name as cobrador 
-         from public.tbl_movimientos tm 
-         join public.tbl_clientes ct on ct.id = tm.id_cliente 
-         join public.tbl_contrato tc on tc.id = tm.id_contrato 
-         join public.tbl_tipo_movimiento ttm on ttm.id = tm.id_tipo_movimiento 
-         left join public.users u on u.id = tm.id_cobrador
-         where tm.deleted_at is null
-         and tm.id_contrato = :id_contrato
-         order by 1 desc
+            $tbl_movimientos_list = DB::select("select * from (
+            select tm.id, tm.fecha_hora, tm.concepto, tm.debe, tm.haber, tm.id_tipo_movimiento, ttm.nombre as tipo_movimiento, tm.id_contrato, tm.id_cobrador, u.name as cobrador 
+            from public.tbl_movimientos tm 
+            join public.tbl_clientes ct on ct.id = tm.id_cliente 
+            join public.tbl_contrato tc on tc.id = tm.id_contrato 
+            join public.tbl_tipo_movimiento ttm on ttm.id = tm.id_tipo_movimiento 
+            left join public.users u on u.id = tm.id_cobrador
+            where tm.deleted_at is null
+            and tm.id_contrato = :id_contrato
+            order by 1 desc
 
-         ) x where id=:id
-         ",[
-         "id"=>$id
-         ]);
-         }
+            ) x where id=:id
+            ",[
+               "id"=>$id
+            ]);
+        }
     
     }catch (Exception $e){
         $msgError=$e->getMessage();
