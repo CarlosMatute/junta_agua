@@ -68,12 +68,12 @@
                 <td>{{$row->id}}</td>
                 <td>{{$row->nombre}} </td>                
                 <td>
-                    <x-base.button
+                    <x-base.button data-tw-toggle="modal" data-tw-target="#modal_nuevo_servicio"
                         class="mb-2 mr-1 editar"
                         variant="warning"
                         size="sm"
                         data-id="{{$row->id}}" 
-                        data-nombre="{{$row->nombre}}"                         
+                        data-nombre="{{$row->nombre}}"                                                 
                     >
                         <x-base.lucide
                             class="h-4 w-4"
@@ -276,16 +276,17 @@
             });
 
             $("#sdatatable tbody").on( "click", "tr", function () { 
-                                     rowNumber=parseInt(table.row( this ).index()); 
-                                     table.$('tr.selected').removeClass('selected'); 
-                                     $(this).addClass('selected'); 
-                                     localStorage.setItem("sdatatable_id_seleccionar",table.row( this ).data()[0]); 
-                                     }); 
+                rowNumber=parseInt(table.row( this ).index()); 
+                table.$('tr.selected').removeClass('selected'); 
+                $(this).addClass('selected'); 
+                localStorage.setItem("sdatatable_id_seleccionar",table.row( this ).data()[0]); 
+            }); 
 
-            $('#sdatatable tbody').on('click', '.editar', function() {
+            $('#sdatatable tbody').on('click', '.editar', function() {                
                 accion = 2;
                 id = $(this).data('id');
-                nombre = $(this).data('nombre');               
+                nombre = $(this).data('nombre');
+                $("#modal_input_nombre").val(nombre);              
             });
 
             function datos_inputs(){
@@ -361,10 +362,10 @@
                             textMsg = data.msgSuccess;
                             typeMsg = "success";
                             if(accion != 3){
-                                var row = data.clientes_list;
+                                var row = data.servicio_list;
                                 var nuevoFila = [
                                     row.id, row.nombre,
-                                    '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"'+
+                                    '<button data-tw-toggle="modal" data-tw-target="#modal_nuevo_servicio" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"'+
                                         'data-id="'+row.id+'"'+ 
                                         'data-nombre="'+row.nombre+'"'+
                                     '><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">'+

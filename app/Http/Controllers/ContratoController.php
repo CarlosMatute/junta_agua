@@ -442,7 +442,8 @@ class ContratoController extends Controller
 
             ) x where id=:id
             ",[
-               "id"=>$id
+               "id"=>$id,
+                "id_contrato"=>$id_contrato
             ]);
         }
     

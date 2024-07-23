@@ -40,10 +40,10 @@ class ServicioController extends Controller
                     returning id;",
                     ["nombre" => $nombre]))->first();
 
-                $id = $servicio->id;
+                $id = $nuevo_servicio->id;
                 $msgSuccess = "Servicio ".$id." registrado exitosamente.";
             }else if ($accion == 2) {
-                DB::select("UPDATE tbl_tipo_servicio set nombre = :nombre , updated_at=now()where id = :ID",
+                DB::select("UPDATE tbl_tipo_servicio set nombre = :nombre , updated_at=now() where id = :id",
                     ["id" => $id, "nombre" => $nombre]);
                 $msgSuccess = "Servicio ".$id." editado exitosamente.";
             }else if ($accion == 3) {
@@ -53,7 +53,7 @@ class ServicioController extends Controller
                 $msgError = "Acción inválida";
             }
                 $servicio_list = collect(\DB::select("SELECT id, nombre from tbl_tipo_servicio 
-                                                where deleted_at is null  and TC.ID =:id order by nombre", ["id" => $id]))->first();
+                where deleted_at is null  and id = :id order by nombre", ["id" => $id]))->first();
         } catch (Exception $e) {
             $msgError = $e->getMessage();
         }
