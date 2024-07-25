@@ -8,6 +8,9 @@ use Illuminate\View\View;
 use DB;
 use Session;
 use Exception;
+use File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 
 class UbicacionesController extends Controller
 {
@@ -234,4 +237,39 @@ class UbicacionesController extends Controller
 
         return response()->json(['msgSuccess' => $msgSuccess, 'msgError' => $msgError, 'ubicaciones_list' => $ubicaciones_list]);
     }
+
+    public function guardar_foto_ubicacion(Request $request){
+        $id_ubicacion = $request->id_ubicacion;
+        if($request->hasFile("profile_picture")){
+            $file=$request->file("profile_picture");
+            
+            // $nombre = "examen_".time().".".$file->guessExtension();
+            $nombre_archivo = "foto_ubicacion_".$id_ubicacion.".".$file->guessExtension();
+
+            $ruta = public_path("img\\ubicaciones\\".$nombre_archivo);
+            //$ruta = $request->file('profile_picture')->store('build/assets/img_empleados', 'public');
+            //$ruta = "/home/shfnuaro/public_html/pdf/examenes_laboratorio/".$nombre_archivo;
+
+            // if($file->guessExtension()=="jpeg"){
+            copy($file, $ruta);
+                        
+                DB::select("UPDATE PUBLIC.tbl_ubicacion
+                    SET
+                        FOTO = :nombre_archivo,
+                        UPDATED_AT = NOW()
+                    WHERE
+                        ID = :id_ubicacion;
+                ", ["id_ubicacion" => $id_ubicacion, "nombre_archivo" => $nombre_archivo]);
+            // }else{
+            //     dd("NO ES UNA IMAGEN");
+            // }
+
+        }
+        return Redirect::back()->withHeaders([
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ]);
+    }
+
 }
