@@ -383,18 +383,17 @@ class ContratoController extends Controller
                 id_cobrador
             )
             select
-                    now() as fecha_hora,
-                    concat('PAGO EN EL MES DE ', upper(cma.nombre_espanol),' - ', tts.nombre  )	concepto,
-                    :haber as haber,
-                    :id_haber as id_tipo_movimiento,
-                    tc.id_cliente,
-                    tc.id as id_contrato,
-                    now() as created_at,
-                    :id_cobrador as id_cobrador
+                now() as fecha_hora,
+                concat('PAGO DEL MES DE ', upper(cma.nombre_espanol),' - ', ts.descripcion  )	concepto,
+                :haber as haber,
+                :id_haber as id_tipo_movimiento,
+                tc.id_cliente,
+                tc.id as id_contrato,
+                now() as created_at,
+                :id_cobrador as id_cobrador
             from
                 public.tbl_contrato tc
-                join public.tbl_servicio ts on ts.id = tc.id_servicio    
-                join public.tbl_tipo_servicio tts on tts.id = ts.id_tipo  
+                join public.tbl_servicio ts on ts.id = tc.id_servicio	
                 join public.cat_meses_anio cma on cma.id_mes_bd::int = to_char( current_date::date,'MM')::int
             where
                 tc.deleted_at is null    

@@ -7,6 +7,10 @@ use Illuminate\View\View;
 use DB;
 use Session;
 use Exception;
+use App\Models\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Hash;
+use Auth;
 
 class EmpleadosController extends Controller
 {
@@ -28,40 +32,89 @@ class EmpleadosController extends Controller
        ;
        }
        
-       public function guardar_per_empleado(Request $request) {
-       $id=$request->id;
-       $primer_nombre=$request->primer_nombre;
-       $segundo_nombre=$request->segundo_nombre;
-       $primer_apellido=$request->primer_apellido;
-       $segundo_apellido=$request->segundo_apellido;
-       $identidad=$request->identidad;
-       $telefono=$request->telefono;
-       $id_pais=$request->id_pais;
-       $domicilio=$request->domicilio;
-       $correo=$request->correo;
-       $msgError=null;
-       $msgSuccess=null;
-       $accion=$request->accion;
-       $per_empleado_list=null;
+    public function guardar_per_empleado(Request $request) {
+        $id=$request->id;
+        $id_usuario=null;
+        $primer_nombre=$request->primer_nombre;
+        $segundo_nombre=$request->segundo_nombre;
+        $primer_apellido=$request->primer_apellido;
+        $segundo_apellido=$request->segundo_apellido;
+        $identidad=$request->identidad;
+        $telefono=$request->telefono;
+        $id_pais=$request->id_pais;
+        $domicilio=$request->domicilio;
+        $correo=$request->correo;
+        $msgError=null;
+        $msgSuccess=null;
+        $accion=$request->accion;
+        $per_empleado_list=null;
+        $password = '$2y$10$F3bJcMM59hkGE6PZHCtg/.mtddeSQhwQ.I7GnprYpDNNVpBvWokb6';
+        $sql_per_empleado =null;
+        $empleado_existe = null;
+        $empleado_existe_permitido = 1;
+        $sql_per_empleado_existente = null;
        if($id==null && $accion==2){
                    $accion=1;
                }
        try{ 
        
        if($accion==1){
-       $sql_per_empleado = DB::select("insert INTO public.per_empleado (
-       correo,domicilio,id_pais,identidad,primer_apellido,primer_nombre,segundo_apellido,segundo_nombre,telefono
-       , created_at) values (
-       :correo,:domicilio,:id_pais,:identidad,:primer_apellido,:primer_nombre,:segundo_apellido,:segundo_nombre,:telefono
-       , now() )
-       RETURNING  id
-       ", ['correo'=>$correo,'domicilio'=>$domicilio,'id_pais'=>$id_pais,'identidad'=>$identidad,'primer_apellido'=>$primer_apellido,'primer_nombre'=>$primer_nombre,'segundo_apellido'=>$segundo_apellido,'segundo_nombre'=>$segundo_nombre,'telefono'=>$telefono
-       ]
-       );
-       foreach($sql_per_empleado as $r){
-       $id=$r->id;
-       }
-       $msgSuccess="Registro creado con el código: ".$id;
+            $sql_per_empleado_existente =collect( DB::select("select count(1) empleado_existe from per_empleado where identidad = :identidad",['identidad'=>$identidad]) )->first();
+
+            $empleado_existe = intval(isset($sql_per_empleado_existente->empleado_existe) ? $sql_per_empleado_existente->empleado_existe : null);
+            
+            if( $empleado_existe !=  $empleado_existe_permitido){
+                $sql_users = DB::select("insert INTO public.users (email,username,password, created_at, name, forzar_cambio_contrasenia)
+                select x.email::text, x.username::text, x.password::text, x.created_at, x.name::text, true::bool forzar_cambio_contrasenia from (
+                    select :email::text email, 
+                    lower(substr(trim(:primer_nombre::text),1,1)||substr(coalesce(trim(:segundo_nombre::text),''),1,1)||trim(:primer_apellido::text)||substr(coalesce(trim(:segundo_apellido::text),''),1,1)||length(trim(:primer_nombre::text)||trim(:primer_apellido::text))) as username, 
+                    :password::text as password, (now() at time zone 'CST') created_at,
+                    TRIM(
+                    COALESCE(TRIM(:primer_nombre::text)||' ','')||
+                    COALESCE(TRIM(:segundo_nombre::text)||' ','')||
+                    COALESCE(TRIM(:primer_apellido::text)||' ','')||
+                    COALESCE(TRIM(:segundo_apellido::text||' '),'')
+                    ) as name
+                )x
+                RETURNING id", 
+                ['email'=>$correo,'password'=>$password,
+                    'primer_apellido'=>$primer_apellido,'primer_nombre'=>$primer_nombre,
+                    'segundo_apellido'=>$segundo_apellido,'segundo_nombre'=>$segundo_nombre
+                ]);
+
+                foreach($sql_users as $r){
+                    $id_usuario=$r->id;
+                }
+
+                $sql_per_empleado = DB::select("insert INTO public.per_empleado (
+                correo,domicilio,id_pais,identidad,primer_apellido,primer_nombre,segundo_apellido,segundo_nombre,telefono, id_usuario
+                , created_at) values (
+                :correo,:domicilio,:id_pais,:identidad,:primer_apellido,:primer_nombre,:segundo_apellido,:segundo_nombre,:telefono, :id_usuario
+                , now() )
+                RETURNING  id
+                ", ['correo'=>$correo,'domicilio'=>$domicilio,'id_pais'=>$id_pais,'identidad'=>$identidad,
+                    'primer_apellido'=>$primer_apellido,'primer_nombre'=>$primer_nombre,'segundo_apellido'=>$segundo_apellido,
+                    'segundo_nombre'=>$segundo_nombre,'telefono'=>$telefono, 'id_usuario'=>$id_usuario
+                ]
+                );
+
+                foreach($sql_per_empleado as $r){
+                    $id=$r->id;
+                }
+
+                $msgSuccess="Registro creado con el código: ".$id;
+            }else if( $empleado_existe ==  $empleado_existe_permitido ){
+                $msgError="Registro duplicado, ya existe un empleado!";
+            }
+            
+            
+            
+            
+            foreach($sql_per_empleado as $r){
+                $id=$r->id;
+            }
+            
+            $msgSuccess="Registro creado con el código: ".$id;
        }else if($accion==2){
        $sql_per_empleado = DB::select("update public.per_empleado set  updated_at = now(),
        correo=:correo,domicilio=:domicilio,id_pais=:id_pais,identidad=:identidad,primer_apellido=:primer_apellido,primer_nombre=:primer_nombre,segundo_apellido=:segundo_apellido,segundo_nombre=:segundo_nombre,telefono=:telefono
