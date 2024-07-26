@@ -113,6 +113,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/clientes/guardar', [ClientesController::class, 'guardar_clientes']);
         Route::get('/ubicaciones', [UbicacionesController::class, 'ver_ubicaciones'])->name('ubicaciones');
         Route::post('/ubicaciones/guardar', [UbicacionesController::class, 'guardar_ubicaciones']);
+        Route::post('/ubicaciones/foto/guardar', [UbicacionesController::class, 'guardar_foto_ubicacion']);
         Route::post('/departamentos-municipios', [DepartamentosMunicipiosController::class, 'ver_departamento_municipios']);
         Route::get('/reportes', [ReportesController::class, 'imprimir_reporte']);
 

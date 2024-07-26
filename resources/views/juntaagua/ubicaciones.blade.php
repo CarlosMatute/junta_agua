@@ -109,7 +109,17 @@
                             @endif
                         </td>
                         <td>{{$row->direccion}}</td>
-                        <td>{{$row->foto}}</td>
+                        <td>
+                            <div class="image-fit relative h-20 w-20 flex-none sm:h-24 sm:w-24 lg:h-32 lg:w-32">
+                                <x-base.image-zoom
+                                    class="rounded-full"
+                                    src="{{ asset('img/ubicaciones/')}}/{{$row->foto}}" onerror="this.src='{{ asset('img/ubicaciones/default.jpg') }}'"
+                                    alt="Midone Tailwind HTML Admin Template"
+                                    />
+                            </div>
+                            
+                        </td>
+                        
                         <td>{{$row->ubicacion}}</td>
                         <td>{{$row->fecha_cobro}}</td>
                         <td class="text-center">
@@ -173,6 +183,40 @@
                                     icon="Trash"
                                 />
                             </x-base.button>
+
+                            <x-base.button
+                                class="mb-2 mr-1 foto"
+                                size="sm"
+                                data-id="{{$row->id}}" 
+                                data-cliente="{{$row->id_cliente}}" 
+                                data-descripcion_casa="{{$row->descripcion_casa}}" 
+                                data-cliente_habita="{{$row->cliente_habita ? '1' : '0'}}" 
+                                data-direccion="{{$row->direccion}}" 
+                                data-foto="{{$row->foto}}" 
+                                data-pais="{{$row->id_pais}}"
+                                data-departamento="{{$row->id_departamento}}"
+                                data-municipio="{{$row->id_municipio}}"
+                                data-coordenadas="{{$row->coordenadas}}"
+                                data-fecha_cobro="{{$row->fecha_cobro}}"
+                                data-activo="{{$row->activo ? '1' : '0'}}"
+                                data-casa_propia="{{$row->casa_propia ? '1' : '0'}}"
+                                id="btn_subir_foto"
+                            >
+                                <x-base.lucide
+                                    class="h-4 w-4"
+                                    icon="Camera"
+                                    
+                                />
+                            </x-base.button>
+
+                            {{-- <div
+                        class="absolute bottom-0 right-0 mb-1 mr-1 flex items-center justify-center rounded-full bg-primary p-2">
+                        <x-base.lucide
+                            class="h-4 w-4 text-white"
+                            icon="Camera"
+                            id="btn_subir_foto"
+                        />
+                    </div> --}}
                         </td>
                     </tr>
                 @endforeach
@@ -379,6 +423,7 @@
                             <strong>Eliminar</strong>
                         </x-base.tab.button>
                     </x-base.tab>
+                    
                 </x-base.tab.list>
             </x-base.dialog.panel>
         </x-base.dialog>
@@ -426,6 +471,29 @@
             <!-- END: Notification Content -->
         </div>
 
+        <x-base.dialog id="modal_subir_foto">
+            <x-base.dialog.panel>
+                <div class="p-5 text-center">
+                    <x-base.lucide class="mx-auto mt-3 h-16 w-16 text-primary" icon="ArrowUpCircle" />
+                    <form id="uploadForm" action="{{url('/ubicaciones/foto/guardar')}}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <x-base.form-label class="font-extrabold" for="fileInput">
+                            Cargar Foto de la Vivienda
+                        </x-base.form-label>
+                        <input type="hidden" id="id_ubicacion" name="id_ubicacion"  required class="mb-4">
+                        <input type="file" id="fileInput" name="profile_picture" accept="image/jpeg" required class="mb-4">
+                        <center> <img id="preview" class="mt-4 w-32 h-32 rounded-full object-cover hidden" src="#" alt="Image Preview"> </center>
+                        <br>
+                        <x-base.button class="mr-1 w-24" data-tw-dismiss="modal" type="button" variant="danger">
+                            Cancelar
+                        </x-base.button>
+                        <x-base.button class="w-24" type="submit" variant="primary">
+                            Cargar
+                        </x-base.button>
+                    </form>
+                </div>
+            </x-base.dialog.panel>
+        </x-base.dialog>
 @endsection
 @once
 
@@ -558,6 +626,8 @@
                                      $(this).addClass('selected'); 
                                      localStorage.setItem("sdatatable_id_seleccionar",table.row( this ).data()[0]); 
                                      }); 
+
+               
 
             $('#sdatatable tbody').on('click', '.editar', function() {
                 map.setView([15.199999, -86.241905], 6);
@@ -759,6 +829,21 @@
                 modal.hide();
             });
 
+            $(".foto").on("click", function (event) {
+                accion = 1;
+                id = $(this).data('id');
+                var hiddenInput = document.getElementById('id_ubicacion');
+
+                // Asigna un valor al input
+                hiddenInput.value = id;
+
+                //alert(hiddenInput.value);
+
+                const el = document.querySelector("#modal_subir_foto");
+                const modal = tailwind.Modal.getOrCreateInstance(el);
+                modal.show();
+            });
+
             function guardar_ubicaciones() {
                 accion_guardar = true;
                 $.ajax({
@@ -795,10 +880,6 @@
                                 var casa_propia_icono = null;
                                 var activo_icono = null;
 
-                                if (row.foto == null || row.foto == '') {
-                                    row.foto = "Prueba";
-                                }
-
                                
 
                                 if (row.cliente_habita) {
@@ -825,10 +906,17 @@
                                     row.casa_propia = 0;
                                 }
 
-                                
+                                /*
+                                <button data-id="1" data-cliente="1" data-descripcion_casa="Casa dos plantas Amarilla" data-cliente_habita="1" data-direccion="Contiguo a la maxidespensa" data-foto="foto_ubicacion_1.jpg" data-pais="102" data-departamento="15" data-municipio="227" data-coordenadas="{&quot;lat&quot;: 14.583583455156525, &quot;lng&quot;: -88.54980468750001}" data-fecha_cobro="2024-04-22" data-activo="1" data-casa_propia="1" id="btn_subir_foto" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 foto mb-2 mr-1 foto"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="camera" data-lucide="camera" class="lucide lucide-camera stroke-1.5 h-4 w-4"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg></button>
+                                */
                                 var objetoUbicacion = JSON.parse(row.coordenadas); 
                                 var nuevoFila = [
-                                    row.id, row.cliente,row.descripcion_casa,cliente_habita_icono ,row.direccion, row.foto, row.ubicacion,
+                                    row.id, row.cliente,row.descripcion_casa,cliente_habita_icono ,row.direccion, '<div class="image-fit relative h-20 w-20 flex-none sm:h-24 sm:w-24 lg:h-32 lg:w-32">'+
+                                        '<img data-action="zoom" src="http://junta_agua.test/img/ubicaciones/'+row.foto+'" '+
+                                        'onerror="this.src=\'http://junta_agua.test/img/ubicaciones/default.jpg\'" '+
+                                        'alt="Midone Tailwind HTML Admin Template" class="rounded-full" style="">'+
+                                    '</div>', 
+                                    row.ubicacion,
                                     row.fecha_cobro, activo_icono , casa_propia_icono, 
                                     '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"'+
                                         'data-id="'+row.id+'"'+ 
@@ -858,7 +946,9 @@
                                         'data-cliente="'+row.id_cliente+'"'+
                                         'data-municipio="'+row.id_municipio+'"'+
                                         'data-activo="'+row.activo+'"'+
-                                    '><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'
+                                    '><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+
+
+                                    '<button data-id="' + row.id + '" data-cliente="' + row.id_cliente + '" data-descripcion_casa="' + row.descripcion_casa + '" data-cliente_habita="' + row.cliente_habita + '" data-direccion="' + row.direccion + '" data-foto="' + row.foto + '" data-pais="' + row.id_pais + '" data-departamento="' + row.id_departamento + '" data-municipio="' + row.id_municipio + '" data-coordenadas="' + JSON.stringify({lat: objetoUbicacion.lat, lng: objetoUbicacion.lng}) + '" data-fecha_cobro="' + row.fecha_cobro + '" data-activo="' + row.activo + '" data-casa_propia="' + row.casa_propia + '" id="btn_subir_foto" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 foto mb-2 mr-1 foto"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="camera" data-lucide="camera" class="lucide lucide-camera stroke-1.5 h-4 w-4"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg></button>'
                                 ]; 
                             }
                             if (accion == 1) { 
