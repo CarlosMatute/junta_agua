@@ -38,7 +38,8 @@ class ContratoController extends Controller
             tc.fecha_fin,
             tc.created_at,
             tc.updated_at,
-            tc.deleted_at
+            tc.deleted_at,
+            to_char(tc.monto,'LFM999,999,999.00') monto
         FROM public.tbl_contrato tc
         JOIN tbl_clientes c on tc.id_cliente = c.id
         JOIN tbl_ubicacion tu on tc.id_ubicacion = tu.id
@@ -99,12 +100,14 @@ class ContratoController extends Controller
             'id_servicio' => 'required|integer',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+            'monto' => 'required|numeric',
         ], [], [
             'id_cliente' => 'cliente',
             'id_ubicacion' => 'ubicación',
             'id_servicio' => 'servicio',
             'fecha_inicio' => 'fecha de inicio',
             'fecha_fin' => 'fecha de fin',
+            'monto' => 'monto',
         ]);
 
         //declarar variables
@@ -118,14 +121,15 @@ class ContratoController extends Controller
         $id_servicio = $request->id_servicio;
         $fecha_inicio = $request->fecha_inicio;
         $fecha_fin = $request->fecha_fin;
+        $monto = $request->monto;
         //dd($request);
         try{
             $saveContrato = collect(\DB::SELECT("
             INSERT INTO public.tbl_contrato(
-                id_cliente, id_ubicacion, id_servicio, fecha_inicio, fecha_fin, created_at, updated_at)
-            VALUES (:id_cliente, :id_ubicacion, :id_servicio, :fecha_inicio, :fecha_fin, now(), now())
+                id_cliente, id_ubicacion, id_servicio, fecha_inicio, fecha_fin, created_at, updated_at, monto)
+            VALUES (:id_cliente, :id_ubicacion, :id_servicio, :fecha_inicio, :fecha_fin, now(), now(), :monto)
             returning id;
-            ",["id_cliente"=>$id_cliente, "id_ubicacion"=>$id_ubicacion, "id_servicio"=>$id_servicio, "fecha_inicio"=>$fecha_inicio, "fecha_fin"=>$fecha_fin]))->first();
+            ",["id_cliente"=>$id_cliente, "id_ubicacion"=>$id_ubicacion, "id_servicio"=>$id_servicio, "fecha_inicio"=>$fecha_inicio, "fecha_fin"=>$fecha_fin, "monto"=>$monto]))->first();
 
             $id = $saveContrato->id;
             $msgSuccess = "¡Excelente!, El contrato N° ".$id." ha sido creado correctamente.";
@@ -156,7 +160,8 @@ class ContratoController extends Controller
             tu.descripcion_casa,
             tc.id_servicio,
             tc.fecha_inicio::date,
-            tc.fecha_fin::date
+            tc.fecha_fin::date,
+            tc.monto
         FROM public.tbl_contrato tc
         JOIN tbl_clientes c on tc.id_cliente = c.id
         JOIN tbl_ubicacion tu on tc.id_ubicacion = tu.id
@@ -211,13 +216,16 @@ class ContratoController extends Controller
             'id_servicio' => 'required|integer',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
+            'monto' => 'required|numeric',
         ], [], [
             'id_cliente' => 'cliente',
             'id_ubicacion' => 'ubicación',
             'id_servicio' => 'servicio',
             'fecha_inicio' => 'fecha de inicio',
             'fecha_fin' => 'fecha de fin',
+            'monto' => 'monto',
         ]);
+
         //declarar variables
         $msgError = null;
         $msgSuccess = null;
@@ -229,6 +237,7 @@ class ContratoController extends Controller
         $id_servicio = $request->id_servicio;
         $fecha_inicio = $request->fecha_inicio;
         $fecha_fin = $request->fecha_fin;
+        $monto = $request->monto;
         //dd($request);
         try{
             $editContrato = DB::SELECT("
@@ -239,10 +248,11 @@ class ContratoController extends Controller
                     id_servicio=:id_servicio,
                     fecha_inicio=:fecha_inicio,
                     fecha_fin=:fecha_fin,
-                    updated_at=now()
+                    updated_at=now(),
+                    monto =:monto
             WHERE
                 id=:id_contrato;
-            ",["id_contrato"=>$id,"id_cliente"=>$id_cliente, "id_ubicacion"=>$id_ubicacion, "id_servicio"=>$id_servicio, "fecha_inicio"=>$fecha_inicio, "fecha_fin"=>$fecha_fin]);
+            ",["id_contrato"=>$id,"id_cliente"=>$id_cliente, "id_ubicacion"=>$id_ubicacion, "id_servicio"=>$id_servicio, "fecha_inicio"=>$fecha_inicio, "fecha_fin"=>$fecha_fin, "monto"=>$monto]);
 
 
             $msgSuccess = "¡Excelente!, El contrato N° ".$id." ha sido actualizado correctamente.";

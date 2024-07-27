@@ -76,6 +76,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Servicio</th>
+                    <th>Monto</th>
                     <th>Nombre Cliente</th>
                     <th>Descripcion Casa</th>
                     <th>Fecha inicio</th>
@@ -90,6 +91,7 @@
                 <tr>    
                     <td>{{$item->id}}</td>
                     <td>{{$item->servicio}}</td>
+                    <td>{{$item->monto}}</td>
                     <td>{{$item->nombre_cliente}}</td>
                     <td>{{$item->descripcion_casa}}</td>
                     <td>{{$item->fecha_inicio}}</td>

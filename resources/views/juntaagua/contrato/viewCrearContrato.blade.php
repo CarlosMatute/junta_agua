@@ -59,7 +59,7 @@
     <form action="{{ route('guardar_contrato') }}" method="POST">
         @csrf
         <div class="grid grid-cols-2 gap-x-4">
-            <div class="mb-4 col-span-2">
+            <div class="mb-4">
                 <label for="id_cliente" class="block text-gray-700">Cliente</label>
                 <select id="id_cliente" name="id_cliente" class="w-full p-2 border {{ $errors->has('id_cliente') ? 'border-red-500' : 'border-gray-300' }} rounded mt-1">
                     <option value="" selected>Seleccione un cliente</option>
@@ -68,6 +68,13 @@
                     @endforeach
                 </select>
                 @error('id_cliente')
+                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label for="monto" class="block text-gray-700">Monto</label>
+                <input type="number" id="monto" name="monto" class="w-full p-2 border {{ $errors->has('monto') ? 'border-red-500' : 'border-gray-300' }} rounded mt-1" value="{{ old('monto') }}">
+                @error('monto')
                     <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                 @enderror
             </div>
@@ -108,6 +115,7 @@
                     <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                 @enderror
             </div>
+            
         </div>
         <button type="submit" class="w-full bg-primary text-white p-2 rounded mt-4">Enviar</button>
     </form>
