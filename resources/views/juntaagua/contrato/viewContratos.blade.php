@@ -107,16 +107,13 @@
                             />
                         </a>
 
-                        <!-- Formulario para Eliminar -->
-                        <form action="{{ route('eliminar_contrato', $item->id) }}" method="GET" class="inline-block">
-                            @csrf
-                            <button type="submit" class="bg-danger hover:bg-red-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
-                                <x-base.lucide
-                                    class="h-4 w-4"
-                                    icon="Trash"
-                                />
-                            </button>
-                        </form>
+                        <!-- Botón Eliminar -->
+                        <button type="button" class="bg-danger hover:bg-red-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center btn-eliminar" data-id="{{ $item->id }}">
+                            <x-base.lucide
+                                class="h-4 w-4"
+                                icon="Trash"
+                            />
+                        </button>
                         
                         <a href="{{url('/movimientos/'.$item->id)}}" class="bg-warning hover:bg-green-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
                             <x-base.lucide
@@ -124,8 +121,6 @@
                                 icon="DollarSign"
                             />
                         </a>
-                        
-                        
                     </td>
                 </tr>
                 @endforeach
@@ -133,7 +128,31 @@
         </table>
     </div>
 </div>
+
+<!-- Modal para confirmar eliminación -->
+<x-base.dialog id="modal_eliminar">
+    <x-base.dialog.panel>
+        <div class="p-5 text-center">
+            <x-base.lucide class="mx-auto mt-3 h-16 w-16 text-danger" icon="XCircle" />
+            <div class="mt-5 text-3xl">¡Advertencia!</div>
+            <div class="mt-2 text-slate-500">
+                ¿Realmente desea eliminar este registro?<br />
+                <div id="id_registro"></div>
+            </div>
+        </div>
+        <div class="px-5 pb-8 text-center">
+            <x-base.button class="mr-1 w-24" data-tw-dismiss="modal" type="button" variant="outline-secondary">
+                Cancelar
+            </x-base.button>
+            <x-base.button class="w-24" type="button" variant="danger" id="btn_eliminar_confirmar">
+                Eliminar
+            </x-base.button>
+        </div>
+    </x-base.dialog.panel>
+</x-base.dialog>
+
 @endsection
+
 @once
     @push('scripts')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -148,35 +167,57 @@
             console.log('Loading');
             table = $('#tablaContrato').DataTable({
                 language: {
-                            "decimal": ",",
-                            "thousands": ".",
-                            "lengthMenu": "Mostrar _MENU_ registros",
-                            "zeroRecords": "No se encontraron resultados",
-                            "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                            "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                            "sSearch": "Buscar:",
-                            "oPaginate": {
-                                "sFirst": "Primero",
-                                "sLast":"Último",
-                                "sNext":"Siguiente",
-                                "sPrevious": "Anterior"
-                            },
+                    "decimal": ",",
+                    "thousands": ".",
+                    "lengthMenu": "Mostrar _MENU_ registros",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sSearch": "Buscar:",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast":"Último",
+                        "sNext":"Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "sProcessing":"Cargando..."
+                },
+                "processing": true,
+                serverSide: false,
+            });
 
-                            "oAria": {
-                                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                            },
+             // Manejar clic en botón eliminar
+            $('.btn-eliminar').on('click', function() {
+                var id = $(this).data('id');
+                const el = document.querySelector("#modal_eliminar");
+                const modal = tailwind.Modal.getOrCreateInstance(el);
+                $('#btn_eliminar_confirmar').data('id', id);
+                modal.show();
+            });
 
-                            "sProcessing":"Cargando..."
-                        },
-                        "processing": true,
-                        serverSide: false,
+            // Confirmar eliminación
+            $('#btn_eliminar_confirmar').on('click', function() {
+                var id = $(this).data('id');
+                var form = $('<form>', {
+                    'method': 'GET',
+                    'action': '{{ url("/")}}/contrato/eliminar/' + id
+                });
+                form.appendTo('body');
+                form.submit();
+            });
+
+            // Cerrar modal al cancelar
+            $('[data-modal-hide="modal_eliminar"]').on('click', function() {
+                const el = document.querySelector("#modal_eliminar");
+                const modal = Modal.getOrCreateInstance(el);
+                modal.hide();
             });
         });
     </script>
-
-
-
     @endpush
 @endonce
