@@ -346,6 +346,7 @@ class ContratoController extends Controller
     $resultado=null;
     $id_cobrador= Auth::user()->id;
     $id_haber = 2;
+    $msgAlert=null;
     if($id==null && $accion==2){
         $accion=1;
     }
@@ -422,16 +423,16 @@ class ContratoController extends Controller
             $msgSuccess="Registro de pago creado: ".$id;
             
         }else if ($accion == 5){
-            $sql_tbl_movimientos = collect(db::select("select cast(s.resultado as bool ) from public.f_registro_cobro_cliente_mes( :id_contrato ) as s(resultado)",[
+            $sql_tbl_movimientos = collect(db::select("select cast(s.resultado as bool ), s.id_movimiento from public.f_registro_cobro_cliente_mes( :id_contrato ) as s(resultado)",[
                 'id_contrato'=>$id_contrato
             ]))->first();
             
             $resultado = isset($sql_tbl_movimientos->resultado) ? $sql_tbl_movimientos->resultado : null;
-            
+            $id = $sql_tbl_movimientos->id_movimiento;
             if($resultado){
                 $msgSuccess="Registro de cobro creado: ".$sql_tbl_movimientos->id_movimiento;
             }else{
-                $msgError="No se encontraron registros de cobro a crear";
+                $msgAlert="No se encontraron registros de cobro a crear";
             }
                         
         }else{
@@ -459,7 +460,7 @@ class ContratoController extends Controller
     }catch (Exception $e){
         $msgError=$e->getMessage();
     }    
-   return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError, "tbl_movimientos_list"=>$tbl_movimientos_list]);
+   return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError,"msgAlert" => $msgAlert, "tbl_movimientos_list"=>$tbl_movimientos_list]);
    }
 
 
