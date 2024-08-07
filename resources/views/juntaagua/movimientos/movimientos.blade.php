@@ -475,16 +475,18 @@ function guardar_tbl_movimientos(){
             }else if(accion==4){
                 $("#modal_pago_tbl_movimientos").show();
             }else if(accion==5){
-            
+                
             }
             mensage({"msgError":data.msgError});
-	}else{
+	}else if(data.msgAlert!=null){
+            mensage({"msgAlert":data.msgAlert});
+        }else{
 		//$("#modal_tbl_tbl_movimientos").hide();
 		for(var i = 0; i < data.tbl_movimientos_list.length; i++) {
 		var row= data.tbl_movimientos_list[i];
 		var nuevaFilaDT=[
                 row.id,row.fecha_hora,row.concepto,row.debe,row.haber,row.tipo_movimiento
-                 ,'<button data-tw-toggle="modal" data-tw-target="#modal_tbl_tbl_movimientos" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1"'+ 
+                 ,'<button '+ ' ' + ( row.id_tipo_movimiento==1 ? 'style="display:none;"' : 'style="display:;"' ) +' data-tw-toggle="modal" data-tw-target="#modal_tbl_tbl_movimientos" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1"'+ 
                  'data-id="'+row.id+'" '+ 
                  'data-fecha_hora="'+row.fecha_hora+'" '+ 
                  'data-concepto="'+row.concepto+'" '+ 
@@ -524,7 +526,7 @@ function guardar_tbl_movimientos(){
             $("#modal_pago_tbl_movimientos").hide();           
             table.row.add(nuevaFilaDT).draw();
         }else if(accion==5){
-            table.row(rowNumber).data(nuevaFilaDT);
+            table.row.add(nuevaFilaDT).draw();
         }                
         
         mensage({"msgExito":data.msgSuccess});
@@ -552,7 +554,12 @@ error: function (xhr, status, error) {
 			typeMsg = "danger";
 			type = "#danger-notification-content";
 
-		}else{
+		}else if(data.msgAlert!=null){
+                        titleMsg="Adevertencia";;
+			textMsg=data.msgAlert;
+			typeMsg = "danger";
+			type = "#danger-notification-content";
+                }else{
 			
 			titleMsg="Datos Guardados";
 			textMsg=data.msgExito;
