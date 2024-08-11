@@ -118,7 +118,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get("/per-empleado",[EmpleadosController::class, "ver_per_empleado"])->name('per-empleado');
         Route::post("/per-empleado/guardar",[EmpleadosController::class, "guardar_per_empleado"]);
-        Route::get("/empleado/permisos/{idEmpleado}",[EmpleadosController::class, "ver_tbl_movimientos"]);
+        Route::get("/empleado/permisos/{idEmpleado}",[EmpleadosController::class, "ver_seg_usuario_permisos"]);
+        Route::post("/empleado/permisos/guardar",[EmpleadosController::class, "guardar_seg_usuario_permisos"]);
         //Modulo Contrato
         Route::get('/contrato',[ContratoController::class,'index'])->name('ver_contrato');
         Route::get('/contrato/crear',[ContratoController::class,'crear'])->name('crear_contrato');

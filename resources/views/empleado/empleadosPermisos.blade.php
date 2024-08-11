@@ -159,7 +159,7 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_s
 	var accion=null;
 	var id=null;
 	var permiso=null;
-	var url_guardar_seg_usuario_permisos= "{{url('/empleado/permisos/{idEmpleado}')}}/guardar";
+	var url_guardar_seg_usuario_permisos= "{{url('/empleado/permisos/guardar')}}";
 	var table=null;
 	var rowNumber=null;
         var uri= "{{url('')}}";
