@@ -234,11 +234,11 @@ class EmpleadosController extends Controller
                join public.seg_permisos sp on sp.id = sup.permiso 
                join per_empleado pe on pe.id_usuario = u.id
                where sup.deleted_at is null
-               and pe.id = :id_empleado
+               and sup.id_usuario = :id_empleado
                order by 1 desc
            ) x where id=:id
            ",[
-           "id"=>$id
+           "id"=>$id, , 'id_empleado'=>$id_empleado
            ]);
         }
         }catch (Exception $e){
