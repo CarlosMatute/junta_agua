@@ -157,4 +157,95 @@ class EmpleadosController extends Controller
        return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError, "per_empleado_list"=>$per_empleado_list]);
        }
        
+     public function ver_seg_usuario_permisos( $idEmpleado ) {
+        $permisos_list = DB::select("select id, nombre from public.seg_permisos where deleted_at is null");
+        $seg_usuario_permisos_list = DB::select("
+        select sup.id, sup.id_usuario, u.name, sup.permiso, sp.nombre as permiso_otorgado
+        from public.seg_usuario_permisos sup 
+        join public.users u on u.id = sup.id_usuario 
+        join public.seg_permisos sp on sp.id = sup.permiso 
+        join per_empleado pe on pe.id_usuario = u.id
+        where sup.deleted_at is null
+        and sup.id_usuario = :id_empleado
+        order by 1 desc
+        ", ['id_empleado'=>$idEmpleado]
+        );
+        
+       return view("empleado.empleadosPermisos")
+                ->with("seg_usuario_permisos_list", $seg_usuario_permisos_list)
+                ->with("permisos_list", $permisos_list)
+                ->with("id_empleado", $idEmpleado)
+       ;
+   }
+
+    public function guardar_seg_usuario_permisos(Request $request) {
+        $id=$request->id;
+        $permiso=$request->permiso;
+        $id_empleado=$request->id_empleado;
+        $msgError=null;
+        $msgSuccess=null;
+        $accion=$request->accion;
+        $seg_usuario_permisos_list=null;
+        
+        if($id==null && $accion==2){
+            $accion=1;
+        }
+        
+        try{ 
+
+        if($accion==1){
+            $sql_seg_usuario_permisos = DB::select("insert INTO public.seg_usuario_permisos (permiso, created_at, id_usuario) 
+                values (:permiso, now(), :id_usuario )
+            RETURNING  id
+            ", ['permiso'=>$permiso, 'id_usuario'=>$id_empleado]
+            );
+            
+            foreach($sql_seg_usuario_permisos as $r){
+                $id=$r->id;
+            }
+            
+            $msgSuccess="Registro creado con el código: ".$id;
+            
+        }else if($accion==2){
+            $sql_seg_usuario_permisos = DB::select("update public.seg_usuario_permisos set  updated_at = now(),permiso=:permiso where id=:id
+            "
+            , ['id'=>$id,'permiso'=>$permiso]
+            );
+            
+            $msgSuccess="Registro ".$id." actualizado";
+
+        }else if($accion==3){
+
+            $sql_seg_usuario_permisos = DB::select("update public.seg_usuario_permisos set deleted_at=now() where id=:id"
+            , ['id'=>$id]
+            );
+            
+            $msgSuccess="Registro ".$id." eliminado";
+
+        }else{
+            $msgError="Accion invalida";
+        }
+        
+        if($msgError==null){
+            $seg_usuario_permisos_list = DB::select("select * from (
+               select sup.id, sup.id_usuario, u.name, sup.permiso, sp.nombre as permiso_otorgado
+               from public.seg_usuario_permisos sup 
+               join public.users u on u.id = sup.id_usuario 
+               join public.seg_permisos sp on sp.id = sup.permiso 
+               join per_empleado pe on pe.id_usuario = u.id
+               where sup.deleted_at is null
+               and pe.id = :id_empleado
+               order by 1 desc
+           ) x where id=:id
+           ",[
+           "id"=>$id
+           ]);
+        }
+        }catch (Exception $e){
+            $msgError=$e->getMessage();
+        }
+        return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError, "seg_usuario_permisos_list"=>$seg_usuario_permisos_list]);
+    }
+  
+       
 }

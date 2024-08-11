@@ -106,6 +106,13 @@ data-domicilio="{{$row->domicilio}}"
 data-correo="{{$row->correo}}"
 data-pais="{{$row->pais}}"
 title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_per_empleado"><x-base.lucide class="h-4 w-4" icon="Trash"/></x-base.button>
+&nbsp&nbsp&nbsp
+<a href="{{url('/empleado/permisos/'.$row->id_usuario)}}" class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
+    <x-base.lucide
+        class="h-4 w-4"
+        icon="FileText"
+    />
+</a>
 </td>
 </tr>
 @endforeach
@@ -477,6 +484,7 @@ row.id,row.primer_nombre,row.segundo_nombre,row.primer_apellido,row.segundo_apel
  'data-correo="'+row.correo+'" '+ 
  'data-pais="'+row.pais+'" '+ 
  'title="Eliminar" variant="danger" size="sm" id="btn_eliminar_per_empleado" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+ 
+ '<a href="'+ uri +'/empleado/permisos/'+row.id_usuario+'"  class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="file-text" data-lucide="file-text" class="lucide lucide-file-text stroke-1.5 mx-auto block"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg></a>'+ 
 ''
 ];
 if(accion==1) {
