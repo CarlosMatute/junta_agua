@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Main;
+use Auth;
+use Session;
+use DB;
 
 class SideMenu
 {
@@ -9,30 +12,82 @@ class SideMenu
      */
     public static function menu(): array
     {
+        $dashboard = 'false';
+        $empleados = 'false';
+        $servicios = 'false';
+        $clientes = 'false';
+        $ubicaciones = 'false';
+        $contratos = 'false';                        
+        
+        $username = isset(Auth::user()->username) ? Auth::user()->username : null;
+        
+        $user_permisos = DB::select('select p.nombre permiso, 
+        case when up.deleted_at is null then true else false end estado_permiso,
+        case when pe.deleted_at is not null then true else false end estado_empleado        
+        from users u 
+        join seg_usuario_permisos up on u.id = up.id_usuario
+        join seg_permisos p on up.permiso = p.id
+        join per_empleado pe on pe.id_usuario = u.id
+        where lower( u.username ) = lower( :username )
+            ', [
+            'username'=>$username
+        ]);
+        
+        foreach ($user_permisos as $up) {
+            
+            if( $up->estado_permiso && $up->permiso == 'menu_dashboard' ){
+                $dashboard = 'true';
+            }
+            if( $up->estado_permiso && $up->permiso == 'menu_empleados' ){
+                $empleados = 'true';
+            }
+            if( $up->estado_permiso && $up->permiso == 'menu_servicios' ){
+                $servicios = 'true';
+            }
+            if( $up->estado_permiso && $up->permiso == 'menu_clientes' ){
+                $clientes = 'true';
+            }
+            if( $up->estado_permiso && $up->permiso == 'menu_ubicaciones' ){
+                $ubicaciones = 'true';
+            }
+            if( $up->estado_permiso && $up->permiso == 'menu_contratos' ){
+                $contratos = 'true';
+            }
+            
+                                
+        }
+        
+        
+        
+        
         return [
+            
             'dashboard-overview-1' => [
                 'icon' => 'home',
                 'route_name' => 'dashboard-overview-1',
                 'params' => [
                     'layout' => 'side-menu'
                 ],
-                'title' => 'Dashboard'
-            ],
+                'title' => 'Dashboard',
+                'permiso' => $dashboard
+            ],                        
             'Empleados' => [
                 'icon' => 'UserCheck',
                 'route_name' => 'per-empleado',
                 'params' => [
                     'layout' => 'side-menu'
                 ],
-                'title' => 'Empleados'
-            ],
+                'title' => 'Empleados',
+               'permiso' => $empleados            
+            ],                        
             'Servicios' => [
                 'icon' => 'Briefcase',
                 'route_name' => 'servicio',
                 'params' => [
                     'layout' => 'side-menu'
                 ],
-                'title' => 'Servicios'
+                'title' => 'Servicios',
+                'permiso' => $servicios
             ],
             'Clientes' => [
                 'icon' => 'users',
@@ -40,7 +95,8 @@ class SideMenu
                 'params' => [
                     'layout' => 'side-menu'
                 ],
-                'title' => 'Clientes'
+                'title' => 'Clientes',
+                'permiso' => $clientes
             ],
             'Ubicaciones' => [
                 'icon' => 'home',
@@ -48,7 +104,8 @@ class SideMenu
                 'params' => [
                     'layout' => 'side-menu'
                 ],
-                'title' => 'Ubicaciones'
+                'title' => 'Ubicaciones',
+                'permiso' => $ubicaciones
             ],
             'Contratos' => [
                 'icon' => 'FileText',
@@ -56,7 +113,8 @@ class SideMenu
                 'params' => [
                     'layout' => 'side-menu'
                 ],
-                'title' => 'Contratos'
+                'title' => 'Contratos',
+                'permiso' => $contratos
             ],
             // 'dashboard' => [
             //     'icon' => 'home',

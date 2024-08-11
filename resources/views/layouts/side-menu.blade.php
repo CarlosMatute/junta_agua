@@ -35,6 +35,7 @@
                                 (array_search($menuKey, array_keys($sideMenu)) + 1) * 10,
                             ])></li>
                         @else
+                        @if ($menu['permiso'] == 'true')
                             <li>
                                 <a
                                     href="{{ isset($menu['route_name']) ? route($menu['route_name'], $menu['params']) : 'javascript:;' }}"
@@ -123,6 +124,7 @@
                                     </ul>
                                 @endif
                             </li>
+                        @endif
                         @endif
                     @endforeach
                 </ul>
