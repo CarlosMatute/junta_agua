@@ -69,7 +69,7 @@ class ReportesController extends Controller
     public function factura_junta_agua($idMovimiento){
 
         $input = $this->INPUT_RPT_PATH.$this->RPT_FACTURA_JUNTA_AGUA.'.jrxml';
-        //dd($input);
+        dd($input);
         $inputCompile = $this->INPUT_RPT_PATH.$this->RPT_FACTURA_JUNTA_AGUA.'.jasper';
         $output = $this->OUTPUT_RPT_PATH.$this->RPT_FACTURA_JUNTA_AGUA;
 

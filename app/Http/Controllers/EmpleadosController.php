@@ -238,7 +238,7 @@ class EmpleadosController extends Controller
                order by 1 desc
            ) x where id=:id
            ",[
-           "id"=>$id, , 'id_empleado'=>$id_empleado
+           "id"=>$id, 'id_empleado'=>$id_empleado
            ]);
         }
         }catch (Exception $e){
