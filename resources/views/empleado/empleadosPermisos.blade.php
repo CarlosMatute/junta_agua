@@ -63,12 +63,12 @@
 <x-base.button class="btn btn-primary" data-tw-toggle="modal" data-tw-target="#modal_tbl_seg_usuario_permisos"
 data-id="{{$row->id}}"
 data-permiso="{{$row->permiso}}"
-data-permisos="{{$row->permisos}}"
+data-permisos="{{$row->permiso_otorgado}}"
 title="Editar" class="mb-2 mr-1" variant="primary" size="sm" id="btn_editar_seg_usuario_permisos"><x-base.lucide class="h-4 w-4" icon="Edit"/></x-base.button>
 &nbsp&nbsp&nbsp<x-base.button class="btn btn-danger" data-tw-toggle="modal" data-tw-target="#modal_eliminar_seg_usuario_permisos"
 data-id="{{$row->id}}"
 data-permiso="{{$row->permiso}}"
-data-permisos="{{$row->permisos}}"
+data-permisos="{{$row->permiso_otorgado}}"
 title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_seg_usuario_permisos"><x-base.lucide class="h-4 w-4" icon="Trash"/></x-base.button>
 </td>
 </tr>
