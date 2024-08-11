@@ -18,8 +18,8 @@ class ReportesController extends Controller
         $this->RPT_HELLO_WORD='hello_world';
         $this->RPT_FACTURA_JUNTA_AGUA='factura_junta_agua';
         $this->INPUT_RPT_PATH=app_path().'/Documentos/Reportes/';
-        //$this->OUTPUT_RPT_PATH=public_path().'/documentos/reportes/';
-        $this->OUTPUT_RPT_PATH='/home/tdmxafft/public_html/documentos/reportes/';
+        $this->OUTPUT_RPT_PATH=public_path().'/documentos/reportes/';
+        //$this->OUTPUT_RPT_PATH='/home/tdmxafft/public_html/documentos/reportes/';
         $this->dbConnection= [
                 'driver' => 'postgres', //env('DB_CONNECTION') //mysql, ....
                 'username' => env('DB_USERNAME'),
