@@ -3,22 +3,6 @@
 	<title>Permisos</title>
 @endsection
 @section("subcontent")
-
-<!-- BEGIN: Profile Info -->
-<div class="intro-y box mt-5 px-5 pt-5">
-    <div class="-mx-5 flex flex-col border-b border-slate-200/60 pb-5 dark:border-darkmode-400 lg:flex-row">
-        <div class="flex flex-1 items-center justify-center px-5 lg:justify-start">
-            <x-base.lucide class="h-40 w-40" icon="file"/>
-            <div class="ml-5">
-                <div class="w-240 truncate text-lg font-medium sm:w-80 sm:whitespace-normal">                        
-                    <h1 class="text-5xl font-medium leading-none"></h1>
-                </div>
-                <div class="text-slate-500"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- END: Profile Info -->
 <!-- BEGIN: Profile Info -->
 <div class="intro-y box mt-5 px-5 pt-5">
     <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
@@ -47,7 +31,7 @@
     </div>    
 </div>
 <!-- END: Profile Info -->
-
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
 
 <!-- BEGIN: Profile body -->
 <div class="intro-y box mt-5 p-5">
@@ -68,7 +52,7 @@
                     id="btn_nuevo_seg_usuario_permisos"
                     data-tw-toggle="modal" data-tw-target="#modal_tbl_seg_usuario_permisos"
                 ><i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
-                        Registrar Nuevo Empleados
+                        Registrar Nuevo Permiso
                 </x-base.button>                                               
             </div>
         </div>
