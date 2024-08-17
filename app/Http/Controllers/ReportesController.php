@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PHPJasper\PHPJasper; 
+use DB;
+use Session;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class ReportesController extends Controller
 {
@@ -66,7 +70,7 @@ class ReportesController extends Controller
         
     }
     
-    public function factura_junta_agua($idMovimiento){
+    public function factura_junta_agua_old($idMovimiento){
 
         $input = $this->INPUT_RPT_PATH.$this->RPT_FACTURA_JUNTA_AGUA.'.jrxml';
         //dd($input);
@@ -96,4 +100,47 @@ class ReportesController extends Controller
         return view('reportes.generico')->with('reportName',$output.'.pdf');
         
     }
+    
+    public function factura_junta_agua(Request $request) {
+    $id=$request->id;    
+    $id_movimiento=$request->id_movimiento;
+    $msgError=null;
+    $msgSuccess=null;
+    $accion=$request->accion;
+    $tbl_movimientos_list=null;
+    $resultado=null;
+    $msgAlert=null;
+
+    try{ 
+
+        $tbl_movimientos_list=DB::select("select
+            ts.descripcion as servicio,
+            to_char( now() , 'YYYY-MM-DD HH:MM:SS' ) as fecha_hora_genera,
+            coalesce(tc1.primer_nombre,'')||' '||coalesce(tc1.segundo_nombre,'')||' '||coalesce(tc1.primer_apellido,'')||' '||coalesce(tc1.segundo_apellido,'') as cliente,
+            tu.descripcion_casa as contrato, 
+            tts.nombre as concepto_pago_servicio,
+            tm.concepto as pago_servicio,
+            tm.haber as monto_pago,
+            to_char( tm.fecha_hora , 'YYYY-MM-DD HH:MM:SS' ) as fecha_hora_pago,
+            u.name as cobrador,
+            cast(tm.id_contrato as text ) as id_contrato 
+            from
+            public.tbl_movimientos tm
+            join public.tbl_contrato tc on tc.id_cliente = tm.id_cliente and tc.id = tm.id_contrato
+            join public.tbl_clientes tc1 on tc1.id = tc.id_cliente
+            join public.tbl_servicio ts on ts.id = tc.id_servicio
+            join public.tbl_ubicacion tu on tu.id = tc.id_ubicacion
+            join public.tbl_tipo_servicio tts on tts.id = ts.id_tipo
+            join users u on u.id = tm.id_cobrador 
+            where
+            tc.deleted_at is null
+            and tm.id = :id_movimiento",[
+            "id_movimiento"=>$id_movimiento
+        ]);
+    
+    }catch (Exception $e){
+        $msgError=$e->getMessage();
+    }    
+   return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError,"msgAlert" => $msgAlert, "tbl_movimientos_list"=>$tbl_movimientos_list]);
+   }
 }

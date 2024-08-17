@@ -31,7 +31,7 @@
     </div>    
 </div>
 <!-- END: Profile Info -->
-<script src="https://cdn.lordicon.com/lordicon.js"></script>
+
 
 <!-- BEGIN: Profile body -->
 <div class="intro-y box mt-5 p-5">
@@ -118,7 +118,7 @@ data-tipo_movimiento="{{$row->tipo_movimiento}}"
 title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_tbl_movimientos"><x-base.lucide class="h-4 w-4" icon="Trash"/></x-base.button>
 &nbsp&nbsp&nbsp
 @if( $row->id_tipo_movimiento == 2)
-<a href="{{url('/movimientos/'.$row->id.'/pago/factura')}}" class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
+<a id="btn_factura_tbl_movimientos" data-id_movimiento="{{$row->id}}" class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
     <x-base.lucide
         class="h-4 w-4"
         icon="FileText"
@@ -243,12 +243,14 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 
 @endsection
 @once
-	@push('scripts')
-                        @vite(['resources/css/app.css', 'resources/js/app.js'])
-		        @vite('resources/js/pages/modal/index.js')
-		        @vite('resources/js/vendor/toastify/index.js')
-		        @vite('resources/js/pages/notification/index.js')
-  
+    @push('scripts')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite('resources/js/pages/modal/index.js')
+    @vite('resources/js/vendor/toastify/index.js')
+    @vite('resources/js/pages/notification/index.js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/pdfmake.min.js" integrity="sha512-axXaF5grZBaYl7qiM6OMHgsgVXdSLxqq0w7F4CQxuFyrcPmn0JfnqsOtYHUun80g6mRRdvJDrTCyL8LQqBOt/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/vfs_fonts.js" integrity="sha512-nNkHPz+lD0Wf0eFGO0ZDxr+lWiFalFutgVeGkPdVgrG4eXDYUnhfEj9Zmg1QkrJFLC0tGs8ZExyU/1mjs4j93w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
 <script type="module">
 	var accion=null;
 	var id=null;
@@ -258,10 +260,12 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 	var haber=null;
 	var id_tipo_movimiento=null;
 	var url_guardar_tbl_movimientos= "{{url('/movimientos')}}/guardar";
+	var url_generar_factura= "{{url('/movimientos/factura')}}";
 	var uri= "{{url('')}}";
 	var table=null;
 	var rowNumber=null;
         var id_contrato = {{$id_contrato}};
+        var id_movimiento = null;
 	
 			var titleMsg = null;
             var textMsg = null;
@@ -353,6 +357,12 @@ $("#tbl_tbl_movimientos").on("click", "#btn_editar_tbl_movimientos", function (e
         //acceder al objeto hijo por medio del objeto padre $( "#id_tipo_movimiento-ts-control > input" ).val( "borderasdfasdfatrestset" );
 });
   
+$("#tbl_tbl_movimientos").on("click", "#btn_factura_tbl_movimientos", function (e) {
+    id_movimiento=$( this ).data("id_movimiento");
+    console.log(id_movimiento)
+    generarFactura();
+});
+
 $("#tbl_tbl_movimientos").on("click", "#btn_eliminar_tbl_movimientos", function (e) {
     $("#modal_eliminar_tbl_movimientos").show();
     id=$( this ).data("id");    
@@ -505,7 +515,7 @@ function guardar_tbl_movimientos(){
                  'data-tipo_movimiento="'+row.tipo_movimiento+'" '+ 
                  'title="Eliminar" variant="danger" size="sm" id="btn_eliminar_tbl_movimientos" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+                                   
                  
-                 '<a href="'+ uri +'/movimientos/'+row.id+'/pago/factura" '+ ' ' + ( row.id_tipo_movimiento==2 ? 'style="display:;"' : 'style="display:none;"' ) +' '+ ' ' +' class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="file-text" data-lucide="file-text" class="lucide lucide-file-text stroke-1.5 mx-auto block"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg></a>'+ 
+                 '<a id="btn_factura_tbl_movimientos" data-id_movimiento="'+row.id+'" '+ ' ' + ( row.id_tipo_movimiento==2 ? 'style="display:;"' : 'style="display:none;"' ) +' '+ ' ' +' class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="file-text" data-lucide="file-text" class="lucide lucide-file-text stroke-1.5 mx-auto block"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg></a>'+ 
                                                  
             ''
                 ];
@@ -539,6 +549,80 @@ error: function (xhr, status, error) {
 	alert(xhr.responseText);
 }
 });
+}
+
+function generarFactura(){
+
+$.ajax({
+    type: "post",
+    url:url_generar_factura,
+    data: {
+     "id_movimiento": id_movimiento,
+    },
+    success: function (data) {
+    if(data.msgError!=null){
+    titleMsg="Error al Guardar";
+    textMsg=data.msgError;
+    typeMsg="error";
+
+
+    }else{
+
+    titleMsg="Datos Guardados";
+    textMsg=data.msgSuccess;
+    typeMsg="success";    
+
+    for(var i = 0; i < data.tbl_movimientos_list.length; i++) {
+        var row= data.tbl_movimientos_list[i];
+
+        var parteSup = [
+            {text: row.servicio, style: "header", alignment: 'center',fontSize: 30},
+            {text: row.cliente, style: "header", alignment: 'center',fontSize: 28},
+            {text: "FACTURA", style: "subheader", alignment: 'center',fontSize: 25},
+            {text: '************************************************************', style: 'subheader', alignment: 'center'},
+            {text: 'Casa:', style: 'subheader', alignment: 'center',fontSize: 20}, 
+            {text: row.contrato, style: "subheader", alignment: 'center',fontSize: 20},
+            {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
+            {text: 'Descripción del pago:', style: 'subheader', alignment: 'center',fontSize: 20}, 
+            {text: row.pago_servicio, style: "subheader", alignment: 'center',fontSize: 20},
+            {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
+            {text: 'Monto pagado en Lempiras:', style: 'subheader', alignment: 'center',fontSize: 20}, 
+            {text: 'L '+row.monto_pago, style: "subheader", alignment: 'center',fontSize: 20},
+            {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
+            {text: 'Fecha y hora del pago:', style: 'subheader', alignment: 'center',fontSize: 20}, 
+            {text: row.fecha_hora_pago, style: "subheader", alignment: 'center',fontSize: 20},
+            {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
+            {text: 'Cobrador:', style: 'subheader', alignment: 'center',fontSize: 20}, 
+            {text: row.cobrador, style: "subheader", alignment: 'center',fontSize: 20},               
+            {text: '************************************************************', style: 'subheader', alignment: 'center'},   
+            {text: 'Copia del cliente', style: 'subheader', alignment: 'center'},
+            {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
+            { qr: row.id_contrato, alignment: 'center'}
+        ];
+
+    }
+    
+    var docDefinition = {
+        content: [
+            parteSup,            
+        ]
+    }
+    
+
+    //pdfMake.createPdf(docDefinition).download();
+    pdfMake.createPdf(docDefinition).print();
+
+    
+
+    }
+    },
+    error: function (xhr, status, error) {
+    alert(xhr.responseText);
+    }
+
+    
+});
+
 }
    
 
