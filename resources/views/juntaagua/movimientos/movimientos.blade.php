@@ -124,6 +124,13 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
         icon="FileText"
     />
 </a>
+&nbsp&nbsp&nbsp
+<a href="{{url('/movimientos/'.$row->id.'/pago/factura')}}" class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
+    <x-base.lucide
+        class="h-4 w-4"
+        icon="FileText"
+    />
+</a>
 @endif
 </td>
 </tr>
@@ -267,34 +274,33 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
         var id_contrato = {{$id_contrato}};
         var id_movimiento = null;
 	
-			var titleMsg = null;
-            var textMsg = null;
-            var typeMsg = null;
-			var languageOptionsDatatables={
-
-			"decimal":        "",
-			"emptyTable":     "Datos no disponibles",
-			"info":           "Mostrando desde _START_ a _END_ de _TOTAL_ registros",
-			"infoEmpty":      "Mostrando desde 0 a 0 de 0 registros",
-			"infoFiltered":   "(Filrado de _MAX_ registros totales)",
-			"infoPostFix":    "",
-			"thousands":      ",",
-			"lengthMenu":     "Mostrar _MENU_ registros",
-			"loadingRecords": "Cargando...",
-			"processing":     "Procesando...",
-			"search":         "Buscar:",
-			"zeroRecords":    "Sin resultados",
-			"paginate": {
-				"first":      "Primero",
-				"last":       "Ultimo",
-				"next":       "Siguiente",
-				"previous":   "Anterior"
-			},
-			"aria": {
-				"sortAscending":  ": activar ordenamiento por columna ascendente",
-				"sortDescending": ": activar ordenamiento por columna descendente"
-			}
-			}
+        var titleMsg = null;
+        var textMsg = null;
+        var typeMsg = null;
+        var languageOptionsDatatables={
+            "decimal":        "",
+            "emptyTable":     "Datos no disponibles",
+            "info":           "Mostrando desde _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty":      "Mostrando desde 0 a 0 de 0 registros",
+            "infoFiltered":   "(Filrado de _MAX_ registros totales)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Mostrar _MENU_ registros",
+            "loadingRecords": "Cargando...",
+            "processing":     "Procesando...",
+            "search":         "Buscar:",
+            "zeroRecords":    "Sin resultados",
+            "paginate": {
+                    "first":      "Primero",
+                    "last":       "Ultimo",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+            },
+            "aria": {
+                    "sortAscending":  ": activar ordenamiento por columna ascendente",
+                    "sortDescending": ": activar ordenamiento por columna descendente"
+            }
+        }
 	
 	$(document).ready(function () {
             $.ajaxSetup({
@@ -624,49 +630,49 @@ $.ajax({
 }
    
 
-	//realiza el despliegue de mensage de exito o erro
-	function mensage (data) {
+    //realiza el despliegue de mensage de exito o erro
+    function mensage (data) {
 
-		var type = null;
+            var type = null;
 
-		if(data.msgError!=null){
+            if(data.msgError!=null){
 
-			titleMsg="Dato Faltante";;
-			textMsg=data.msgError;
-			typeMsg = "danger";
-			type = "#danger-notification-content";
+                    titleMsg="Dato Faltante";;
+                    textMsg=data.msgError;
+                    typeMsg = "danger";
+                    type = "#danger-notification-content";
 
-		}else if(data.msgAlert!=null){
-                        titleMsg="Adevertencia";;
-			textMsg=data.msgAlert;
-			typeMsg = "danger";
-			type = "#danger-notification-content";
-                }else{
-			
-			titleMsg="Datos Guardados";
-			textMsg=data.msgExito;
-			typeMsg='success';
-			type = "#success-notification-content";
+            }else if(data.msgAlert!=null){
+                    titleMsg="Adevertencia";;
+                    textMsg=data.msgAlert;
+                    typeMsg = "danger";
+                    type = "#danger-notification-content";
+            }else{
 
-		}
+                    titleMsg="Datos Guardados";
+                    textMsg=data.msgExito;
+                    typeMsg='success';
+                    type = "#success-notification-content";
 
-		$("#"+typeMsg+"-notification").html('<div class="font-medium">' + titleMsg + "</div>" + '<div class="mt-1 text-slate-500">' + textMsg + "</div>");
+            }
 
-		Toastify({
-			node: $(type).clone().removeClass("hidden")[0],
-			duration: 5000,
-			newWindow: true,
-			close: true,
-			gravity: "top",
-			position: "right",
-			stopOnFocus: true,
-		}).showToast();
-	}
+            $("#"+typeMsg+"-notification").html('<div class="font-medium">' + titleMsg + "</div>" + '<div class="mt-1 text-slate-500">' + textMsg + "</div>");
+
+            Toastify({
+                    node: $(type).clone().removeClass("hidden")[0],
+                    duration: 5000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+            }).showToast();
+    }
         
-        function goDetailFactura(id_pago) {
-            let url = "{{ url('/movimientos/') }}"+id_pago+'/pago/factura';                                  
-            window.location.href = url;
-        }
+    function goDetailFactura(id_pago) {
+        let url = "{{ url('/movimientos/') }}"+id_pago+'/pago/factura';                                  
+        window.location.href = url;
+    }
         
         
 	

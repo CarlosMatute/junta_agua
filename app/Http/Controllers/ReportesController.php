@@ -101,6 +101,14 @@ class ReportesController extends Controller
         
     }
     
+    public function ver_factura_junta_agua($idMovimiento){        
+        
+        //return response()->file($pathToFile);
+        return view('reportes.generico')
+                ->with('idMovimiento',$idMovimiento);
+        
+    }
+    
     public function factura_junta_agua(Request $request) {
     $id=$request->id;    
     $id_movimiento=$request->id_movimiento;
