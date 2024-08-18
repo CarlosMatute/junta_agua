@@ -560,64 +560,63 @@ $.ajax({
      "id_movimiento": id_movimiento,
     },
     success: function (data) {
-    if(data.msgError!=null){
-    titleMsg="Error al Guardar";
-    textMsg=data.msgError;
-    typeMsg="error";
+            if(data.msgError!=null){
+            titleMsg="Error al Guardar";
+            textMsg=data.msgError;
+            typeMsg="error";
+
+        }else{
+
+            titleMsg="Datos Guardados";
+            textMsg=data.msgSuccess;
+            typeMsg="success";    
+
+            for(var i = 0; i < data.tbl_movimientos_list.length; i++) {
+                var row= data.tbl_movimientos_list[i];
+
+                var parteSup = [
+                    {text: row.servicio, style: "header", alignment: 'center',fontSize: 30},
+                    {text: row.cliente, style: "header", alignment: 'center',fontSize: 28},
+                    {text: "FACTURA", style: "subheader", alignment: 'center',fontSize: 25},
+                    {text: '************************************************************', style: 'subheader', alignment: 'center'},
+                    {text: 'Casa:', style: 'subheader', alignment: 'center',fontSize: 20}, 
+                    {text: row.contrato, style: "subheader", alignment: 'center',fontSize: 20},
+                    {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
+                    {text: 'Descripción del pago:', style: 'subheader', alignment: 'center',fontSize: 20}, 
+                    {text: row.pago_servicio, style: "subheader", alignment: 'center',fontSize: 20},
+                    {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
+                    {text: 'Monto pagado en Lempiras:', style: 'subheader', alignment: 'center',fontSize: 20}, 
+                    {text: 'L '+row.monto_pago, style: "subheader", alignment: 'center',fontSize: 20},
+                    {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
+                    {text: 'Fecha y hora del pago:', style: 'subheader', alignment: 'center',fontSize: 20}, 
+                    {text: row.fecha_hora_pago, style: "subheader", alignment: 'center',fontSize: 20},
+                    {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
+                    {text: 'Cobrador:', style: 'subheader', alignment: 'center',fontSize: 20}, 
+                    {text: row.cobrador, style: "subheader", alignment: 'center',fontSize: 20},               
+                    {text: '************************************************************', style: 'subheader', alignment: 'center'},   
+                    {text: 'Copia del cliente', style: 'subheader', alignment: 'center'},
+                    {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
+                    { qr: row.id_contrato, alignment: 'center'}
+                ];
+
+            }
+
+            var docDefinition = {
+                content: [
+                    parteSup,            
+                ]
+            }
+
+            //pdfMake.createPdf(docDefinition).download();
+            //pdfMake.createPdf(docDefinition).print();
+            // pdfMake.createPdf(docDefinition).open();
+            pdfMake.createPdf(docDefinition).print({}, window);
 
 
-    }else{
-
-    titleMsg="Datos Guardados";
-    textMsg=data.msgSuccess;
-    typeMsg="success";    
-
-    for(var i = 0; i < data.tbl_movimientos_list.length; i++) {
-        var row= data.tbl_movimientos_list[i];
-
-        var parteSup = [
-            {text: row.servicio, style: "header", alignment: 'center',fontSize: 30},
-            {text: row.cliente, style: "header", alignment: 'center',fontSize: 28},
-            {text: "FACTURA", style: "subheader", alignment: 'center',fontSize: 25},
-            {text: '************************************************************', style: 'subheader', alignment: 'center'},
-            {text: 'Casa:', style: 'subheader', alignment: 'center',fontSize: 20}, 
-            {text: row.contrato, style: "subheader", alignment: 'center',fontSize: 20},
-            {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
-            {text: 'Descripción del pago:', style: 'subheader', alignment: 'center',fontSize: 20}, 
-            {text: row.pago_servicio, style: "subheader", alignment: 'center',fontSize: 20},
-            {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
-            {text: 'Monto pagado en Lempiras:', style: 'subheader', alignment: 'center',fontSize: 20}, 
-            {text: 'L '+row.monto_pago, style: "subheader", alignment: 'center',fontSize: 20},
-            {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
-            {text: 'Fecha y hora del pago:', style: 'subheader', alignment: 'center',fontSize: 20}, 
-            {text: row.fecha_hora_pago, style: "subheader", alignment: 'center',fontSize: 20},
-            {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
-            {text: 'Cobrador:', style: 'subheader', alignment: 'center',fontSize: 20}, 
-            {text: row.cobrador, style: "subheader", alignment: 'center',fontSize: 20},               
-            {text: '************************************************************', style: 'subheader', alignment: 'center'},   
-            {text: 'Copia del cliente', style: 'subheader', alignment: 'center'},
-            {text: '\n', style: "subheader", alignment: 'center',fontSize: 20},
-            { qr: row.id_contrato, alignment: 'center'}
-        ];
-
-    }
-    
-    var docDefinition = {
-        content: [
-            parteSup,            
-        ]
-    }
-    
-
-    //pdfMake.createPdf(docDefinition).download();
-    pdfMake.createPdf(docDefinition).print();
-
-    
-
-    }
+        }
     },
-    error: function (xhr, status, error) {
-    alert(xhr.responseText);
+        error: function (xhr, status, error) {
+        alert(xhr.responseText);
     }
 
     
