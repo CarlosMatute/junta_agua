@@ -605,13 +605,11 @@ $.ajax({
                 content: [
                     parteSup,            
                 ]
-            }
-            var win = window.open('', '_blank');
+            }            
             //pdfMake.createPdf(docDefinition).download();
             //pdfMake.createPdf(docDefinition).print();
             //pdfMake.createPdf(docDefinition).open();
-            pdfMake.createPdf(docDefinition).open({}, win);
-            //pdfMake.createPdf(docDefinition).open({}, window);
+            pdfMake.createPdf(docDefinition).open({}, window);
             //pdfMake.createPdf(docDefinition).print({}, window);
 
 
