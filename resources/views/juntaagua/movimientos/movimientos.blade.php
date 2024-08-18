@@ -578,7 +578,7 @@ $.ajax({
                     {text: row.servicio, style: "header", alignment: 'center',fontSize: 50},
                     {text: row.cliente, style: "header", alignment: 'center',fontSize: 48},
                     {text: "FACTURA", style: "subheader", alignment: 'center',fontSize: 45},
-                    {text: '************************************************************************************************************', style: 'subheader', alignment: 'center'},
+                    {text: '*******************************************************************************************************', style: 'subheader', alignment: 'center'},
                     {text: 'Casa:', style: 'subheader', alignment: 'center',fontSize: 40}, 
                     {text: row.contrato, style: "subheader", alignment: 'center',fontSize: 40},
                     {text: '\n', style: "subheader", alignment: 'center'},
@@ -593,10 +593,9 @@ $.ajax({
                     {text: '\n', style: "subheader", alignment: 'center'},
                     {text: 'Cobrador:', style: 'subheader', alignment: 'center',fontSize: 40}, 
                     {text: row.cobrador, style: "subheader", alignment: 'center',fontSize: 40},               
-                    {text: '************************************************************************************************************', style: 'subheader', alignment: 'center'},   
-                    {text: 'Copia del cliente', style: 'subheader', alignment: 'center',fontSize: 25},
-                    {text: '\n', style: "subheader", alignment: 'center'},
-                    { qr: row.id_contrato, alignment: 'center',fontSize: 45}
+                    {text: '*******************************************************************************************************', style: 'subheader', alignment: 'center'},   
+                    {text: 'Copia del cliente', style: 'subheader', alignment: 'center',fontSize: 37},
+                    {text: '\n\n\n', style: "subheader", alignment: 'center'}                   
                 ];
 
             }
