@@ -609,8 +609,8 @@ $.ajax({
 
             //pdfMake.createPdf(docDefinition).download();
             //pdfMake.createPdf(docDefinition).print();
-            // pdfMake.createPdf(docDefinition).open();
-            pdfMake.createPdf(docDefinition).print({}, window);
+            pdfMake.createPdf(docDefinition).open();
+            //pdfMake.createPdf(docDefinition).print({}, window);
 
 
         }
