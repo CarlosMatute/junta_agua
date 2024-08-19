@@ -4,18 +4,22 @@
 @endsection
 @section("subcontent")
 <!-- BEGIN: Profile Info -->
-<div class="intro-y box mt-5 px-5 pt-5">
-    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
-        <div class="flex flex-1 items-center justify-center px-5 lg:justify-start">
-            
+<div class="intro-y box mt-5 px-5 pt-5">    
+        <div class="flex flex-1 items-center justify-center px-5 lg:justify-start">            
         <lord-icon
-    src="https://cdn.lordicon.com/ebkiwugo.json"
-    trigger="loop"
-    delay="2000"
-    state="hover-unfold"
-    style="width:150px;height:150px">
-</lord-icon>
-        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Pantalla de Permisos</h1>
+        src="https://cdn.lordicon.com/ebkiwugo.json"
+        trigger="loop"
+        delay="2000"
+        state="hover-unfold"
+        style="width:150px;height:150px">
+        </lord-icon>
+            <div class="ml-5">
+                <div class="text-lg font-medium truncate w-240 sm:w-80 sm:whitespace-normal">
+
+                    <h1 class="text-5xl font-medium leading-none">PERMISOS</h1>
+                </div>
+                <div class="text-slate-500">Pantalla de administración de Permisos.</div>
+            </div>        
         </div>
         <div class="flex flex-col space-y-4 sm:flex-row  sm:space-y-0">
             <a href="{{url('/per-empleado')}}" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1">
@@ -24,14 +28,11 @@
                     trigger="hover"
                     style="width:24px;height:24px">
                 </lord-icon>
-            </a>
-            
-            
-        </div>
-    </div>    
+            </a>                        
+        </div>      
 </div>
 <!-- END: Profile Info -->
-<script src="https://cdn.lordicon.com/lordicon.js"></script>
+
 
 <!-- BEGIN: Profile body -->
 <div class="intro-y box mt-5 p-5">
@@ -161,12 +162,12 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_s
 
 @endsection
 @once
-	@push('scripts')
-				@vite(['resources/css/app.css', 'resources/js/app.js'])
-		        @vite('resources/js/pages/modal/index.js')
-		        @vite('resources/js/vendor/toastify/index.js')
-		        @vite('resources/js/pages/notification/index.js')
-  
+    @push('scripts')
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite('resources/js/pages/modal/index.js')
+        @vite('resources/js/vendor/toastify/index.js')
+        @vite('resources/js/pages/notification/index.js')
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
 <script type="module">
 	var accion=null;
 	var id=null;

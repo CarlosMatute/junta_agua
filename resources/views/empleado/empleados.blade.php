@@ -5,10 +5,9 @@
 @section("subcontent")
 
 <!-- BEGIN: Profile Info -->
-<div class="intro-y box mt-5 px-5 pt-5">
-    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
-        <div class="flex flex-1 items-center justify-center px-5 lg:justify-start">
-            
+
+<div class="intro-y box mt-5 px-5 pt-5">    
+        <div class="flex flex-1 items-center justify-center px-5 lg:justify-start">            
         <lord-icon
             src="https://cdn.lordicon.com/xcxzayqr.json"
             trigger="loop"
@@ -16,11 +15,14 @@
             state="morph-group"
             style="width:150px;height:150px">
         </lord-icon>
-        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Pantalla de Empleados</h1>
-        </div>
-        <div class="flex flex-col space-y-4 sm:flex-row  sm:space-y-0">            
-        </div>
-    </div>    
+            <div class="ml-5">
+                <div class="text-lg font-medium truncate w-240 sm:w-80 sm:whitespace-normal">
+
+                    <h1 class="text-5xl font-medium leading-none">EMPLEADOS</h1>
+                </div>
+                <div class="text-slate-500">Pantalla de administración de Empleados.</div>
+            </div>        
+        </div>              
 </div>
 <!-- END: Profile Info -->
 
@@ -214,11 +216,11 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_p
 
 @endsection
 @once
-	@push('scripts')
-				@vite(['resources/css/app.css', 'resources/js/app.js'])
-		        @vite('resources/js/pages/modal/index.js')
-		        @vite('resources/js/vendor/toastify/index.js')
-		        @vite('resources/js/pages/notification/index.js')
+    @push('scripts')
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite('resources/js/pages/modal/index.js')
+        @vite('resources/js/vendor/toastify/index.js')
+        @vite('resources/js/pages/notification/index.js')
 <script src="https://cdn.lordicon.com/lordicon.js"></script>
 <script type="module">
 	var accion=null;

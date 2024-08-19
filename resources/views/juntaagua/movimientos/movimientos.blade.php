@@ -5,8 +5,8 @@
 @section("subcontent")
 
 <!-- BEGIN: Profile Info -->
-<div class="intro-y box mt-5 px-5 pt-5">
-    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
+<div class="px-5 pt-5 mt-5 intro-y box">
+    
         <div class="flex flex-1 items-center justify-center px-5 lg:justify-start">
             
         <lord-icon
@@ -15,7 +15,13 @@
                 delay="2000"
                 style="width:150px;height:150px">
             </lord-icon>
-        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Pantalla de Saldos</h1>
+            <div class="ml-5">
+                <div class="text-lg font-medium truncate w-240 sm:w-80 sm:whitespace-normal">
+
+                    <h1 class="text-5xl font-medium leading-none">SALDOS</h1>
+                </div>
+                <div class="text-slate-500">Pantalla de administración de Saldos.</div>
+            </div>
         </div>
         <div class="flex flex-col space-y-4 sm:flex-row  sm:space-y-0">
             <a href="{{url('/contrato')}}" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1">
@@ -24,14 +30,10 @@
                     trigger="hover"
                     style="width:24px;height:24px">
                 </lord-icon>
-            </a>
-            
-            
-        </div>
-    </div>    
+            </a>                        
+        </div>        
 </div>
 <!-- END: Profile Info -->
-
 
 <!-- BEGIN: Profile body -->
 <div class="intro-y box mt-5 p-5">
@@ -118,13 +120,6 @@ data-tipo_movimiento="{{$row->tipo_movimiento}}"
 title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_tbl_movimientos"><x-base.lucide class="h-4 w-4" icon="Trash"/></x-base.button>
 &nbsp&nbsp&nbsp
 @if( $row->id_tipo_movimiento == 2)
-<a id="btn_factura_tbl_movimientos" data-id_movimiento="{{$row->id}}" class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
-    <x-base.lucide
-        class="h-4 w-4"
-        icon="FileText"
-    />
-</a>
-&nbsp&nbsp&nbsp
 <a href="{{url('/movimientos/'.$row->id.'/pago/factura')}}" class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
     <x-base.lucide
         class="h-4 w-4"
@@ -521,7 +516,7 @@ function guardar_tbl_movimientos(){
                  'data-tipo_movimiento="'+row.tipo_movimiento+'" '+ 
                  'title="Eliminar" variant="danger" size="sm" id="btn_eliminar_tbl_movimientos" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+                                   
                  
-                 '<a id="btn_factura_tbl_movimientos" data-id_movimiento="'+row.id+'" '+ ' ' + ( row.id_tipo_movimiento==2 ? 'style="display:;"' : 'style="display:none;"' ) +' '+ ' ' +' class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="file-text" data-lucide="file-text" class="lucide lucide-file-text stroke-1.5 mx-auto block"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg></a>'+ 
+                 '<a href="'+ uri +'/movimientos/'+row.id+'/pago/factura" '+ ' ' + ( row.id_tipo_movimiento==2 ? 'style="display:;"' : 'style="display:none;"' ) +' '+ ' ' +' class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="file-text" data-lucide="file-text" class="lucide lucide-file-text stroke-1.5 mx-auto block"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg></a>'+ 
                                                  
             ''
                 ];

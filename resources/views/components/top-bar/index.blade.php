@@ -2,17 +2,17 @@
 <div class="relative z-[51] flex h-[67px] items-center border-b border-slate-200">
     <!-- BEGIN: Breadcrumb -->
     <x-base.breadcrumb class="-intro-x mr-auto hidden sm:flex">
-        <x-base.breadcrumb.link :index="0">Application</x-base.breadcrumb.link>
+<!--        <x-base.breadcrumb.link :index="0">Application</x-base.breadcrumb.link>
         <x-base.breadcrumb.link
             :index="1"
             :active="true"
         >
             Dashboard
-        </x-base.breadcrumb.link>
+        </x-base.breadcrumb.link>-->
     </x-base.breadcrumb>
     <!-- END: Breadcrumb -->
     <!-- BEGIN: Search -->
-    <div class="search intro-x relative mr-3 sm:mr-6">
+<!--    <div class="search intro-x relative mr-3 sm:mr-6">
         <div class="relative hidden sm:block">
             <x-base.form-input
                 class="w-56 rounded-full border-transparent bg-slate-300/50 pr-8 shadow-none transition-[width] duration-300 ease-in-out focus:w-72 focus:border-transparent dark:bg-darkmode-400/70"
@@ -127,10 +127,10 @@
                 @endforeach
             </div>
         </x-base.transition>
-    </div>
+    </div>-->
     <!-- END: Search  -->
     <!-- BEGIN: Notifications -->
-    <x-base.popover class="intro-x mr-auto sm:mr-6">
+<!--    <x-base.popover class="intro-x mr-auto sm:mr-6">
         <x-base.popover.button
             class="relative block text-slate-600 outline-none before:absolute before:top-[-2px] before:right-0 before:h-[8px] before:w-[8px] before:rounded-full before:bg-danger before:content-['']"
         >
@@ -175,7 +175,7 @@
                 </div>
             @endforeach
         </x-base.popover.panel>
-    </x-base.popover>
+    </x-base.popover>-->
     <!-- END: Notifications  -->
     <!-- BEGIN: Account Menu -->
     <x-base.menu>
@@ -187,13 +187,15 @@
         </x-base.menu.button>
         <x-base.menu.items class="mt-px w-56 bg-primary text-white">
             <x-base.menu.header class="font-normal">
-                <div class="font-medium">{{ $fakers[0]['users'][0]['name'] }}</div>
+<!--                <div class="font-medium">{{ $fakers[0]['users'][0]['name'] }}</div>
                 <div class="mt-0.5 text-xs text-white/70 dark:text-slate-500">
                     {{ $fakers[0]['jobs'][0] }}
-                </div>
+                </div>-->
+
+                    {{Auth::user()->name}}
             </x-base.menu.header>
             <x-base.menu.divider class="bg-white/[0.08]" />
-            <x-base.menu.item class="hover:bg-white/5">
+<!--            <x-base.menu.item class="hover:bg-white/5">
                 <x-base.lucide
                     class="mr-2 h-4 w-4"
                     icon="User"
@@ -216,13 +218,13 @@
                     class="mr-2 h-4 w-4"
                     icon="HelpCircle"
                 /> Help
-            </x-base.menu.item>
-            <x-base.menu.divider class="bg-white/[0.08]" />
+            </x-base.menu.item>-->
+            <!--<x-base.menu.divider class="bg-white/[0.08]" />-->
             <x-base.menu.item class="hover:bg-white/5" href="{{url('logout')}}">
                 <x-base.lucide
                     class="mr-2 h-4 w-4"
                     icon="ToggleRight"
-                /> Logout
+                /> Cerrar Sesión
             </x-base.menu.item>
         </x-base.menu.items>
     </x-base.menu>
