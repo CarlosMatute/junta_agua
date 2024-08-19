@@ -159,13 +159,17 @@ $.ajax({
                     {text: "FACTURA", style: "subheader", alignment: 'center',fontSize: 45},
                     {text: '***************************************************************************************************', style: 'subheader', alignment: 'center'},
                     {text: 'Casa:', style: 'subheader', alignment: 'center',fontSize: 40}, 
-                    {text: row.contrato, style: "subheader", alignment: 'center',fontSize: 40},                    
+                    {text: row.contrato, style: "subheader", alignment: 'center',fontSize: 40},
+                    {text: '\n', style: "subheader", alignment: 'center'},
                     {text: 'Descripción del pago:', style: 'subheader', alignment: 'center',fontSize: 40}, 
-                    {text: row.pago_servicio, style: "subheader", alignment: 'center',fontSize: 40},                    
+                    {text: row.pago_servicio, style: "subheader", alignment: 'center',fontSize: 40},
+                    {text: '\n', style: "subheader", alignment: 'center'},
                     {text: 'Monto pagado en Lempiras:', style: 'subheader', alignment: 'center',fontSize: 40}, 
-                    {text: 'L '+row.monto_pago, style: "subheader", alignment: 'center',fontSize: 40},                    
+                    {text: 'L '+row.monto_pago, style: "subheader", alignment: 'center',fontSize: 40},
+                    {text: '\n', style: "subheader", alignment: 'center'},
                     {text: 'Fecha y hora del pago:', style: 'subheader', alignment: 'center',fontSize: 40}, 
-                    {text: row.fecha_hora_pago, style: "subheader", alignment: 'center',fontSize: 40},                    
+                    {text: row.fecha_hora_pago, style: "subheader", alignment: 'center',fontSize: 40},
+                    {text: '\n', style: "subheader", alignment: 'center'},
                     {text: 'Cobrador:', style: 'subheader', alignment: 'center',fontSize: 40}, 
                     {text: row.cobrador, style: "subheader", alignment: 'center',fontSize: 40},               
                     {text: '***************************************************************************************************', style: 'subheader', alignment: 'center'},   
@@ -177,7 +181,7 @@ $.ajax({
 
             docDefinition = {
                 pageSize: 'LEGAL',
-                pageMargins: [ 10, 10 ],
+                pageMargins: [ 5, 5 ],
                 content: [
                     parteSup,            
                 ]
@@ -221,7 +225,7 @@ $.ajax({
                       pdf.getPage(pageNumber).then(function(page) {
                         //console.log('Page loaded');
 
-                        var scale = 0.85;
+                        var scale = 0.9;
                         var viewport = page.getViewport({scale: scale});
 
                         // Prepare canvas using PDF page dimensions
