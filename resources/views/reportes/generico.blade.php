@@ -65,7 +65,7 @@
     <div class="scrollbar-hidden overflow-x-auto">
         
         <div id="div_credencial_movil_descargar" style="display: none;">
-            <a id="btn_imprimir_reporte" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-2 w-32 mb-2 mr-2 w-32"><i class="fa fa-file-text">Descargar</i></a>        
+            <a id="btn_imprimir_reporte" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-2 w-32 mb-2 mr-2 w-32"><i class="fa fa-file-text">Imprimir</i></a>        
         </div>
         
         <div id="div_credencial_movil_pdf" style="display: none;">
@@ -220,7 +220,7 @@ $.ajax({
                       pdf.getPage(pageNumber).then(function(page) {
                         //console.log('Page loaded');
 
-                        var scale = 0.85;
+                        var scale = 0.81;
                         var viewport = page.getViewport({scale: scale});
 
                         // Prepare canvas using PDF page dimensions
