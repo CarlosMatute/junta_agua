@@ -144,22 +144,18 @@ $.ajax({
                     {text: row.servicio, style: "header", alignment: 'center',fontSize: 50},
                     {text: row.cliente, style: "header", alignment: 'center',fontSize: 48},
                     {text: "FACTURA", style: "subheader", alignment: 'center',fontSize: 45},
-                    {text: '*******************************************************************************************************', style: 'subheader', alignment: 'center'},
+                    {text: '***************************************************************************************************', style: 'subheader', alignment: 'center'},
                     {text: 'Casa:', style: 'subheader', alignment: 'center',fontSize: 40}, 
-                    {text: row.contrato, style: "subheader", alignment: 'center',fontSize: 40},
-                    {text: '\n', style: "subheader", alignment: 'center'},
+                    {text: row.contrato, style: "subheader", alignment: 'center',fontSize: 40},                    
                     {text: 'Descripción del pago:', style: 'subheader', alignment: 'center',fontSize: 40}, 
-                    {text: row.pago_servicio, style: "subheader", alignment: 'center',fontSize: 40},
-                    {text: '\n', style: "subheader", alignment: 'center'},
+                    {text: row.pago_servicio, style: "subheader", alignment: 'center',fontSize: 40},                    
                     {text: 'Monto pagado en Lempiras:', style: 'subheader', alignment: 'center',fontSize: 40}, 
-                    {text: 'L '+row.monto_pago, style: "subheader", alignment: 'center',fontSize: 40},
-                    {text: '\n', style: "subheader", alignment: 'center'},
+                    {text: 'L '+row.monto_pago, style: "subheader", alignment: 'center',fontSize: 40},                    
                     {text: 'Fecha y hora del pago:', style: 'subheader', alignment: 'center',fontSize: 40}, 
-                    {text: row.fecha_hora_pago, style: "subheader", alignment: 'center',fontSize: 40},
-                    {text: '\n', style: "subheader", alignment: 'center'},
+                    {text: row.fecha_hora_pago, style: "subheader", alignment: 'center',fontSize: 40},                    
                     {text: 'Cobrador:', style: 'subheader', alignment: 'center',fontSize: 40}, 
                     {text: row.cobrador, style: "subheader", alignment: 'center',fontSize: 40},               
-                    {text: '*******************************************************************************************************', style: 'subheader', alignment: 'center'},   
+                    {text: '***************************************************************************************************', style: 'subheader', alignment: 'center'},   
                     {text: 'Copia del cliente', style: 'subheader', alignment: 'center',fontSize: 37},
                     {text: '\n\n\n', style: "subheader", alignment: 'center'}                   
                 ];
@@ -167,6 +163,7 @@ $.ajax({
             }
 
             docDefinition = {
+                pageSize: 'LEGAL',
                 content: [
                     parteSup,            
                 ]
@@ -210,7 +207,7 @@ $.ajax({
                       pdf.getPage(pageNumber).then(function(page) {
                         //console.log('Page loaded');
 
-                        var scale = 0.8;
+                        var scale = 0.9;
                         var viewport = page.getViewport({scale: scale});
 
                         // Prepare canvas using PDF page dimensions
@@ -226,7 +223,7 @@ $.ajax({
                         };
                         var renderTask = page.render(renderContext);
                         renderTask.promise.then(function () {
-                          console.log('Page rendered');
+                          //console.log('Page rendered');
                         });
                       });
                     }, function (reason) {
