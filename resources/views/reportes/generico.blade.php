@@ -1,6 +1,6 @@
 @extends('../layouts/' . $layout)
 @section('subhead')
-    <title>Reportes</title>
+    <title>Factura de pago</title>
 @endsection
 @section('subcontent')
 <style>
@@ -20,17 +20,30 @@
 />
 <!-- BEGIN: Profile Info -->
 <div class="intro-y box mt-5 px-5 pt-5">
-    <div class="-mx-5 flex flex-col border-b border-slate-200/60 pb-5 dark:border-darkmode-400 lg:flex-row">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16">
         <div class="flex flex-1 items-center justify-center px-5 lg:justify-start">
-            <x-base.lucide class="h-40 w-40" icon="file"/>
-            <div class="ml-5">
-                <div class="w-240 truncate text-lg font-medium sm:w-80 sm:whitespace-normal">                        
-                    <h1 class="text-5xl font-medium leading-none"></h1>
-                </div>
-                <div class="text-slate-500">Pantalla de Reportes</div>
-            </div>
+            
+        <lord-icon
+            src="https://cdn.lordicon.com/yqiuuheo.json"
+            trigger="in"
+            delay="1500"
+            state="in-reveal"
+            style="width:150px;height:150px">
+        </lord-icon>
+        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Pantalla de Factura de pago</h1>
         </div>
-    </div>
+        <div class="flex flex-col space-y-4 sm:flex-row  sm:space-y-0">
+            <a href="{{url('/contrato')}}" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1">
+                <lord-icon
+                    src="https://cdn.lordicon.com/zutufmmf.json"
+                    trigger="hover"
+                    style="width:24px;height:24px">
+                </lord-icon>
+            </a>
+            
+            
+        </div>
+    </div>    
 </div>
 <!-- END: Profile Info -->
 <!-- BEGIN: Profile body -->
@@ -40,7 +53,7 @@
             <div class="p-5">
                 <h3 class="text-2xl font-medium leading-none"><div class="flex items-center">
                     <i data-lucide="List" class="w-6 h-6 mr-1"></i>
-                        <span class="text-white-700"> Reporte </span>
+                        <span class="text-white-700"> Factura </span>
                     </div></h3>
             </div>
         </div>
@@ -83,7 +96,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.min.js" integrity="sha512-hoZmP5l0sJQzHzkXQS3ZCj/H7bOn8JKmbHd/s2trPUoMcvPaBfLSE9/92cpwYzcXBaEtVT/aCQ9P97rkTSWqcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.js" integrity="sha512-/fgTphwXa3lqAhN+I8gG8AvuaTErm1YxpUjbdCvwfTMyv8UZnFyId7ft5736xQ6CyQN4Nzr21lBuWWA9RTCXCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
 <script type="module">
 
 var ancho_ventana = window.innerWidth;
@@ -207,7 +220,7 @@ $.ajax({
                       pdf.getPage(pageNumber).then(function(page) {
                         //console.log('Page loaded');
 
-                        var scale = 0.9;
+                        var scale = 0.85;
                         var viewport = page.getViewport({scale: scale});
 
                         // Prepare canvas using PDF page dimensions
