@@ -177,7 +177,7 @@ $.ajax({
 
             docDefinition = {
                 pageSize: 'LEGAL',
-                pageMargins: [ 5 ]
+                pageMargins: [ 10, 10 ],
                 content: [
                     parteSup,            
                 ]
@@ -221,7 +221,7 @@ $.ajax({
                       pdf.getPage(pageNumber).then(function(page) {
                         //console.log('Page loaded');
 
-                        var scale = 0.8;
+                        var scale = 0.85;
                         var viewport = page.getViewport({scale: scale});
 
                         // Prepare canvas using PDF page dimensions
