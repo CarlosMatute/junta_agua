@@ -9,14 +9,6 @@
     border: 1px solid black;
     direction: ltr;
 }
-
-.container {
-        position: relative;
-        overflow: hidden;
-        width: 100vw; 
-        height: 100vh;        
-        max-width:599px;
-      }
         
 </style>
 <link
@@ -60,22 +52,12 @@
     <div class="scrollbar-hidden overflow-x-auto">
         
         <div id="div_credencial_movil_descargar" style="display: none;">
-        <a id="btn_imprimir_reporte" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-2 w-32 mb-2 mr-2 w-32"><i class="fa fa-file-text">Descargar</i></a>
-        <a id="buttonId" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-2 w-32 mb-2 mr-2 w-32"><i class="fa fa-file-text">Descargar</i></a>
+            <a id="btn_imprimir_reporte" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-2 w-32 mb-2 mr-2 w-32"><i class="fa fa-file-text">Descargar</i></a>        
         </div>
         
         <div id="div_credencial_movil_pdf" style="display: none;">
             <canvas id="the-canvas"></canvas>
-        </div>
-        
-<!--        <div id="iframeContainer" >
-            
-        </div>-->
-        
-        
-<!--        <object data="mypdf.pdf" type="application/pdf" frameborder="0" width="100%" height="600px" style="padding: 20px;">
-            <embed id="the-embed" type="application/pdf" src="https://drive.google.com/file/d/1CRFdbp6uBDE-YKJFaqRm4uy9Z4wgMS7H/preview?usp=sharing" width="100%" height="600px"/> 
-        </object>-->
+        </div>        
 
 <!--         Si es ordenador de escritorio has lo que necesites-->
         <div id="div_credencial_ordenador" style="display: none;">   
@@ -84,16 +66,6 @@
                 id="preview_report"
                 />
         </div>
-
-<div id="GFG" style="background-color: green;">
-        
-        <h2>Geeksforgeeks</h2>
-        
-        <p>
-            This is inside the div and will be printed
-            on the screen after the click.
-        </p>
-    </div>
 
     </div>
 </div>
@@ -136,34 +108,12 @@ $(document).ready(function () {
                
     generarFactura();
     
-    $('#btn_imprimir_reporte').on( "click", function(e){
-        
-        
+    $('#btn_imprimir_reporte').on( "click", function(e){                
         //window.print();
         printJS('the-canvas', 'html');
         //console.log(uri_reporte_generado);
-        //printJS({printable: uri_reporte_generado, type:'pdf', showModal:true});
-        
-        
-    }); 
-    
-    $('#buttonId').on('click', function () {
-//        var divContents = document.getElementById("GFG").innerHTML;
-//        var a = window.open('', '', 'height=500, width=500');
-//        a.document.write('<html>');
-//        a.document.write('<body > <h1>Div contents are <br>');
-//        a.document.write(divContents);
-//        a.document.write('</body></html>');
-//        a.document.close();
-//        a.print();
-window.print();
-    })
-
-
-    
-    
-
-    console.log(es_movil);
+        //printJS({printable: uri_reporte_generado, type:'pdf', showModal:true});                
+    });
 
 });
 
@@ -260,7 +210,7 @@ $.ajax({
                       pdf.getPage(pageNumber).then(function(page) {
                         //console.log('Page loaded');
 
-                        var scale = 1;
+                        var scale = 0.8;
                         var viewport = page.getViewport({scale: scale});
 
                         // Prepare canvas using PDF page dimensions
