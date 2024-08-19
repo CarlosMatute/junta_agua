@@ -148,14 +148,15 @@ $(document).ready(function () {
     }); 
     
     $('#buttonId').on('click', function () {
-        var divContents = document.getElementById("GFG").innerHTML;
-        var a = window.open('', '', 'height=500, width=500');
-        a.document.write('<html>');
-        a.document.write('<body > <h1>Div contents are <br>');
-        a.document.write(divContents);
-        a.document.write('</body></html>');
-        a.document.close();
-        a.print();
+//        var divContents = document.getElementById("GFG").innerHTML;
+//        var a = window.open('', '', 'height=500, width=500');
+//        a.document.write('<html>');
+//        a.document.write('<body > <h1>Div contents are <br>');
+//        a.document.write(divContents);
+//        a.document.write('</body></html>');
+//        a.document.close();
+//        a.print();
+window.print();
     })
 
 
@@ -252,14 +253,14 @@ $.ajax({
                     // Asynchronous download of PDF
                     var loadingTask = pdfjsLib.getDocument(url);
                     loadingTask.promise.then(function(pdf) {
-                      console.log('PDF loaded');
+                      //console.log('PDF loaded');
 
                       // Fetch the first page
                       var pageNumber = 1;
                       pdf.getPage(pageNumber).then(function(page) {
-                        console.log('Page loaded');
+                        //console.log('Page loaded');
 
-                        var scale = 1.5;
+                        var scale = 1;
                         var viewport = page.getViewport({scale: scale});
 
                         // Prepare canvas using PDF page dimensions
