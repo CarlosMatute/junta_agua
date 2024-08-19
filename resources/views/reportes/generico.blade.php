@@ -19,6 +19,13 @@
       }
         
 </style>
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.css"
+	integrity="sha512-tKGnmy6w6vpt8VyMNuWbQtk6D6vwU8VCxUi0kEMXmtgwW+6F70iONzukEUC3gvb+KTJTLzDKAGGWc1R7rmIgxQ=="
+	crossorigin="anonymous"
+	referrerpolicy="no-referrer"
+/>
 <!-- BEGIN: Profile Info -->
 <div class="intro-y box mt-5 px-5 pt-5">
     <div class="-mx-5 flex flex-col border-b border-slate-200/60 pb-5 dark:border-darkmode-400 lg:flex-row">
@@ -53,7 +60,8 @@
     <div class="scrollbar-hidden overflow-x-auto">
         
         <div id="div_credencial_movil_descargar" style="display: none;">
-        <a id="btn_imprimir_reporte" download href="" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-2 w-32 mb-2 mr-2 w-32"><i class="fa fa-file-text">Descargar</i></a>
+        <a id="btn_imprimir_reporte" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-2 w-32 mb-2 mr-2 w-32"><i class="fa fa-file-text">Descargar</i></a>
+        <a id="buttonId" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-2 w-32 mb-2 mr-2 w-32"><i class="fa fa-file-text">Descargar</i></a>
         </div>
         
         <div id="div_credencial_movil_pdf" style="display: none;">
@@ -76,6 +84,17 @@
                 id="preview_report"
                 />
         </div>
+
+<div id="GFG" style="background-color: green;">
+        
+        <h2>Geeksforgeeks</h2>
+        
+        <p>
+            This is inside the div and will be printed
+            on the screen after the click.
+        </p>
+    </div>
+
     </div>
 </div>
 <!-- BEGIN: Profile body --> 
@@ -91,6 +110,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.worker.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.min.js" integrity="sha512-hoZmP5l0sJQzHzkXQS3ZCj/H7bOn8JKmbHd/s2trPUoMcvPaBfLSE9/92cpwYzcXBaEtVT/aCQ9P97rkTSWqcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.js" integrity="sha512-/fgTphwXa3lqAhN+I8gG8AvuaTErm1YxpUjbdCvwfTMyv8UZnFyId7ft5736xQ6CyQN4Nzr21lBuWWA9RTCXCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script type="module">
 
@@ -117,9 +137,29 @@ $(document).ready(function () {
     generarFactura();
     
     $('#btn_imprimir_reporte').on( "click", function(e){
-        //pdfMake.createPdf(docDefinition).download();
-        window.print();
+        
+        
+        //window.print();
+        printJS('the-canvas', 'html');
+        //console.log(uri_reporte_generado);
+        //printJS({printable: uri_reporte_generado, type:'pdf', showModal:true});
+        
+        
     }); 
+    
+    $('#buttonId').on('click', function () {
+        var divContents = document.getElementById("GFG").innerHTML;
+        var a = window.open('', '', 'height=500, width=500');
+        a.document.write('<html>');
+        a.document.write('<body > <h1>Div contents are <br>');
+        a.document.write(divContents);
+        a.document.write('</body></html>');
+        a.document.close();
+        a.print();
+    })
+
+
+    
     
 
     console.log(es_movil);
