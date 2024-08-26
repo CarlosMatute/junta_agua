@@ -139,7 +139,7 @@ Route::middleware('auth')->group(function () {
         Route::post("/movimientos/guardar",[ContratoController::class, "guardar_tbl_movimientos"]);
         Route::get("/movimientos/{idMovimiento}/pago/factura",[ReportesController::class, "ver_factura_junta_agua"]);
         Route::post("/movimientos/factura",[ReportesController::class, "factura_junta_agua"]);
-
+        Route::get("/clientes/balance",[ClientesController::class, "ver_balance_general"])->name('balance');
         
 
     //Finaliza Junta de agua

@@ -116,6 +116,15 @@ class SideMenu
                 'title' => 'Contratos',
                 'permiso' => $contratos
             ],
+            'Balance' => [
+                'icon' => 'FileText',
+                'route_name' => 'balance',
+                'params' => [
+                    'layout' => 'side-menu'
+                ],
+                'title' => 'Balance',
+                'permiso' => $contratos
+            ],
             // 'dashboard' => [
             //     'icon' => 'home',
             //     'title' => 'Dashboard',

@@ -32,22 +32,23 @@
             </div>
         @endif
 {{--Encabezado--}}
-<div class="px-5 pt-5 mt-5 intro-y box">
-    <div class="flex flex-col pb-5 -mx-5 border-b border-slate-200/60 dark:border-darkmode-400 lg:flex-row">
-        <div class="flex items-center justify-center flex-1 px-5 lg:justify-start">
-                <x-base.lucide
-                    class="w-40 h-40"
-                    icon="FileText"
-                />
+<div class="intro-y box mt-5 px-5 pt-5">    
+        <div class="flex flex-1 items-center justify-center px-5 lg:justify-start">            
+        <lord-icon
+            src="https://cdn.lordicon.com/vhyuhmbl.json"
+            trigger="loop"
+            delay="3500"
+            state="morph-group"
+            style="width:150px;height:150px">
+        </lord-icon>
             <div class="ml-5">
                 <div class="text-lg font-medium truncate w-240 sm:w-80 sm:whitespace-normal">
 
                     <h1 class="text-5xl font-medium leading-none">CONTRATOS</h1>
                 </div>
                 <div class="text-slate-500">Pantalla de administración de contratos.</div>
-            </div>
-        </div>
-    </div>
+            </div>        
+        </div>              
 </div>
 {{--Data Table--}}
 <div class="p-5 mt-5 intro-y box">
@@ -159,7 +160,7 @@
     @vite('resources/js/pages/modal/index.js')
     @vite('resources/js/vendor/toastify/index.js')
     @vite('resources/js/pages/notification/index.js')
-
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script type="module">
         var table = null;
 

@@ -156,10 +156,10 @@ $.ajax({
                 var row= data.tbl_movimientos_list[i];
 
                 var parteSup = [
-                    {text: row.servicio, style: "header", alignment: 'center',fontSize: 50},
-                    {text: row.cliente, style: "header", alignment: 'center',fontSize: 48},
+                    {text: row.servicio, style: "header", alignment: 'center',fontSize: 50},                    
                     {text: "FACTURA", style: "subheader", alignment: 'center',fontSize: 45},
                     {text: '***************************************************************************************************', style: 'subheader', alignment: 'center'},
+                    {text: row.cliente, style: "subheader", alignment: 'center',fontSize: 40},
                     {text: 'Casa:', style: 'subheader', alignment: 'center',fontSize: 40}, 
                     {text: row.contrato, style: "subheader", alignment: 'center',fontSize: 40},
                     {text: '\n', style: "subheader", alignment: 'center'},
@@ -176,7 +176,8 @@ $.ajax({
                     {text: row.cobrador, style: "subheader", alignment: 'center',fontSize: 40},               
                     {text: '***************************************************************************************************', style: 'subheader', alignment: 'center'},   
                     {text: 'Copia del cliente', style: 'subheader', alignment: 'center',fontSize: 37},
-                    {text: '\n\n\n', style: "subheader", alignment: 'center'}                   
+                    {text: '\n\n\n', style: "subheader", alignment: 'center'} 
+                    {text: '**************************************************', style: 'subheader', alignment: 'center'},
                 ];
 
             }
