@@ -30,11 +30,13 @@
                             ])>
                                 <div class="box p-5">
                                     <div class="flex">
-                                        <x-base.lucide
-                                            class="h-[28px] w-[28px] text-primary"
-                                            icon="ShoppingCart"
-                                        />
-                                        <div class="ml-auto">
+                                    <lord-icon
+                                        src="https://cdn.lordicon.com/xcxzayqr.json"
+                                        trigger="loop"
+                                        delay="500"
+                                        style="width:28px;height:28px">
+                                    </lord-icon>
+                                        <!-- <div class="ml-auto">
                                             <x-base.tippy
                                                 class="flex cursor-pointer items-center rounded-full bg-success py-[3px] pl-2 pr-1 text-xs font-medium text-white"
                                                 as="div"
@@ -46,10 +48,10 @@
                                                     icon="ChevronUp"
                                                 />
                                             </x-base.tippy>
-                                        </div>
+                                        </div> -->
                                     </div>
-                                    <div class="mt-6 text-3xl font-medium leading-8">4.710</div>
-                                    <div class="mt-1 text-base text-slate-500">Item Sales</div>
+                                    <div class="mt-6 text-3xl font-medium leading-8">{{$clientes->clientes}}</div>
+                                    <div class="mt-1 text-base text-slate-500">Clientes Registrados</div>
                                 </div>
                             </div>
                         </div>
@@ -60,12 +62,15 @@
                             ])>
                                 <div class="box p-5">
                                     <div class="flex">
-                                        <x-base.lucide
-                                            class="h-[28px] w-[28px] text-pending"
-                                            icon="CreditCard"
-                                        />
+                                    <lord-icon
+                                        src="https://cdn.lordicon.com/ibanawal.json"
+                                        trigger="loop"
+                                        delay="500"
+                                        state="in-reveal"
+                                        style="width:28px;height:28px">
+                                    </lord-icon>
                                         <div class="ml-auto">
-                                            <x-base.tippy
+                                            <!-- <x-base.tippy
                                                 class="flex cursor-pointer items-center rounded-full bg-danger py-[3px] pl-2 pr-1 text-xs font-medium text-white"
                                                 as="div"
                                                 content="2% Lower than last month"
@@ -75,11 +80,11 @@
                                                     class="ml-0.5 h-4 w-4"
                                                     icon="ChevronDown"
                                                 />
-                                            </x-base.tippy>
+                                            </x-base.tippy> -->
                                         </div>
                                     </div>
-                                    <div class="mt-6 text-3xl font-medium leading-8">3.721</div>
-                                    <div class="mt-1 text-base text-slate-500">New Orders</div>
+                                    <div class="mt-6 text-3xl font-medium leading-8">{{$empleados->empleados}}</div>
+                                    <div class="mt-1 text-base text-slate-500">Empleados Registrados</div>
                                 </div>
                             </div>
                         </div>
@@ -313,38 +318,41 @@
                 <div class="col-span-12 mt-6 xl:col-span-4">
                     <div class="intro-y flex h-10 items-center">
                         <h2 class="mr-5 truncate text-lg font-medium">
-                            Weekly Best Sellers
+                            Ubicaciones pos clientes
                         </h2>
                     </div>
                     <div class="mt-5">
-                        @foreach (array_slice($fakers, 0, 4) as $faker)
+                        @foreach ($clientes_ubicaciones as $row)
                             <div class="intro-y">
                                 <div class="box zoom-in mb-3 flex items-center px-4 py-4">
                                     <div class="image-fit h-10 w-10 flex-none overflow-hidden rounded-md">
-                                        <img
-                                            src="{{ Vite::asset($faker['photos'][0]) }}"
-                                            alt="Midone Tailwind HTML Admin Template"
-                                        />
+                                    <lord-icon
+                                        src="https://cdn.lordicon.com/zfmcashd.json"
+                                        trigger="loop"
+                                        delay="500"
+                                        state="in-reveal"
+                                        style="width:28px;height:28px">
+                                    </lord-icon>
                                     </div>
                                     <div class="ml-4 mr-auto">
-                                        <div class="font-medium">{{ $faker['users'][0]['name'] }}</div>
+                                        <div class="font-medium">{{ $row->cliente }}</div>
                                         <div class="mt-0.5 text-xs text-slate-500">
-                                            {{ $faker['dates'][0] }}
+                                            {{ $row->fecha_cliente_registrado }}
                                         </div>
                                     </div>
                                     <div
                                         class="cursor-pointer rounded-full bg-success px-2 py-1 text-xs font-medium text-white">
-                                        137 Sales
+                                        {{ $row->ubicaciones }} ubicaciones
                                     </div>
                                 </div>
                             </div>
                         @endforeach
-                        <a
+                        <!-- <a
                             class="intro-y block w-full rounded-md border border-dotted border-slate-400 py-4 text-center text-slate-500 dark:border-darkmode-300"
                             href=""
                         >
                             View More
-                        </a>
+                        </a> -->
                     </div>
                 </div>
                 <!-- END: Weekly Best Sellers -->
@@ -1042,4 +1050,5 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
 @endsection

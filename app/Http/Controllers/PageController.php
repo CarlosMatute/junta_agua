@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\View\View;
+use DB;
+use Session;
+use Exception;
+use App\Models\User;
 
 class PageController extends Controller
 {
@@ -12,13 +16,41 @@ class PageController extends Controller
      */
     public function dashboardOverview1(): View
     {
-        return view('pages/dashboard-overview-1', [
-            // Specify the base layout.
-            // Eg: 'side-menu', 'simple-menu', 'top-menu', 'login'
-            // The default value is 'side-menu'
+        $clientes = collect(\DB::select("SELECT
+                COUNT(1) CLIENTES
+            FROM
+                TBL_CLIENTES
+            WHERE
+                DELETED_AT IS NULL"))->first();
 
-            // 'layout' => 'side-menu'
-        ]);
+        $empleados = collect(\DB::select("SELECT
+                COUNT(1) EMPLEADOS
+            FROM
+                PER_EMPLEADO
+            WHERE
+                DELETED_AT IS NULL"))->first();
+
+        $clientes_ubicaciones = DB::select("SELECT
+                TRIM(
+                    COALESCE(TRIM(TC.PRIMER_NOMBRE) || ' ', '') || COALESCE(TRIM(TC.SEGUNDO_NOMBRE) || ' ', '') || COALESCE(TRIM(TC.PRIMER_APELLIDO) || ' ', '') || COALESCE(TRIM(TC.SEGUNDO_APELLIDO || ' '), '')
+                ) CLIENTE,
+                COUNT(TU.ID) UBICACIONES,
+                TO_CHAR(TC.CREATED_AT, 'DD FMMonth YYYY') FECHA_CLIENTE_REGISTRADO
+            FROM
+                TBL_CLIENTES TC
+                LEFT JOIN TBL_UBICACION TU ON TC.ID = TU.ID_CLIENTE
+            WHERE
+                TC.DELETED_AT IS NULL
+                AND TU.DELETED_AT IS NULL
+            GROUP BY
+                CLIENTE,
+                TC.CREATED_AT
+            ORDER BY
+                UBICACIONES DESC
+            LIMIT 4");
+        return view('pages/dashboard-overview-1')->with("clientes", $clientes)
+        ->with("empleados", $empleados)
+        ->with("clientes_ubicaciones", $clientes_ubicaciones);
     }
 
     /**
