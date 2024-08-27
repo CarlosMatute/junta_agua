@@ -105,7 +105,7 @@ class UbicacionesController extends Controller
         $descripcion_casa=$request->descripcion_casa;
         $direccion=$request->direccion;
         $cliente_habita=$request->cliente_habita;
-        $fecha_cobro=$request->fecha_cobro;
+        //$fecha_cobro=$request->fecha_cobro;
         $pais=$request->pais;
         $coordenadas=$request->coordenadas;
         $casa_propia=$request->casa_propia;
@@ -145,15 +145,14 @@ class UbicacionesController extends Controller
             //throw New Exception($identidad, true);
             if ($accion == 1) {
                 $ubicacion = collect(\DB::select("INSERT INTO public.tbl_ubicacion(
-                    id_cliente,descripcion_casa, direccion, cliente_habita, fecha_cobro, id_pais, coordenadas, casa_propia, id_departamento, id_municipio, activo)
-                    VALUES (:id_cliente, :descripcion_casa, :direccion,  :cliente_habita, :fecha_cobro, :pais, :coordenadas, :casa_propia, :id_departamento, :id_municipio, :activo)
+                    id_cliente,descripcion_casa, direccion, cliente_habita, id_pais, coordenadas, casa_propia, id_departamento, id_municipio, activo)
+                    VALUES (:id_cliente, :descripcion_casa, :direccion,  :cliente_habita, :pais, :coordenadas, :casa_propia, :id_departamento, :id_municipio, :activo)
                     returning id;",
                     [
                         "id_cliente" => $cliente,
                         "descripcion_casa" => $descripcion_casa,
                         "direccion" => $direccion,
                         "cliente_habita" => $cliente_habita,
-                        "fecha_cobro" => $fecha_cobro,
                         "pais" => $pais,
                         "coordenadas" => $ubicacion_casa,
                         "casa_propia" => $casa_propia,
@@ -168,7 +167,7 @@ class UbicacionesController extends Controller
             }else if ($accion == 2) {
                 DB::select("UPDATE public.tbl_ubicacion
                     SET id_cliente = :id_cliente ,descripcion_casa=:descripcion_casa, direccion=:direccion, cliente_habita=:cliente_habita, 
-                    fecha_cobro=:fecha_cobro, id_pais=:pais, coordenadas=:coordenadas, casa_propia=:casa_propia, 
+                    id_pais=:pais, coordenadas=:coordenadas, casa_propia=:casa_propia, 
                     id_departamento=:id_departamento, id_municipio=:id_municipio, activo=:activo, updated_at=now()
                     WHERE id = :id;",
                     [
@@ -177,7 +176,6 @@ class UbicacionesController extends Controller
                         "descripcion_casa" => $descripcion_casa,
                         "direccion" => $direccion,
                         "cliente_habita" => $cliente_habita,
-                        "fecha_cobro" => $fecha_cobro,
                         "pais" => $pais,
                         "coordenadas" => $ubicacion_casa,
                         "casa_propia" => $casa_propia,
