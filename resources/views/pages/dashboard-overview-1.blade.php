@@ -95,28 +95,29 @@
                             ])>
                                 <div class="box p-5">
                                     <div class="flex">
-                                        <x-base.lucide
-                                            class="h-[28px] w-[28px] text-warning"
-                                            icon="Monitor"
-                                        />
+                                    <lord-icon
+                                        src="https://cdn.lordicon.com/vhyuhmbl.json"
+                                        trigger="loop"
+                                        delay="500"
+                                        state="morph-group"
+                                        style="width:28px;height:28px">
+                                    </lord-icon>
                                         <div class="ml-auto">
-                                            <x-base.tippy
-                                                class="flex cursor-pointer items-center rounded-full bg-success py-[3px] pl-2 pr-1 text-xs font-medium text-white"
+                                            <!-- <x-base.tippy
+                                                class="flex cursor-pointer items-center rounded-full bg-danger py-[3px] pl-2 pr-1 text-xs font-medium text-white"
                                                 as="div"
-                                                content="12% Higher than last month"
+                                                content="2% Lower than last month"
                                             >
-                                                12%
+                                                2%
                                                 <x-base.lucide
                                                     class="ml-0.5 h-4 w-4"
-                                                    icon="ChevronUp"
+                                                    icon="ChevronDown"
                                                 />
-                                            </x-base.tippy>
+                                            </x-base.tippy> -->
                                         </div>
                                     </div>
-                                    <div class="mt-6 text-3xl font-medium leading-8">2.149</div>
-                                    <div class="mt-1 text-base text-slate-500">
-                                        Total Products
-                                    </div>
+                                    <div class="mt-6 text-3xl font-medium leading-8">{{$contratos->contratos}}</div>
+                                    <div class="mt-1 text-base text-slate-500">Contratos Registrados</div>
                                 </div>
                             </div>
                         </div>

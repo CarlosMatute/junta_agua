@@ -48,9 +48,22 @@ class PageController extends Controller
             ORDER BY
                 UBICACIONES DESC
             LIMIT 4");
+
+
+        $contratos = collect(\DB::SELECT("SELECT COUNT(1) CONTRATOS
+                FROM PUBLIC.TBL_CONTRATO TC
+                JOIN TBL_CLIENTES C ON TC.ID_CLIENTE = C.ID
+                JOIN TBL_UBICACION TU ON TC.ID_UBICACION = TU.ID
+                JOIN TBL_SERVICIO TS ON TC.ID_SERVICIO = TS.ID
+                WHERE TC.DELETED_AT IS NULL
+                    AND C.DELETED_AT IS NULL
+                    AND TU.DELETED_AT IS NULL
+                    AND TS.DELETED_AT IS NULL"))->first();
+
         return view('pages/dashboard-overview-1')->with("clientes", $clientes)
         ->with("empleados", $empleados)
-        ->with("clientes_ubicaciones", $clientes_ubicaciones);
+        ->with("clientes_ubicaciones", $clientes_ubicaciones)
+        ->with("contratos", $contratos);
     }
 
     /**
