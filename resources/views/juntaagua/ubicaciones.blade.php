@@ -85,7 +85,6 @@
                         <th>Dirección</th>
                         <th>Foto</th>
                         <th>Ubicación</th>
-                        <th>Fecha Cobro</th>
                         <th>Activo</th>
                         <th>Casa Propia</th>
                         <th>Acciones</th>
@@ -118,7 +117,7 @@
                         </td>
                         
                         <td>{{$row->ubicacion}}</td>
-                        <td>{{$row->fecha_cobro}}</td>
+                        {{-- <td>{{$row->fecha_cobro}}</td> --}}
                         <td class="text-center">
                             @if($row->activo)
                                 <i data-lucide="Check" class="w-4 h-4 text-green-500" style="color: #10B981;"></i>
@@ -148,7 +147,7 @@
                                 data-departamento="{{$row->id_departamento}}"
                                 data-municipio="{{$row->id_municipio}}"
                                 data-coordenadas="{{$row->coordenadas}}"
-                                data-fecha_cobro="{{$row->fecha_cobro}}"
+                                {{-- data-fecha_cobro="{{$row->fecha_cobro}}" --}}
                                 data-activo="{{$row->activo ? '1' : '0'}}"
                                 data-casa_propia="{{$row->casa_propia ? '1' : '0'}}"
                             >
@@ -171,7 +170,7 @@
                                 data-departamento="{{$row->id_departamento}}"
                                 data-municipio="{{$row->id_municipio}}"
                                 data-coordenadas="{{$row->coordenadas}}"
-                                data-fecha_cobro="{{$row->fecha_cobro}}"
+                                {{-- data-fecha_cobro="{{$row->fecha_cobro}}" --}}
                                 data-activo="{{$row->activo ? '1' : '0'}}"
                                 data-casa_propia="{{$row->casa_propia ? '1' : '0'}}"
                             >
@@ -194,7 +193,7 @@
                                 data-departamento="{{$row->id_departamento}}"
                                 data-municipio="{{$row->id_municipio}}"
                                 data-coordenadas="{{$row->coordenadas}}"
-                                data-fecha_cobro="{{$row->fecha_cobro}}"
+                                {{-- data-fecha_cobro="{{$row->fecha_cobro}}" --}}
                                 data-activo="{{$row->activo ? '1' : '0'}}"
                                 data-casa_propia="{{$row->casa_propia ? '1' : '0'}}"
                                 id="btn_subir_foto"
@@ -349,7 +348,7 @@
                     </div>
 
 
-                    <div class="col-span-12 md:col-span-12 lg:col-span-6">
+                    {{-- <div class="col-span-12 md:col-span-12 lg:col-span-6">
                         <x-base.form-label class="font-extrabold" for="modal_input_fecha_cobro">
                             Fecha de Cobro
                         </x-base.form-label>
@@ -357,7 +356,7 @@
                             id="modal_input_fecha_cobro"
                             type="date"
                         />
-                    </div>
+                    </div> --}}
                     
 
                     <div class="col-span-12 md:col-span-12 lg:col-span-6">
@@ -638,7 +637,7 @@
                 pais = $(this).data('pais');
                 coordenadas = $(this).data('coordenadas');
                 casa_propia = $(this).data('casa_propia');
-                fecha_cobro = $(this).data('fecha_cobro');
+                // fecha_cobro = $(this).data('fecha_cobro');
                 departamento = $(this).data('departamento');
                 cliente = $(this).data('cliente');
                 municipio = $(this).data('municipio');
@@ -666,7 +665,7 @@
                 $("#modal_input_pais").val(pais);
                 $("#modal_input_coordenadas").val(coordenadas);
                 $("#modal_input_casa_propia").val(casa_propia);
-                $("#modal_input_fecha_cobro").val(fecha_cobro);
+                // $("#modal_input_fecha_cobro").val(fecha_cobro);
                 $("#modal_input_departamento").val(departamento);
                 $("#modal_input_cliente").val(cliente);
                 $("#modal_input_municipio").val(municipio);
@@ -700,7 +699,7 @@
                 //$("#modal_input_pais").val('');
                 $("#modal_input_coordenadas").val('');
                 $("#modal_input_casa_propia").val('');
-                $("#modal_input_fecha_cobro").val('');
+                // $("#modal_input_fecha_cobro").val('');
                 $("#modal_input_departamento").val(id_departamento);
                 $("#modal_input_cliente").val(id_cliente);
                 //$("#modal_input_municipio").val('');
@@ -724,7 +723,7 @@
                 pais = $("#modal_input_pais").val();
                 coordenadas = $("#modal_input_coordenadas").val();
                 casa_propia = $("#modal_input_casa_propia").val();
-                fecha_cobro = $("#modal_input_fecha_cobro").val();
+                // fecha_cobro = $("#modal_input_fecha_cobro").val();
                 departamento = $("#modal_input_departamento").val();
                 cliente = $("#modal_input_cliente").val();
                 municipio = $("#modal_input_municipio").val();
@@ -797,13 +796,13 @@
                 }
 
 
-                if(fecha_cobro == null || fecha_cobro == ''){
-                    titleMsg = 'Valor Requerido'
-                    textMsg = 'Debe especificar un valor para fecha de cobro.';
-                    typeMsg = 'error';
-                    notificacion()
-                    return false;
-                }
+                // if(fecha_cobro == null || fecha_cobro == ''){
+                //     titleMsg = 'Valor Requerido'
+                //     textMsg = 'Debe especificar un valor para fecha de cobro.';
+                //     typeMsg = 'error';
+                //     notificacion()
+                //     return false;
+                // }
 
                 if(direccion == null || direccion == ''){
                     titleMsg = 'Valor Requerido'
@@ -853,7 +852,7 @@
                         'descripcion_casa' : descripcion_casa,
                         'direccion' : direccion,
                         'cliente_habita' : cliente_habita,
-                        'fecha_cobro' : fecha_cobro,
+                        //'fecha_cobro' : fecha_cobro,
                         'pais' : pais,
                         'coordenadas' : coordenadas,
                         'casa_propia' : casa_propia,
@@ -915,14 +914,14 @@
                                         'alt="Midone Tailwind HTML Admin Template" class="rounded-full" style="">'+
                                     '</div>', 
                                     row.ubicacion,
-                                    row.fecha_cobro, activo_icono , casa_propia_icono, 
+                                     activo_icono , casa_propia_icono, 
                                     '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"'+
                                         'data-id="'+row.id+'"'+ 
                                         'data-cliente="'+row.id_cliente+'"'+ 
                                         'data-descripcion_casa="'+row.descripcion_casa+'"'+ 
                                         'data-direccion="'+row.direccion+'"'+ 
                                         'data-cliente_habita="'+row.cliente_habita+'"'+ 
-                                        'data-fecha_cobro="'+row.fecha_cobro+'"'+
+                                        
                                         'data-coordenadas="'+"{&quot;lat&quot;: "+objetoUbicacion.lat+", &quot;lng&quot;: "+objetoUbicacion.lng+"}"+'"'+ 
                                         'data-casa_propia="'+row.casa_propia+'"'+
                                         'data-pais="'+row.id_pais+'"'+
@@ -936,7 +935,7 @@
                                         'data-descripcion_casa="'+row.descripcion_casa+'"'+ 
                                         'data-direccion="'+row.direccion+'"'+ 
                                         'data-cliente_habita="'+row.cliente_habita+'"'+ 
-                                        'data-fecha_cobro="'+row.fecha_cobro+'"'+
+                                    
                                         'data-coordenadas="'+"{&quot;lat&quot;: "+objetoUbicacion.lat+", &quot;lng&quot;: "+objetoUbicacion.lng+"}"+'"'+ 
                                         'data-casa_propia="'+row.casa_propia+'"'+
                                         'data-pais="'+row.id_pais+'"'+
@@ -946,7 +945,7 @@
                                         'data-activo="'+row.activo+'"'+
                                     '><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+
 
-                                    '<button data-id="' + row.id + '" data-cliente="' + row.id_cliente + '" data-descripcion_casa="' + row.descripcion_casa + '" data-cliente_habita="' + row.cliente_habita + '" data-direccion="' + row.direccion + '" data-foto="' + row.foto + '" data-pais="' + row.id_pais + '" data-departamento="' + row.id_departamento + '" data-municipio="' + row.id_municipio + '" data-coordenadas="' + JSON.stringify({lat: objetoUbicacion.lat, lng: objetoUbicacion.lng}) + '" data-fecha_cobro="' + row.fecha_cobro + '" data-activo="' + row.activo + '" data-casa_propia="' + row.casa_propia + '" id="btn_subir_foto" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 foto mb-2 mr-1 foto"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="camera" data-lucide="camera" class="lucide lucide-camera stroke-1.5 h-4 w-4"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg></button>'
+                                    '<button data-id="' + row.id + '" data-cliente="' + row.id_cliente + '" data-descripcion_casa="' + row.descripcion_casa + '" data-cliente_habita="' + row.cliente_habita + '" data-direccion="' + row.direccion + '" data-foto="' + row.foto + '" data-pais="' + row.id_pais + '" data-departamento="' + row.id_departamento + '" data-municipio="' + row.id_municipio + '" data-coordenadas="' + JSON.stringify({lat: objetoUbicacion.lat, lng: objetoUbicacion.lng}) +  '" data-activo="' + row.activo + '" data-casa_propia="' + row.casa_propia + '" id="btn_subir_foto" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 foto mb-2 mr-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="camera" data-lucide="camera" class="lucide lucide-camera stroke-1.5 h-4 w-4"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg></button>'
                                 ]; 
                             }
                             if (accion == 1) { 
