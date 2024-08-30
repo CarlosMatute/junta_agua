@@ -59,11 +59,46 @@ class PageController extends Controller
                     AND C.DELETED_AT IS NULL
                     AND TU.DELETED_AT IS NULL
                     AND TS.DELETED_AT IS NULL"))->first();
+        
+        $sql_ingresos_mensuales = DB::SELECT("select sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 1 ) as enero,
+            sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 2 ) as febrero,
+            sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 3 ) as marzo,
+            sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 4 ) as abril,
+            sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 5 ) as mayo,
+            sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 6 ) as junio,
+            sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 7 ) as julio,
+            sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 8 ) as agosto,
+            sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 9 ) as septiembre,
+            sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 10 ) as octubre,
+            sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 11 ) as noviembre,
+            sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 12 ) as diciembre	
+            from public.tbl_movimientos
+	where extract( year from created_at )  = extract( year from current_date )
+	");
+        
+        $sql_cobros_mensuales = DB::SELECT("select sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 1 ) as enero,
+                sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 2 ) as febrero,
+                sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 3 ) as marzo,
+                sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 4 ) as abril,
+                sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 5 ) as mayo,
+                sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 6 ) as junio,
+                sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 7 ) as julio,
+                sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 8 ) as agosto,
+                sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 9 ) as septiembre,
+                sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 10 ) as octubre,
+                sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 11 ) as noviembre,
+                sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 12 ) as diciembre	
+        from public.tbl_movimientos
+	where extract( year from created_at )  = extract( year from current_date )
+	");
 
         return view('pages/dashboard-overview-1')->with("clientes", $clientes)
         ->with("empleados", $empleados)
         ->with("clientes_ubicaciones", $clientes_ubicaciones)
-        ->with("contratos", $contratos);
+        ->with("contratos", $contratos)
+        ->with("sql_ingresos_mensuales", $sql_ingresos_mensuales)
+        ->with("sql_cobros_mensuales", $sql_cobros_mensuales)
+                ;
     }
 
     /**

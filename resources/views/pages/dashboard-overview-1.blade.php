@@ -21,7 +21,8 @@
                                 icon="RefreshCcw"
                             /> Reload Data
                         </a>
-                    </div>
+                    </div>                                                                                
+                                        
                     <div class="mt-5 grid grid-cols-12 gap-6">
                         <div class="intro-y col-span-12 sm:col-span-6 xl:col-span-3">
                             <div @class([
@@ -157,7 +158,7 @@
                 </div>
                 <!-- END: General Report -->
                 <!-- BEGIN: Sales Report -->
-                <div class="col-span-12 mt-8 lg:col-span-6">
+<!--                <div class="col-span-12 mt-8 lg:col-span-6">
                     <div class="intro-y block h-10 items-center sm:flex">
                         <h2 class="mr-5 truncate text-lg font-medium">Sales Report</h2>
                         <div class="relative mt-3 text-slate-500 sm:ml-auto sm:mt-0">
@@ -222,7 +223,50 @@
                             />
                         </div>
                     </div>
+                </div>-->
+                
+                <!-- BEGIN: Sales Report -->
+                <div class="col-span-12 mt-8 lg:col-span-8">
+                    <div class="intro-y block h-10 items-center sm:flex">
+                        <h2 class="mr-5 truncate text-lg font-medium">Ingresos mensuales</h2>
+                        
+                    </div>
+                    <div class="intro-y box mt-12 p-5 sm:mt-5">
+<!--                        <div class="flex flex-col md:flex-row md:items-center">
+                            <div class="flex">
+                                <div>
+                                    <div class="text-lg font-medium text-primary dark:text-slate-300 xl:text-xl">
+                                        $15,000
+                                    </div>
+                                    <div class="mt-0.5 text-slate-500">This Month</div>
+                                </div>
+                                <div
+                                    class="mx-4 h-12 w-px border border-r border-dashed border-slate-200 dark:border-darkmode-300 xl:mx-5">
+                                </div>
+                                <div>
+                                    <div class="text-lg font-medium text-slate-500 xl:text-xl">
+                                        $10,000
+                                    </div>
+                                    <div class="mt-0.5 text-slate-500">Last Month</div>
+                                </div>
+                            </div>                            
+                        </div>-->
+                        <div >
+<!--                            <x-report-line-chart
+                                id="myChart"
+                                class="mt-6 -mb-6"
+                                height="h-[275px]"
+                            />-->
+                            
+                            <canvas id="myChart" class="chart line-chart line-chart"></canvas>
+                            
+                        </div>
+                    </div>
                 </div>
+                
+                
+                
+                
                 <!-- END: Sales Report -->
                 <!-- BEGIN: Weekly Top Seller -->
                 <div class="col-span-12 mt-8 sm:col-span-6 lg:col-span-3">
@@ -1053,3 +1097,75 @@
     </div>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
 @endsection
+@once
+    @push('scripts')
+    
+<script type="module">
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      datasets: [{
+        label: 'Ingresos',        
+        data: [
+            @foreach ($sql_ingresos_mensuales as $mes)
+                {{$mes->enero}},
+                {{$mes->febrero}},
+                {{$mes->marzo}},
+                {{$mes->abril}},
+                {{$mes->mayo}},
+                {{$mes->junio}},
+                {{$mes->julio}},
+                {{$mes->agosto}},
+                {{$mes->septiembre}},
+                {{$mes->octubre}},
+                {{$mes->noviembre}},
+                {{$mes->diciembre}}
+            @endforeach            
+        ],
+        borderColor: '#36A2EB',
+        backgroundColor: '#9BD0F5',        
+        borderWidth: 1
+      },
+      {
+        label: 'Cobros',        
+        data: [
+            @foreach ($sql_cobros_mensuales as $mes)
+                {{$mes->enero}},
+                {{$mes->febrero}},
+                {{$mes->marzo}},
+                {{$mes->abril}},
+                {{$mes->mayo}},
+                {{$mes->junio}},
+                {{$mes->julio}},
+                {{$mes->agosto}},
+                {{$mes->septiembre}},
+                {{$mes->octubre}},
+                {{$mes->noviembre}},
+                {{$mes->diciembre}}
+            @endforeach            
+        ],
+        borderColor: '#FF6384',
+        backgroundColor: '#FFB1C1',        
+        borderWidth: 1
+      }
+  ]
+    },
+    options: {
+        animation: true,
+        plugins: {
+          legend: {
+            display: true
+          },
+          tooltip: {
+            enabled: true
+          }
+        }
+      },
+  }
+          );
+</script>
+@endpush
+@endonce

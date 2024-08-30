@@ -18,6 +18,7 @@ class SideMenu
         $clientes = 'false';
         $ubicaciones = 'false';
         $contratos = 'false';                        
+        $balances = 'false';                        
         
         $username = isset(Auth::user()->username) ? Auth::user()->username : null;
         
@@ -52,6 +53,9 @@ class SideMenu
             }
             if( $up->estado_permiso && $up->permiso == 'menu_contratos' ){
                 $contratos = 'true';
+            }
+            if( $up->estado_permiso && $up->permiso == 'menu_balances' ){
+                $balances = 'true';
             }
             
                                 
@@ -123,6 +127,15 @@ class SideMenu
                     'layout' => 'side-menu'
                 ],
                 'title' => 'Balance',
+                'permiso' => $balances
+            ],
+            'chart' => [
+                'icon' => 'activity',
+                'route_name' => 'chart',
+                'params' => [
+                    'layout' => 'side-menu'
+                ],
+                'title' => 'Chart',
                 'permiso' => $contratos
             ],
             // 'dashboard' => [
