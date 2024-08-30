@@ -129,15 +129,6 @@ class SideMenu
                 'title' => 'Balance',
                 'permiso' => $balances
             ],
-            'chart' => [
-                'icon' => 'activity',
-                'route_name' => 'chart',
-                'params' => [
-                    'layout' => 'side-menu'
-                ],
-                'title' => 'Chart',
-                'permiso' => $contratos
-            ],
             // 'dashboard' => [
             //     'icon' => 'home',
             //     'title' => 'Dashboard',
