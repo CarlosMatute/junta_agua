@@ -97,6 +97,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.worker.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.min.js" integrity="sha512-hoZmP5l0sJQzHzkXQS3ZCj/H7bOn8JKmbHd/s2trPUoMcvPaBfLSE9/92cpwYzcXBaEtVT/aCQ9P97rkTSWqcw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.js" ></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.js" integrity="sha512-/fgTphwXa3lqAhN+I8gG8AvuaTErm1YxpUjbdCvwfTMyv8UZnFyId7ft5736xQ6CyQN4Nzr21lBuWWA9RTCXCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.lordicon.com/lordicon.js"></script>
 <script type="module">
@@ -176,7 +177,7 @@ $.ajax({
                     {text: row.cobrador, style: "subheader", alignment: 'center',fontSize: 40},               
                     {text: '***************************************************************************************************', style: 'subheader', alignment: 'center'},   
                     {text: 'Copia del cliente', style: 'subheader', alignment: 'center',fontSize: 37},
-                    {text: '\n\n\n', style: "subheader", alignment: 'center'} 
+                    {text: '\n\n\n', style: "subheader", alignment: 'center'},
                     {text: '**************************************************', style: 'subheader', alignment: 'center'},
                 ];
 

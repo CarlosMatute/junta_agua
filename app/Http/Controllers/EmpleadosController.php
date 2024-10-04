@@ -160,7 +160,7 @@ class EmpleadosController extends Controller
      public function ver_seg_usuario_permisos( $idEmpleado ) {
         $permisos_list = DB::select("select id, nombre from public.seg_permisos where deleted_at is null");
         $seg_usuario_permisos_list = DB::select("
-        select sup.id, sup.id_usuario, u.name, sup.permiso, sp.nombre as permiso_otorgado
+        select sup.id, sup.id_usuario, u.username,  u.name, sup.permiso, sp.nombre as permiso_otorgado
         from public.seg_usuario_permisos sup 
         join public.users u on u.id = sup.id_usuario 
         join public.seg_permisos sp on sp.id = sup.permiso 
@@ -170,10 +170,21 @@ class EmpleadosController extends Controller
         order by 1 desc
         ", ['id_empleado'=>$idEmpleado]
         );
+        $sql_empleado = DB::select("
+        select u.username
+        from public.users u
+        join per_empleado pe on pe.id_usuario = u.id
+        where u.deleted_at is null
+        and pe.id = :id_empleado
+        ", ['id_empleado'=>$idEmpleado]
+        );
+        
+        
         
        return view("empleado.empleadosPermisos")
                 ->with("seg_usuario_permisos_list", $seg_usuario_permisos_list)
                 ->with("permisos_list", $permisos_list)
+                ->with("sql_empleado", $sql_empleado)
                 ->with("id_empleado", $idEmpleado)
        ;
    }

@@ -19,7 +19,9 @@
                     <h1 class="text-5xl font-medium leading-none">PERMISOS</h1>
                 </div>
                 <div class="text-slate-500">Pantalla de administración de Permisos.</div>
+                <h1 class="text-2xl font-medium leading-none">Usuario : @foreach ($sql_empleado as $row) {{$row->username}}  @endforeach</h1>
             </div>        
+                   
         </div>
         <div class="flex flex-col space-y-4 sm:flex-row  sm:space-y-0">
             <a href="{{url('/per-empleado')}}" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1">
@@ -61,33 +63,33 @@
     <div class="scrollbar-hidden overflow-x-auto">
 <table class="jambo_table table table-hover" id="tbl_seg_usuario_permisos" border=1>
 	<thead>
-		<tr style="color: black; background-color: buttonhighlight; font-size: large    ">
+		<tr style="color: black; background-color: buttonhighlight; font-size: large">
 			<th scope="col">Id</th>
 			<th scope="col">Permiso</th>
 			<th scope="col">Opciones</th>
 		</tr>
 	</thead>
-<tbody>
-@foreach ($seg_usuario_permisos_list as $row)
-<tr style="font-size: medium">
-<td scope="row">{{$row->id}}</td>
-<td scope="row">{{$row->permiso_otorgado}}</td>
-<td>
-<x-base.button class="btn btn-primary" data-tw-toggle="modal" data-tw-target="#modal_tbl_seg_usuario_permisos"
-data-id="{{$row->id}}"
-data-permiso="{{$row->permiso}}"
-data-permisos="{{$row->permiso_otorgado}}"
-title="Editar" class="mb-2 mr-1" variant="primary" size="sm" id="btn_editar_seg_usuario_permisos"><x-base.lucide class="h-4 w-4" icon="Edit"/></x-base.button>
-&nbsp&nbsp&nbsp<x-base.button class="btn btn-danger" data-tw-toggle="modal" data-tw-target="#modal_eliminar_seg_usuario_permisos"
-data-id="{{$row->id}}"
-data-permiso="{{$row->permiso}}"
-data-permisos="{{$row->permiso_otorgado}}"
-title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_seg_usuario_permisos"><x-base.lucide class="h-4 w-4" icon="Trash"/></x-base.button>
-</td>
-</tr>
-@endforeach
-</tbody>
-</table>
+            <tbody>
+                @foreach ($seg_usuario_permisos_list as $row)
+                <tr style="font-size: medium">
+                <td scope="row">{{$row->id}}</td>
+                <td scope="row">{{$row->permiso_otorgado}}</td>
+                <td>
+                <x-base.button class="btn btn-primary" data-tw-toggle="modal" data-tw-target="#modal_tbl_seg_usuario_permisos"
+                data-id="{{$row->id}}"
+                data-permiso="{{$row->permiso}}"
+                data-permisos="{{$row->permiso_otorgado}}"
+                title="Editar" class="mb-2 mr-1" variant="primary" size="sm" id="btn_editar_seg_usuario_permisos"><x-base.lucide class="h-4 w-4" icon="Edit"/></x-base.button>
+                &nbsp&nbsp&nbsp<x-base.button class="btn btn-danger" data-tw-toggle="modal" data-tw-target="#modal_eliminar_seg_usuario_permisos"
+                data-id="{{$row->id}}"
+                data-permiso="{{$row->permiso}}"
+                data-permisos="{{$row->permiso_otorgado}}"
+                title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_seg_usuario_permisos"><x-base.lucide class="h-4 w-4" icon="Trash"/></x-base.button>
+                </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
 
     </div>
 </div>
@@ -95,7 +97,7 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_s
 
 	
 <!-- BEGIN: Modal Content -->
-<x-base.dialog id="modal_tbl_seg_usuario_permisos" size="xl">
+<x-base.dialog id="modal_tbl_seg_usuario_permisos" size="md">
     <x-base.dialog.panel>
         <x-base.dialog.title class="bg-primary">
             <h2 class="mr-auto text-white font-medium">
@@ -106,7 +108,7 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_s
             </h2>
         </x-base.dialog.title>
         <x-base.dialog.description class="grid grid-cols-12 gap-4 gap-y-3">
-<div class="col-span-12 md:col-span-12 lg:col-span-6">
+<div class="col-span-12 md:col-span-12 lg:col-span-12">
                 <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Permiso</x-base.form-label><x-base.tom-select id="permiso" name="permiso" class="w-full" >
 				<option></option>
 				@foreach ($permisos_list as $permisos)

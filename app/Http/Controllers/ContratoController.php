@@ -323,9 +323,34 @@ class ContratoController extends Controller
        'id_contrato'=>$idContrato
    ]);
     
+    $saldos = DB::SELECT("with saldos as (
+            select TRIM(
+                COALESCE(TRIM(tc.primer_nombre)||' ','')||
+                COALESCE(TRIM(tc.segundo_nombre)||' ','')||
+                COALESCE(TRIM(tc.primer_apellido)||' ','')||
+                COALESCE(TRIM(tc.segundo_apellido||' '),'')
+            ) as nombre_cliente,
+            sum( coalesce( tm.debe, 0 ) ) as debe, sum( coalesce(tm.haber, 0) ) as haber, tm.id_cliente,
+            case when sum( coalesce( tm.debe, 0 ) ) > sum( coalesce(tm.haber, 0) ) then 'DEUDA' 
+                when sum( coalesce( tm.debe, 0 ) ) < sum( coalesce(tm.haber, 0) ) then 'SALDO A FAVOR' 
+                when sum( coalesce( tm.debe, 0 ) ) = sum( coalesce(tm.haber, 0) ) then 'SOLVENTE'
+            else '' end estado_cuenta,
+            abs( sum( coalesce( tm.debe, 0 ) ) - sum( coalesce(tm.haber, 0) ) ) as total ,
+            tm.id_contrato
+            from public.tbl_movimientos tm
+            join public.tbl_clientes tc on tc.id = tm.id_cliente
+            where tm.deleted_at is null            
+            and tm.id_contrato = :id_contrato
+            group by 1,4,7
+        ) 
+        select * from saldos",[           
+            "id_contrato"=>$idContrato
+        ]);
+    
    return view("juntaagua.movimientos.movimientos")
             ->with("tbl_movimientos_list", $tbl_movimientos_list)
             ->with("tipo_movimiento_list", $tipo_movimiento_list)
+            ->with("saldos", $saldos)
             ->with("id_contrato", $idContrato)
    ;
    
@@ -432,7 +457,7 @@ class ContratoController extends Controller
             if($resultado){
                 $msgSuccess="Registro de cobro creado: ".$sql_tbl_movimientos->id_movimiento;
             }else{
-                $msgAlert="No se encontraron registros de cobro a crear";
+                $msgAlert="¡Ya existe un cobro para el mes actual!";
             }
                         
         }else{

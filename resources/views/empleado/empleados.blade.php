@@ -54,7 +54,7 @@
     <div class="scrollbar-hidden overflow-x-auto">
 <table class="jambo_table table table-hover" id="tbl_per_empleado" border=1>
 	<thead>
-		<tr style="color: black; background-color: buttonhighlight; font-size: large    ">
+		<tr style="color: black; background-color: buttonhighlight; font-size: large">
 			<th scope="col">id</th>
 			<th scope="col">Primer nombre</th>
 			<th scope="col">Segundo nombre</th>

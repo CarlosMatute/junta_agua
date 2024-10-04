@@ -161,20 +161,23 @@ class ClientesController extends Controller
     public function ver_balance_general() {
         
         $sql_balance_general = DB::SELECT("with saldos as (
-select TRIM(
-	COALESCE(TRIM(tc.primer_nombre)||' ','')||
-	COALESCE(TRIM(tc.segundo_nombre)||' ','')||
-	COALESCE(TRIM(tc.primer_apellido)||' ','')||
-	COALESCE(TRIM(tc.segundo_apellido||' '),'')
-) as nombre_cliente,
-	sum(tm.debe) as debe, sum(tm.haber) as haber, tm.id_cliente, tm.id_cobrador,
-case when sum(tm.debe) > sum(tm.haber) then 'DEUDA' else 'SOLVENTE' end estado_cuenta
-from public.tbl_movimientos tm
-	join public.tbl_clientes tc on tc.id = tm.id_cliente	
-group by 1,4,5
-) 
-select * from saldos 
-where estado_cuenta = 'DEUDA'");
+            select TRIM(
+                    COALESCE(TRIM(tc.primer_nombre)||' ','')||
+                    COALESCE(TRIM(tc.segundo_nombre)||' ','')||
+                    COALESCE(TRIM(tc.primer_apellido)||' ','')||
+                    COALESCE(TRIM(tc.segundo_apellido||' '),'')
+            ) as nombre_cliente,
+            sum( coalesce( tm.debe, 0 ) ) as debe, sum( coalesce(tm.haber, 0) ) as haber, tm.id_cliente,
+            case when sum( coalesce( tm.debe, 0 ) ) > sum( coalesce(tm.haber, 0) ) then 'DEUDA' else 'SOLVENTE' end estado_cuenta,
+            tm.id_contrato,
+            sum( coalesce( tm.debe, 0 ) ) - sum( coalesce(tm.haber, 0) ) as total
+            from public.tbl_movimientos tm
+            join public.tbl_clientes tc on tc.id = tm.id_cliente
+            where tm.deleted_at is null
+            group by 1,4,6
+        ) 
+        select * from saldos 
+        where estado_cuenta = 'DEUDA'");
         
         return view('juntaagua.balance')
                 ->with('sql_balance_general',$sql_balance_general);

@@ -57,6 +57,7 @@
 			<th scope="col">Cliente</th>
 			<th scope="col">Debe</th>
 			<th scope="col">Haber</th>			
+			<th scope="col">Deuda total</th>			
 			<th scope="col">Estado</th>			
 		</tr>
 	</thead>
@@ -66,6 +67,7 @@
 <td scope="row">{{$row->nombre_cliente}}</td>
 <td scope="row">{{$row->debe}}</td>
 <td scope="row">{{$row->haber}}</td>
+<td scope="row">{{$row->total}}</td>
 <td scope="row">{{$row->estado_cuenta}}</td>
 </tr>
 @endforeach

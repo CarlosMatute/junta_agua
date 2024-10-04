@@ -47,7 +47,7 @@
                     variant="primary"
                     id="btn_nuevo_cliente"
                 ><i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
-                     Registrar Nuevo Cliente
+                     Registrar Nuevo Servicio
                 </x-base.button>
            
         </div>
@@ -56,7 +56,7 @@
 <div class="scrollbar-hidden overflow-x-auto">
     <table id="sdatatable" class="display datatable" style="width:100%">
         <thead>
-            <tr>
+            <tr style="color: black; background-color: buttonhighlight; font-size: large">
                 <th>ID</th>
                 <th>Nombres</th>               
                 <th>Acciones</th>
@@ -101,7 +101,7 @@
 </div>
 </div>
 <!-- BEGIN: Modal Content -->
-<x-base.dialog id="modal_nuevo_servicio" size="xl">
+<x-base.dialog id="modal_nuevo_servicio" size="md">
     <x-base.dialog.panel>
         <x-base.dialog.title class="bg-primary">
             <h2 class="mr-auto text-white font-medium">
@@ -112,9 +112,9 @@
             </h2>
         </x-base.dialog.title>
         <x-base.dialog.description class="grid grid-cols-12 gap-4 gap-y-3">
-            <div class="col-span-12 md:col-span-12 lg:col-span-6">
+            <div class="col-span-12 md:col-span-12 lg:col-span-12">
                 <x-base.form-label class="font-extrabold" for="modal_input_nombre">
-                    Tipo Servicio
+                    Servicio
                 </x-base.form-label>
                 <x-base.form-input id="modal_input_nombre" type="text" placeholder="Escriba el nombre del servicio" />
             </div>

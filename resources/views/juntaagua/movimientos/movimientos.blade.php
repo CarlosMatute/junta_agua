@@ -22,6 +22,17 @@
                 </div>
                 <div class="text-slate-500">Pantalla de administración de Saldos.</div>
             </div>
+            
+            <div class="ml-5">
+                <div class="text-lg font-medium truncate w-240 sm:w-80 sm:whitespace-normal">
+                    @foreach ($saldos as $row)
+                        <h1 id="msg_estado_cuenta" class="text-2xl font-medium leading-none">Estado: {{$row->estado_cuenta}}</h1>
+                        <h1 id="msg_total" class="text-2xl font-medium leading-none">Dinero total: L. {{$row->total}}</h1>
+                    @endforeach
+                </div>
+                
+            </div>
+            
         </div>
         <div class="flex flex-col space-y-4 sm:flex-row  sm:space-y-0">
             <a href="{{url('/contrato')}}" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1">
@@ -77,7 +88,7 @@
     <div class="scrollbar-hidden overflow-x-auto">
 <table id="tbl_tbl_movimientos"  class="display datatable" style="width:100%">
 	<thead>
-		<tr>
+		<tr style="color: black; background-color: buttonhighlight; font-size: large">
 			<th scope="col">Id</th>
 			<th scope="col">Fecha</th>
 			<th scope="col">Servicio</th>
@@ -179,7 +190,7 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 
 
 <!-- BEGIN: Modal Content -->
-<x-base.dialog id="modal_pago_tbl_movimientos" size="xl">
+<x-base.dialog id="modal_pago_tbl_movimientos" size="md">
     <x-base.dialog.panel>
         <x-base.dialog.title class="bg-primary">
             <h2 class="mr-auto text-white font-medium">
@@ -193,8 +204,8 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 
           
                 
-                <div class="col-span-12 md:col-span-12 lg:col-span-6">
-                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Monto pago</x-base.form-label><x-base.form-input placeholder="Escriba un dato para haber" type="text" id="haber_pago" name="haber_pago"/></div>
+                <div class="col-span-12 md:col-span-12 lg:col-span-12">
+                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Monto pago</x-base.form-label><x-base.form-input class="validatornumber" placeholder="Escriba un dato para haber" type="text" id="haber_pago" name="haber_pago"/></div>
 
         </x-base.dialog.description>
         <x-base.dialog.footer class="bg-dark modal-footer">
@@ -315,7 +326,19 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
         $("#btn_pago_tbl_movimientos").on("click", function (event) {                        
             accion = 4;
             $("#modal_pago_tbl_movimientos").show();
+            $("#haber_pago").val();
         }); 
+        
+        $('.validatornumber').keypress(function ()
+        {
+
+                var keynum = window.event ? window.event.keyCode : e.which;
+                if ((keynum == 8) || (keynum == 46))
+                        return true;
+
+                return /\d/.test(String.fromCharCode(keynum));
+        });
+
 
 //	$('.timestamp').daterangepicker({
 //                    singleDatePicker: true,
@@ -440,6 +463,8 @@ $(".modal-footer").on("click", "#modal_btn_guardar_pago_tbl_movimientos", functi
         mensage({"msgError":'Ingrese un dato para haber!'});
         return false;
     }
+    
+    $( this ).attr("disabled","disabled");
 
     preguardar_tbl_movimientos();
 });
@@ -484,6 +509,7 @@ function guardar_tbl_movimientos(){
             }else if(accion==3){
                 $("#modal_eliminar_tbl_movimientos").show();
             }else if(accion==4){
+                $( "#modal_btn_guardar_pago_tbl_movimientos" ).removeAttr("disabled","disabled");
                 $("#modal_pago_tbl_movimientos").show();
             }else if(accion==5){
                 
@@ -534,6 +560,7 @@ function guardar_tbl_movimientos(){
             table.row(rowNumber).remove().draw();
             //table.row(rowNumber).data(nuevaFilaDT);
         }else if (accion==4) {
+            $( "#modal_btn_guardar_pago_tbl_movimientos" ).removeAttr("disabled","disabled");
             $("#modal_pago_tbl_movimientos").hide();           
             table.row.add(nuevaFilaDT).draw();
         }else if(accion==5){

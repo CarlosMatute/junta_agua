@@ -74,6 +74,7 @@ class PageController extends Controller
             sum(haber) FILTER (WHERE extract( month from fecha_hora ) = 12 ) as diciembre	
             from public.tbl_movimientos
 	where extract( year from created_at )  = extract( year from current_date )
+        and deleted_at is null
 	");
         
         $sql_cobros_mensuales = DB::SELECT("select sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 1 ) as enero,
@@ -90,6 +91,7 @@ class PageController extends Controller
                 sum(debe) FILTER (WHERE extract( month from fecha_hora ) = 12 ) as diciembre	
         from public.tbl_movimientos
 	where extract( year from created_at )  = extract( year from current_date )
+        and deleted_at is null
 	");
 
         return view('pages/dashboard-overview-1')->with("clientes", $clientes)
