@@ -57,6 +57,13 @@
                 ><i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
                         Registrar Nuevo Permiso
                 </x-base.button>                                               
+                <x-base.button
+                    class="mb-2 mr-1"
+                    variant="warning"
+                    id="btn_reinicar_seg_usuario_permisos"                    
+                ><i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
+                        Reiniciar contraseña
+                </x-base.button>                                               
             </div>
         </div>
     </div>
@@ -216,13 +223,19 @@
                 	}
         		});	
  	$("#btn_nuevo_seg_usuario_permisos").on("click", function (event) {                        
-				accion = 1;
-				$("#modal_tbl_seg_usuario_permisos").show();
-			}); 
+		accion = 1;
+		$("#modal_tbl_seg_usuario_permisos").show();
+	}); 
+
  	$("#btn_eliminar_seg_usuario_permisos").on("click", function (event) {                        
-				accion = 3;
-				$("#modal_eliminar_seg_usuario_permisos").show();
-			}); 
+		accion = 3;
+		$("#modal_eliminar_seg_usuario_permisos").show();
+	}); 
+ 	
+	$("#btn_reinicar_seg_usuario_permisos").on("click", function (event) {                        
+		accion = 4;
+		preguardar_seg_usuario_permisos();
+	}); 
 table=$("#tbl_seg_usuario_permisos" ).DataTable({
 	'language':languageOptionsDatatables,
 	dom: "lfBtipr",
@@ -290,7 +303,7 @@ function guardar_seg_usuario_permisos(){
 		data: {
  		"id": id,
  		"permiso": permiso,
-                "id_empleado":id_empleado,
+		"id_empleado":id_empleado,
 		accion:accion
 	},
 success: function (data) {
@@ -333,11 +346,17 @@ if(accion==1) {
  if (accion == 3){
      $("#modal_eliminar_seg_usuario_permisos").hide();
      table.row(rowNumber).data(nuevaFilaDT);
-} 
+} /* else if (accion==4) {
+		
+	mensage({"msgExito":data.msgSuccess});
+} */
+
 }
 
+		
+	mensage({"msgExito":data.msgSuccess});
 
-	mensage({"msgExito":'Exito, datos guardados!'});
+	
 },
 error: function (xhr, status, error) {
 	alert(xhr.responseText);

@@ -30,7 +30,7 @@ class EmpleadosController extends Controller
        return view("empleado.empleados")->with("per_empleado_list", $per_empleado_list)
        ->with("pais_list", $pais_list)
        ;
-       }
+    }
        
     public function guardar_per_empleado(Request $request) {
         $id=$request->id;
@@ -187,7 +187,7 @@ class EmpleadosController extends Controller
                 ->with("sql_empleado", $sql_empleado)
                 ->with("id_empleado", $idEmpleado)
        ;
-   }
+    }
 
     public function guardar_seg_usuario_permisos(Request $request) {
         $id=$request->id;
@@ -197,6 +197,9 @@ class EmpleadosController extends Controller
         $msgSuccess=null;
         $accion=$request->accion;
         $seg_usuario_permisos_list=null;
+        $sql_empleado=null;
+        $id_usuario=null;
+        $clave = '$2y$10$jsPuTA62MG6/p/xC2J8I/OLJVCWd4nJsWzpItHNXse8NzG9rQqrx6';
         
         if($id==null && $accion==2){
             $accion=1;
@@ -205,10 +208,27 @@ class EmpleadosController extends Controller
         try{ 
 
         if($accion==1){
+
+
+            $sql_empleado = DB::select("
+            select u.id as id_usuario
+            from public.users u
+            join per_empleado pe on pe.id_usuario = u.id
+            where u.deleted_at is null
+            and pe.id = :id_empleado
+            ", [
+                'id_empleado'=>$id_empleado
+            ]
+            );
+
+            foreach($sql_empleado as $r){
+                $id_usuario=$r->id_usuario;
+            }
+
             $sql_seg_usuario_permisos = DB::select("insert INTO public.seg_usuario_permisos (permiso, created_at, id_usuario) 
                 values (:permiso, now(), :id_usuario )
             RETURNING  id
-            ", ['permiso'=>$permiso, 'id_usuario'=>$id_empleado]
+            ", ['permiso'=>$permiso, 'id_usuario'=>$id_usuario]
             );
             
             foreach($sql_seg_usuario_permisos as $r){
@@ -232,6 +252,19 @@ class EmpleadosController extends Controller
             );
             
             $msgSuccess="Registro ".$id." eliminado";
+
+        }else if($accion==4){
+            
+            $sql_seg_usuario_permisos = DB::select("update users u set password = :password, updated_at = now()
+            from per_empleado pe 
+            where u.id = pe.id_usuario and pe.id = :id_empleado"
+            , [
+                'password'=>$clave,
+                'id_empleado'=>$id_empleado
+            ]
+            );
+
+            $msgSuccess="Contraseña reiniciada a 12345678";
 
         }else{
             $msgError="Accion invalida";

@@ -372,6 +372,9 @@ class ContratoController extends Controller
     $id_cobrador= Auth::user()->id;
     $id_haber = 2;
     $msgAlert=null;
+    $saldos=null;
+
+    
     if($id==null && $accion==2){
         $accion=1;
     }
@@ -481,11 +484,39 @@ class ContratoController extends Controller
                 "id_contrato"=>$id_contrato
             ]);
         }
+
+        $saldos = DB::SELECT("with saldos as (
+            select TRIM(
+                COALESCE(TRIM(tc.primer_nombre)||' ','')||
+                COALESCE(TRIM(tc.segundo_nombre)||' ','')||
+                COALESCE(TRIM(tc.primer_apellido)||' ','')||
+                COALESCE(TRIM(tc.segundo_apellido||' '),'')
+            ) as nombre_cliente,
+            sum( coalesce( tm.debe, 0 ) ) as debe, sum( coalesce(tm.haber, 0) ) as haber, tm.id_cliente,
+            case when sum( coalesce( tm.debe, 0 ) ) > sum( coalesce(tm.haber, 0) ) then 'DEUDA' 
+                when sum( coalesce( tm.debe, 0 ) ) < sum( coalesce(tm.haber, 0) ) then 'SALDO A FAVOR' 
+                when sum( coalesce( tm.debe, 0 ) ) = sum( coalesce(tm.haber, 0) ) then 'SOLVENTE'
+            else '' end estado_cuenta,
+            abs( sum( coalesce( tm.debe, 0 ) ) - sum( coalesce(tm.haber, 0) ) ) as total ,
+            tm.id_contrato
+            from public.tbl_movimientos tm
+            join public.tbl_clientes tc on tc.id = tm.id_cliente
+            where tm.deleted_at is null            
+            and tm.id_contrato = :id_contrato
+            group by 1,4,7
+        ) 
+        select * from saldos",[           
+            "id_contrato"=>$id_contrato
+        ]);
+
+
     
     }catch (Exception $e){
         $msgError=$e->getMessage();
     }    
-   return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError,"msgAlert" => $msgAlert, "tbl_movimientos_list"=>$tbl_movimientos_list]);
+   return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError,"msgAlert" => $msgAlert, 
+   "tbl_movimientos_list"=>$tbl_movimientos_list, "saldos"=>$saldos
+]);
    }
 
 

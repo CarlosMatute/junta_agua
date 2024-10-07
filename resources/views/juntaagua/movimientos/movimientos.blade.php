@@ -502,75 +502,76 @@ function guardar_tbl_movimientos(){
  		"id_contrato": id_contrato,
 		accion:accion
 	},
-        success: function (data) {        
-	if(data.msgError!=null){
+    success: function (data) {        
+        if(data.msgError!=null){
             if(accion==1 || accion==2){
                 $("#modal_tbl_tbl_movimientos").show();
             }else if(accion==3){
                 $("#modal_eliminar_tbl_movimientos").show();
             }else if(accion==4){
-                $( "#modal_btn_guardar_pago_tbl_movimientos" ).removeAttr("disabled","disabled");
+                $("#modal_btn_guardar_pago_tbl_movimientos" ).removeAttr("disabled","disabled");
                 $("#modal_pago_tbl_movimientos").show();
             }else if(accion==5){
                 
             }
             mensage({"msgError":data.msgError});
-	}else if(data.msgAlert!=null){
-            mensage({"msgAlert":data.msgAlert});
-        }else{
-		//$("#modal_tbl_tbl_movimientos").hide();
-		for(var i = 0; i < data.tbl_movimientos_list.length; i++) {
-		var row= data.tbl_movimientos_list[i];
-		var nuevaFilaDT=[
-                row.id,row.fecha_hora,row.concepto,row.debe,row.haber,row.tipo_movimiento
-                 ,'<button '+ ' ' + ( row.id_tipo_movimiento==1 ? 'style="display:none;"' : 'style="display:;"' ) +' data-tw-toggle="modal" data-tw-target="#modal_tbl_tbl_movimientos" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1"'+ 
-                 'data-id="'+row.id+'" '+ 
-                 'data-fecha_hora="'+row.fecha_hora+'" '+ 
-                 'data-concepto="'+row.concepto+'" '+ 
-                 'data-debe="'+row.debe+'" '+ 
-                 'data-haber="'+row.haber+'" '+ 
-                 'data-id_tipo_movimiento="'+row.id_tipo_movimiento+'" '+ 
-                 'data-tipo_movimiento="'+row.tipo_movimiento+'" '+ 
-                 'title="Editar" variant="secondary" size="sm" id="btn_editar_tbl_movimientos" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>'+ 
-                 '&nbsp&nbsp&nbsp<button  data-tw-toggle="modal" data-tw-target="#modal_eliminar_tbl_movimientos" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"'+ 
-                 'data-id="'+row.id+'" '+ 
-                 'data-fecha_hora="'+row.fecha_hora+'" '+ 
-                 'data-concepto="'+row.concepto+'" '+ 
-                 'data-debe="'+row.debe+'" '+ 
-                 'data-haber="'+row.haber+'" '+ 
-                 'data-id_tipo_movimiento="'+row.id_tipo_movimiento+'" '+ 
-                 'data-tipo_movimiento="'+row.tipo_movimiento+'" '+ 
-                 'title="Eliminar" variant="danger" size="sm" id="btn_eliminar_tbl_movimientos" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+                                   
-                 
-                 '<a href="'+ uri +'/movimientos/'+row.id+'/pago/factura" '+ ' ' + ( row.id_tipo_movimiento==2 ? 'style="display:;"' : 'style="display:none;"' ) +' '+ ' ' +' class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="file-text" data-lucide="file-text" class="lucide lucide-file-text stroke-1.5 mx-auto block"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg></a>'+ 
-                                                 
-            ''
-                ];
+        }else if(data.msgAlert!=null){
+                mensage({"msgAlert":data.msgAlert});
+            }else{
+            //$("#modal_tbl_tbl_movimientos").hide();
+            for(var i = 0; i < data.tbl_movimientos_list.length; i++) {
+            var row= data.tbl_movimientos_list[i];
+            var nuevaFilaDT=[
+                    row.id,row.fecha_hora,row.concepto,row.debe,row.haber,row.tipo_movimiento
+                    ,'<button '+ ' ' + ( row.id_tipo_movimiento==1 ? 'style="display:none;"' : 'style="display:;"' ) +' data-tw-toggle="modal" data-tw-target="#modal_tbl_tbl_movimientos" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1"'+ 
+                    'data-id="'+row.id+'" '+ 
+                    'data-fecha_hora="'+row.fecha_hora+'" '+ 
+                    'data-concepto="'+row.concepto+'" '+ 
+                    'data-debe="'+row.debe+'" '+ 
+                    'data-haber="'+row.haber+'" '+ 
+                    'data-id_tipo_movimiento="'+row.id_tipo_movimiento+'" '+ 
+                    'data-tipo_movimiento="'+row.tipo_movimiento+'" '+ 
+                    'title="Editar" variant="secondary" size="sm" id="btn_editar_tbl_movimientos" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>'+ 
+                    '&nbsp&nbsp&nbsp<button  data-tw-toggle="modal" data-tw-target="#modal_eliminar_tbl_movimientos" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"'+ 
+                    'data-id="'+row.id+'" '+ 
+                    'data-fecha_hora="'+row.fecha_hora+'" '+ 
+                    'data-concepto="'+row.concepto+'" '+ 
+                    'data-debe="'+row.debe+'" '+ 
+                    'data-haber="'+row.haber+'" '+ 
+                    'data-id_tipo_movimiento="'+row.id_tipo_movimiento+'" '+ 
+                    'data-tipo_movimiento="'+row.tipo_movimiento+'" '+ 
+                    'title="Eliminar" variant="danger" size="sm" id="btn_eliminar_tbl_movimientos" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+                                   
+                    
+                    '<a href="'+ uri +'/movimientos/'+row.id+'/pago/factura" '+ ' ' + ( row.id_tipo_movimiento==2 ? 'style="display:;"' : 'style="display:none;"' ) +' '+ ' ' +' class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="file-text" data-lucide="file-text" class="lucide lucide-file-text stroke-1.5 mx-auto block"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg></a>'+ 
+                                                    
+                ''
+                    ];
+                
+            }
             
-        }
-        
-        if(accion==1) {
-            $("#modal_tbl_tbl_movimientos").hide();
-            table.row.add(nuevaFilaDT).draw();
-        }else if (accion==2) {
-            $("#modal_tbl_tbl_movimientos").hide();
-            table.row(rowNumber).data(nuevaFilaDT);
-        }else if (accion == 3){
-            $("#modal_eliminar_tbl_movimientos").hide();
-            table.row(rowNumber).remove().draw();
-            //table.row(rowNumber).data(nuevaFilaDT);
-        }else if (accion==4) {
-            $( "#modal_btn_guardar_pago_tbl_movimientos" ).removeAttr("disabled","disabled");
-            $("#modal_pago_tbl_movimientos").hide();           
-            table.row.add(nuevaFilaDT).draw();
-        }else if(accion==5){
-            table.row.add(nuevaFilaDT).draw();
-        }                
-        
-        mensage({"msgExito":data.msgSuccess});
-    }
+            if(accion==1) {
+                $("#modal_tbl_tbl_movimientos").hide();
+                table.row.add(nuevaFilaDT).draw();
+            }else if (accion==2) {
+                $("#modal_tbl_tbl_movimientos").hide();
+                table.row(rowNumber).data(nuevaFilaDT);
+            }else if (accion == 3){
+                $("#modal_eliminar_tbl_movimientos").hide();
+                table.row(rowNumber).remove().draw();
+                //table.row(rowNumber).data(nuevaFilaDT);
+            }else if (accion==4) {
+                $( "#modal_btn_guardar_pago_tbl_movimientos" ).removeAttr("disabled","disabled");
+                $("#modal_pago_tbl_movimientos").hide();           
+                table.row.add(nuevaFilaDT).draw();
+            }else if(accion==5){
+                table.row.add(nuevaFilaDT).draw();
+            }                
+            
+            mensage({"msgExito":data.msgSuccess});
+        }            
 
-
+        $("#msg_estado_cuenta").text('Estado: '+data.saldos[0].estado_cuenta);
+        $("#msg_total").text('Estado: '+data.saldos[0].total);
     
 },
 error: function (xhr, status, error) {
