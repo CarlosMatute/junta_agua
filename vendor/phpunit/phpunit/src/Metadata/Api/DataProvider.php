@@ -9,9 +9,8 @@
  */
 namespace PHPUnit\Metadata\Api;
 
-use const JSON_ERROR_NONE;
-use const PREG_OFFSET_CAPTURE;
 use function array_key_exists;
+use function array_merge;
 use function assert;
 use function explode;
 use function is_array;
@@ -40,10 +39,9 @@ use PHPUnit\Util\Reflection;
 use ReflectionClass;
 use ReflectionMethod;
 use Throwable;
+use Traversable;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class DataProvider
@@ -178,24 +176,33 @@ final class DataProvider
                 );
             }
 
-            foreach ($data as $key => $value) {
-                if (is_int($key)) {
-                    $result[] = $value;
-                } elseif (array_key_exists($key, $result)) {
-                    Event\Facade::emitter()->dataProviderMethodFinished(
-                        $testMethod,
-                        ...$methodsCalled,
-                    );
+            if ($data instanceof Traversable) {
+                $origData = $data;
+                $data     = [];
 
-                    throw new InvalidDataProviderException(
-                        sprintf(
-                            'The key "%s" has already been defined by a previous data provider',
-                            $key,
-                        ),
-                    );
-                } else {
-                    $result[$key] = $value;
+                foreach ($origData as $key => $value) {
+                    if (is_int($key)) {
+                        $data[] = $value;
+                    } elseif (array_key_exists($key, $data)) {
+                        Event\Facade::emitter()->dataProviderMethodFinished(
+                            $testMethod,
+                            ...$methodsCalled,
+                        );
+
+                        throw new InvalidDataProviderException(
+                            sprintf(
+                                'The key "%s" has already been defined by a previous data provider',
+                                $key,
+                            ),
+                        );
+                    } else {
+                        $data[$key] = $value;
+                    }
                 }
+            }
+
+            if (is_array($data)) {
+                $result = array_merge($result, $data);
             }
         }
 

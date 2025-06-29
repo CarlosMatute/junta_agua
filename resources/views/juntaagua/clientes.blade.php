@@ -59,7 +59,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombres</th>
-                        <th>Apellidos</th>
+                        {{-- <th>Apellidos</th> --}}
                         <th>Identidad</th>
                         <th>Celular</th>
                         <th>Correo Electrónico</th>
@@ -69,6 +69,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                {{--
                 @foreach($clientes as $row)
                     <tr>
                         <td>{{$row->id}}</td>
@@ -128,6 +129,7 @@
                         <!-- Aquí puedes agregar más columnas según tus necesidades -->
                     </tr>
                     @endforeach
+                     --}}
                 </tbody>
             </table>
         </div>
@@ -353,6 +355,7 @@
             var id_departamento = null;
             var url_consultar_municipios = "{{url('/departamentos-municipios')}}";
             var url_guardar_clientes = "{{url('/clientes/guardar')}}";
+            var url_clientes_data = "{{url('/clientes/data')}}";
             var onTomSelect = false;
             var tomSelect = null;
             var titleMsg = null;
@@ -371,9 +374,24 @@
                     
                 });	 
 
+                //$('#sdatatable').DataTable().destroy();
+
                 //$.fn.dataTable.isDataTable('#sdatatable')
                     // Inicializa el DataTable
-                    table = $('#sdatatable').DataTable({
+                    table = $('#sdatatable').DataTable({                                                
+                        processing: true,
+                        serverSide: true,
+                        "ajax": url_clientes_data,
+                        "columns": [
+                            {data: "id"},
+                            {data: "cliente"},
+                            {data: "identidad"},
+                            {data: "celular"},
+                            {data: "correo_electronico"},
+                            {data: "genero"},
+                            {data: "domicilio_completa"},
+                            {data: "opciones"},
+                        ],
                         language: { 
                             "decimal": ",", 
                             "thousands": ".", 
@@ -397,8 +415,6 @@
             
                             "sProcessing":"Cargando..." 
                         },
-                        "processing": true,
-                        serverSide: false,
                     });
 
                     id_departamento = $("#modal_input_departamento").val();
@@ -592,10 +608,14 @@
                             textMsg = data.msgSuccess;
                             typeMsg = "success";
                             if(accion != 3){
-                                var row = data.clientes_list;
+
+                                table.ajax.reload();
+
+                                
+                                /*var row = data.clientes_list;
                                 var nuevoFila = [
-                                    row.id, row.primer_nombre+' '+row.segundo_nombre, row.primer_apellido+' '+row.segundo_apellido,
-                                    row.identidad, row.celular, row.correo_electronico, row.genero, row.departamento+', '+row.municipio+', '+row.domicilio,
+                                    row.id, row.cliente,
+                                    row.identidad, row.celular, row.correo_electronico, row.genero, row.domicilio_completa,
                                     '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"'+
                                         'data-id="'+row.id+'"'+ 
                                         'data-primer_nombre="'+row.primer_nombre+'"'+ 
@@ -625,15 +645,15 @@
                                         'data-municipio="'+row.id_municipio+'"'+
                                         'data-domicilio="'+row.domicilio+'"'+
                                     '><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'
-                                ]; 
+                                ];*/  
                             }
-                            if (accion == 1) { 
+                            /*if (accion == 1) { 
                                 $('#sdatatable').DataTable().row.add(nuevoFila).draw();
                             } else if (accion == 2) { 
                                 $('#sdatatable').DataTable().row(rowNumber).data(nuevoFila);
                             } else if (accion == 3) {
                                 $('#sdatatable').DataTable().row(rowNumber).remove().draw();
-                            }
+                            }*/ 
                             
                         }
                         notificacion(); 

@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
     });
     //Inicia Junta de agua
         Route::get('/clientes', [ClientesController::class, 'ver_clientes'])->name('clientes');
+        Route::get('/clientes/data', [ClientesController::class, 'getClientesData']);
         Route::post('/clientes/guardar', [ClientesController::class, 'guardar_clientes']);
         Route::get('/ubicaciones', [UbicacionesController::class, 'ver_ubicaciones'])->name('ubicaciones');
         Route::post('/ubicaciones/guardar', [UbicacionesController::class, 'guardar_ubicaciones']);

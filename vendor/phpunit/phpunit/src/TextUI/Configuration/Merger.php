@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use const DIRECTORY_SEPARATOR;
-use const PATH_SEPARATOR;
 use function array_diff;
 use function assert;
 use function dirname;
@@ -32,8 +31,6 @@ use SebastianBergmann\Environment\Console;
 use SebastianBergmann\Invoker\Invoker;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Merger
@@ -346,14 +343,6 @@ final class Merger
         if ($xmlConfiguration->codeCoverage()->hasText()) {
             $coverageTextShowUncoveredFiles = $xmlConfiguration->codeCoverage()->text()->showUncoveredFiles();
             $coverageTextShowOnlySummary    = $xmlConfiguration->codeCoverage()->text()->showOnlySummary();
-        }
-
-        if ($cliConfiguration->hasCoverageTextShowUncoveredFiles()) {
-            $coverageTextShowUncoveredFiles = $cliConfiguration->coverageTextShowUncoveredFiles();
-        }
-
-        if ($cliConfiguration->hasCoverageTextShowOnlySummary()) {
-            $coverageTextShowOnlySummary = $cliConfiguration->coverageTextShowOnlySummary();
         }
 
         if ($cliConfiguration->hasCoverageText()) {

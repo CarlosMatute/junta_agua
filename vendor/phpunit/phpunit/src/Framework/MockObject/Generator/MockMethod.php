@@ -30,8 +30,6 @@ use SebastianBergmann\Type\Type;
 use SebastianBergmann\Type\UnknownType;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class MockMethod
