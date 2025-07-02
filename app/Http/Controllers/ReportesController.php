@@ -64,10 +64,20 @@ class ReportesController extends Controller
             $output,
             $options
         )->execute();
+
         
-        //return response()->file($pathToFile);
-        return view('reportes.generico')->with('reportName',$output.'.pdf');
         
+        //$outputRep = $output.'.pdf';
+        //dd( $outputRep  );
+
+        //return response()->file($outputRep);
+        return view('reportes.reporteria')->with('reportName',$output.'.pdf');
+        //$headers = [
+        //    'Content-Type' => 'application/pdf',
+        //];
+
+        //return response()->download( $outputRep  );
+
     }
     
     public function factura_junta_agua_old($idMovimiento){
