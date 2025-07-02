@@ -114,6 +114,7 @@ class ComposerStaticInit45c29414269620d9dc790cb95b6f0af6
             'Psr\\Clock\\' => 10,
             'PhpParser\\' => 10,
             'PhpOption\\' => 10,
+            'PHPJasper\\' => 10,
         ),
         'N' => 
         array (
@@ -390,6 +391,10 @@ class ComposerStaticInit45c29414269620d9dc790cb95b6f0af6
         'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'PHPJasper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/geekcom/phpjasper/src',
         ),
         'NunoMaduro\\Collision\\' => 
         array (
@@ -3573,6 +3578,12 @@ class ComposerStaticInit45c29414269620d9dc790cb95b6f0af6
         'NunoMaduro\\Collision\\SolutionsRepositories\\NullSolutionsRepository' => __DIR__ . '/..' . '/nunomaduro/collision/src/SolutionsRepositories/NullSolutionsRepository.php',
         'NunoMaduro\\Collision\\Writer' => __DIR__ . '/..' . '/nunomaduro/collision/src/Writer.php',
         'Override' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/Override.php',
+        'PHPJasper\\Exception\\ErrorCommandExecutable' => __DIR__ . '/..' . '/geekcom/phpjasper/src/Exception/ErrorCommandExecutable.php',
+        'PHPJasper\\Exception\\InvalidCommandExecutable' => __DIR__ . '/..' . '/geekcom/phpjasper/src/Exception/InvalidCommandExecutable.php',
+        'PHPJasper\\Exception\\InvalidFormat' => __DIR__ . '/..' . '/geekcom/phpjasper/src/Exception/InvalidFormat.php',
+        'PHPJasper\\Exception\\InvalidInputFile' => __DIR__ . '/..' . '/geekcom/phpjasper/src/Exception/InvalidInputFile.php',
+        'PHPJasper\\Exception\\InvalidResourceDirectory' => __DIR__ . '/..' . '/geekcom/phpjasper/src/Exception/InvalidResourceDirectory.php',
+        'PHPJasper\\PHPJasper' => __DIR__ . '/..' . '/geekcom/phpjasper/src/PHPJasper.php',
         'PHPUnit\\Event\\Application\\Finished' => __DIR__ . '/..' . '/phpunit/phpunit/src/Event/Events/Application/Finished.php',
         'PHPUnit\\Event\\Application\\FinishedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Event/Events/Application/FinishedSubscriber.php',
         'PHPUnit\\Event\\Application\\Started' => __DIR__ . '/..' . '/phpunit/phpunit/src/Event/Events/Application/Started.php',

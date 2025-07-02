@@ -48,20 +48,10 @@ class ReportesController extends Controller
         $inputCompile = $this->INPUT_RPT_PATH.$this->RPT_HELLO_WORD.'.jasper';
         $output = $this->OUTPUT_RPT_PATH.$this->RPT_HELLO_WORD;
 
-        /*if(!file_exists($inputCompile)){
+        if(!file_exists($inputCompile)){
             $jasper = new PHPJasper;
             $jasper->compile($input)->execute();
-        }*/
-
-        if (!file_exists($inputCompile)) {
-            $jasper = new PHPJasper;
-            try {
-                $jasper->compile($input)->execute();
-                echo "¡Archivo .jasper compilado con éxito!";
-            } catch (\Exception $e) {
-                dd("Error al compilar: " . $e->getMessage()); // Detiene el script y muestra el error
-            }
-        }
+        }        
         
         $options = [
             'format' => ['pdf']
