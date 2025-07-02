@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'fcdf3877be39e745258583900678f71809ab8a03',
+        'reference' => 'f6954a19008f10afd22b474ae33c33f55e593e04',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -112,12 +112,12 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'geekcom/phpjasper-laravel' => array(
-            'pretty_version' => 'v1.1',
-            'version' => '1.1.0.0',
-            'reference' => 'f15078b15d1373636d324118396fa8b16163ad9d',
+        'geekcom/phpjasper' => array(
+            'pretty_version' => '3.4.0',
+            'version' => '3.4.0.0',
+            'reference' => 'bae2d6c0064ee32e5f478e0208af419ba3fcb2ee',
             'type' => 'library',
-            'install_path' => __DIR__ . '/../geekcom/phpjasper-laravel',
+            'install_path' => __DIR__ . '/../geekcom/phpjasper',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -391,7 +391,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'fcdf3877be39e745258583900678f71809ab8a03',
+            'reference' => 'f6954a19008f10afd22b474ae33c33f55e593e04',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -766,8 +766,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0|3.0',
-                1 => '3.0.0',
+                0 => '3.0.0',
+                1 => '1.0|2.0|3.0',
             ),
         ),
         'psr/simple-cache' => array(
