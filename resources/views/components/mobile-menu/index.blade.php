@@ -10,11 +10,13 @@
             class="mr-auto flex"
             href=""
         >
-            <img
-                class="w-6"
-                src="{{ Vite::asset('resources/images/logo.svg') }}"
-                alt="Midone Tailwind HTML Admin Template"
-            />
+            <lord-icon
+                                        src="https://cdn.lordicon.com/ymgusxed.json"
+                                        trigger="loop"
+                                        delay="500"
+                                        colors="primary:#ffffff,secondary:#848484"
+                                        style="width:28px;height:28px">
+                                    </lord-icon>
         </a>
         <a
             class="mobile-menu-toggler"
