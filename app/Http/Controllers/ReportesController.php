@@ -59,25 +59,15 @@ class ReportesController extends Controller
 
         $jasper = new PHPJasper;
 
+        $jasper->debug = true;
+
         $jasper->process(
             $inputCompile,
             $output,
             $options
         )->execute();
 
-        
-        
-        //$outputRep = $output.'.pdf';
-        //dd( $outputRep  );
-
-        //return response()->file($outputRep);
-        return view('reportes.reporteria')->with('reportName',$output.'.pdf');
-        //$headers = [
-        //    'Content-Type' => 'application/pdf',
-        //];
-
-        //return response()->download( $outputRep  );
-
+        return view('reportes.reporteria')->with('reportName',$output.'.pdf');        
     }
     
     public function factura_junta_agua_old($idMovimiento){
