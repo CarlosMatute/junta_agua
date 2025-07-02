@@ -51,6 +51,7 @@
                     <li class="menu__divider my-6"></li>
                 @else
                     <li>
+                        @if ($menu['permiso'] == 'true')
                         <a
                             class="{{ $firstLevelActiveIndex == $menuKey ? 'menu menu--active' : 'menu' }}"
                             href="{{ isset($menu['route_name']) ? route($menu['route_name'], $menu['params']) : 'javascript:;' }}"
@@ -68,6 +69,7 @@
                                 @endif
                             </div>
                         </a>
+                    @endif
                         @if (isset($menu['sub_menu']))
                             <ul class="{{ $firstLevelActiveIndex == $menuKey ? 'menu__sub-open' : '' }}">
                                 @foreach ($menu['sub_menu'] as $subMenuKey => $subMenu)
