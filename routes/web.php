@@ -131,12 +131,14 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/ubicaciones/{id_cliente}', [ContratoController::class, 'getUbicaciones'])->name('getUbicaciones');
 
+        Route::get('/contrato/data', [ContratoController::class, 'dataListarContratos'])->name('dataListarContratos');
+
         //Finaliza Modulo Contrato
         
         Route::get('/servicio', [ServicioController::class, 'ver_servicio'])->name('servicio');
         Route::post('/servicio/guardar', [ServicioController::class, 'guardar_servicio']);
         
-        Route::get("/movimientos/{idContrato}",[ContratoController::class, "ver_tbl_movimientos"]);
+        Route::get("/movimientos/{idContrato}",[ContratoController::class, "ver_tbl_movimientos"])->name('pago_contrato');
         Route::post("/movimientos/guardar",[ContratoController::class, "guardar_tbl_movimientos"]);
         Route::get("/movimientos/{idMovimiento}/pago/factura",[ReportesController::class, "ver_factura_junta_agua"]);
         Route::post("/movimientos/factura",[ReportesController::class, "factura_junta_agua"]);

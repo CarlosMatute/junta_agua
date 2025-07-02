@@ -519,6 +519,43 @@ class ContratoController extends Controller
 ]);
    }
 
+   public function dataListarContratos(){
+    //Obtener lsita de contratos
+        $listarContratos = DB::select("
+        SELECT
+            tc.id,
+            tc.id_cliente,
+            TRIM(
+                COALESCE(TRIM(c.primer_nombre)||' ','')||
+                COALESCE(TRIM(c.segundo_nombre)||' ','')||
+                COALESCE(TRIM(c.primer_apellido)||' ','')||
+                COALESCE(TRIM(c.segundo_apellido||' '),'')
+
+            ) as nombre_cliente,
+            tc.id_ubicacion,
+            tu.descripcion_casa,
+            tc.id_servicio,
+            ts.descripcion as servicio,
+            tc.fecha_inicio,
+            tc.fecha_fin,
+            tc.created_at,
+            tc.updated_at,
+            tc.deleted_at,
+            to_char(tc.monto,'LFM999,999,999.00') monto
+        FROM public.tbl_contrato tc
+        JOIN tbl_clientes c on tc.id_cliente = c.id
+        JOIN tbl_ubicacion tu on tc.id_ubicacion = tu.id
+        JOIN tbl_servicio ts on tc.id_servicio = ts.id
+        WHERE
+            tc.deleted_at is null
+            and c.deleted_at is null
+            and tu.deleted_at is null
+            and ts.deleted_at is null");
+
+    return response()->json(["data"=>$listarContratos]);
+
+   }
+
 
 
 }
