@@ -61,12 +61,12 @@
         <div class="grid grid-cols-2 gap-x-4">
             <div class="mb-4">
                 <label for="id_cliente" class="block text-gray-700">Cliente</label>
-                <select id="id_cliente" name="id_cliente" class="w-full p-2 border {{ $errors->has('id_cliente') ? 'border-red-500' : 'border-gray-300' }} rounded mt-1">
-                    <option value="" selected>Seleccione un cliente</option>
-                    @foreach($clientes as $cliente)
-                        <option value="{{ $cliente->id }}" {{ old('id_cliente') == $cliente->id ? 'selected' : '' }}>{{ $cliente->cliente }}</option>
-                    @endforeach
-                </select>
+                <x-base.tom-select id="id_cliente" name="id_cliente" class="w-full" >
+				<option></option>
+				@foreach ($clientes as $cliente)
+					<option value="{{$cliente->id}}">{{$cliente->cliente}}</option>
+				@endforeach
+			</x-base.tom-select>
                 @error('id_cliente')
                     <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                 @enderror
