@@ -48,33 +48,24 @@ class ReportesController extends Controller
         $inputCompile = $this->INPUT_RPT_PATH.$this->RPT_HELLO_WORD.'.jasper';
         $output = $this->OUTPUT_RPT_PATH.$this->RPT_HELLO_WORD;
 
-        try {
-
-            if(!file_exists($inputCompile)){
-                $jasper = new PHPJasper;
-                $jasper->compile($input)->execute();
-            }
-            
-            $options = [
-                'format' => ['pdf']
-            ];
-
+        if(!file_exists($inputCompile)){
             $jasper = new PHPJasper;
-
-            $jasper->debug = true;
-
-            $jasper->process(
-                $inputCompile,
-                $output,
-                $options
-            )->execute();
-
-            //dd($output); // Ver qué devuelve
-        } catch (\Exception $e) {
-            dd($e->getMessage()); // Mensaje de error detallado
+            $jasper->compile($input)->execute();
         }
-
         
+        $options = [
+            'format' => ['pdf']
+        ];
+
+        $jasper = new PHPJasper;
+
+        $jasper->debug = true;
+
+        $jasper->process(
+            $inputCompile,
+            $output,
+            $options
+        )->execute();
 
         return view('reportes.reporteria')->with('reportName',$output.'.pdf');        
     }
