@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'fcdf3877be39e745258583900678f71809ab8a03',
+        'reference' => '385792b86a7e7015c0452c7d2741d9643da290e8',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -109,15 +109,6 @@
             'reference' => '3d158f36e7875e2f040f37bc0573956240a5a38b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../fruitcake/php-cors',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'geekcom/phpjasper-laravel' => array(
-            'pretty_version' => 'v1.1',
-            'version' => '1.1.0.0',
-            'reference' => 'f15078b15d1373636d324118396fa8b16163ad9d',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../geekcom/phpjasper-laravel',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -391,7 +382,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'fcdf3877be39e745258583900678f71809ab8a03',
+            'reference' => '385792b86a7e7015c0452c7d2741d9643da290e8',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -766,8 +757,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0|3.0',
-                1 => '3.0.0',
+                0 => '3.0.0',
+                1 => '1.0|2.0|3.0',
             ),
         ),
         'psr/simple-cache' => array(
