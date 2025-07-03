@@ -91,7 +91,7 @@
 	/>
 </div>
 
-<a download href="{{url('/documentos/reportes')}}/$reportDoc" class="btn button step"><i class="fa fa-file-text">Descargar</i></a>
+<a download href="{{ asset($reportName) }}" class="btn button step"><i class="fa fa-file-text">Descargar</i></a>
 
 
 
@@ -123,7 +123,7 @@ $(document).ready(function () {
    
 desplegar_reporte();
 
-console.log(es_movil);
+//console.log(es_movil);
             
 });
 
@@ -132,10 +132,10 @@ function desplegar_reporte() {
     
     es_movil = detectar_dispositivo();
     
-    if(true){
+    if(es_movil){
         $('#div_credencial_movil_descargar').show();
         $('#div_credencial_movil_pdf').show();
-        //$('#div_credencial_ordenador').hide();
+        $('#div_credencial_ordenador').hide();
         
         
         // If absolute URL from the remote server is provided, configure the CORS

@@ -279,10 +279,10 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_p
 			$("#modal_tbl_per_empleado").show();
 		}); 
 
- 		/*$("#btn_eliminar_per_empleado").on("click", function (event) {                        
+ 		$("#btn_eliminar_per_empleado").on("click", function (event) {                        
 			accion = 3;
 			$("#modal_eliminar_per_empleado").show();
-		});*/ 
+		}); 
 
 		table=$("#tbl_per_empleado" ).DataTable({
 			'language':languageOptionsDatatables,
@@ -319,7 +319,7 @@ $("#tbl_per_empleado").on("click", "#btn_editar_per_empleado", function (e) {
   
 $("#tbl_per_empleado").on("click", "#btn_eliminar_per_empleado", function (e) {
 	//console.log( $( this ).data("id") )
-	//$("#modal_eliminar_per_empleado").show();
+	$("#modal_eliminar_per_empleado").show();
 	id=$( this ).data("id");
 	primer_nombre=$( this ).data("primer_nombre");
 	segundo_nombre=$( this ).data("segundo_nombre");
