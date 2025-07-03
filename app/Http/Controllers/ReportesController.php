@@ -63,7 +63,7 @@ class ReportesController extends Controller
 
         $jasper->process(
             $inputCompile,
-            $output,
+            public_path().$output,
             $options
         )->execute();
 
