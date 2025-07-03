@@ -18,13 +18,12 @@ class EmpleadosController extends Controller
         $pais_list = DB::select("select id, nombre as pais from public.tbl_paises where deleted_at is null");
         $per_empleado_list = DB::select("
         select pe.id, pe.primer_nombre, pe.segundo_nombre, pe.primer_apellido, pe.segundo_apellido, pe.identidad,
-       pe.telefono, pe.id_pais, tp.nombre as pais, pe.domicilio, pe.id_usuario, pe.correo 
-       from public.per_empleado pe 
-       join public.tbl_paises tp on tp.id = pe.id_pais
-       join public.users uu on uu.id = pe.id_usuario
-       where pe.deleted_at is null
-       order by 1 desc
-       
+        pe.telefono, pe.id_pais, tp.nombre as pais, pe.domicilio, pe.id_usuario, pe.correo 
+        from public.per_empleado pe 
+        join public.tbl_paises tp on tp.id = pe.id_pais
+        join public.users uu on uu.id = pe.id_usuario
+        where pe.deleted_at is null
+        order by 1 desc       
        "
        );
        return view("empleado.empleados")->with("per_empleado_list", $per_empleado_list)
@@ -136,24 +135,24 @@ class EmpleadosController extends Controller
        }else{
                    $msgError="Accion invalida";
                }
-       if($msgError==null){
-        $per_empleado_list = DB::select("select * from (
-        select pe.id, pe.primer_nombre, pe.segundo_nombre, pe.primer_apellido, pe.segundo_apellido, pe.identidad,
-       pe.telefono, pe.id_pais, tp.nombre as pais, pe.domicilio, pe.id_usuario, pe.correo 
-       from public.per_empleado pe 
-       join public.tbl_paises tp on tp.id = pe.id_pais
-       join public.users uu on uu.id = pe.id_usuario
-       where pe.deleted_at is null
-       order by 1 desc
-       
-       ) x where id=:id
-       ",[
-       "id"=>$id
-       ]);
-       }
-       }catch (Exception $e){
-                   $msgError=$e->getMessage();
-               }
+        if($msgError==null){
+            $per_empleado_list = DB::select("select * from (
+            select pe.id, pe.primer_nombre, pe.segundo_nombre, pe.primer_apellido, pe.segundo_apellido, pe.identidad,
+                pe.telefono, pe.id_pais, tp.nombre as pais, pe.domicilio, pe.id_usuario, pe.correo 
+                from public.per_empleado pe 
+                join public.tbl_paises tp on tp.id = pe.id_pais
+                join public.users uu on uu.id = pe.id_usuario
+                where pe.deleted_at is null
+                order by 1 desc       
+            ) x where id=:id
+            ",[
+            "id"=>$id
+            ]);
+        }
+
+        }catch (Exception $e){
+            $msgError=$e->getMessage();
+        }
        return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError, "per_empleado_list"=>$per_empleado_list]);
        }
        

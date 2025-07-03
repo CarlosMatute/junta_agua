@@ -91,7 +91,7 @@
 	/>
 </div>
 
-<a download href="{{ asset($reportName) }}" class="btn button step"><i class="fa fa-file-text">Descargar</i></a>
+<a download href="{{url('/documentos/reportes')}}/$reportDoc" class="btn button step"><i class="fa fa-file-text">Descargar</i></a>
 
 
 
@@ -132,10 +132,10 @@ function desplegar_reporte() {
     
     es_movil = detectar_dispositivo();
     
-    if(es_movil){
+    if(true){
         $('#div_credencial_movil_descargar').show();
         $('#div_credencial_movil_pdf').show();
-        $('#div_credencial_ordenador').hide();
+        //$('#div_credencial_ordenador').hide();
         
         
         // If absolute URL from the remote server is provided, configure the CORS
@@ -156,7 +156,7 @@ function desplegar_reporte() {
           // Fetch the first page
           var pageNumber = 1;
           pdf.getPage(pageNumber).then(function(page) {
-            console.log('Page loaded');
+            //console.log('Page loaded');
 
             var scale = 1.5;
             var viewport = page.getViewport({scale: scale});

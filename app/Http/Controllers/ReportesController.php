@@ -59,7 +59,7 @@ class ReportesController extends Controller
 
         $jasper = new PHPJasper;
 
-        $jasper->debug = true;
+        //$jasper->debug = true;
 
         $jasper->process(
             $inputCompile,
@@ -67,7 +67,10 @@ class ReportesController extends Controller
             $options
         )->execute();
 
-        return view('reportes.reporteria')->with('reportName',$output.'.pdf');        
+        return view('reportes.reporteria')
+            ->with('reportName',$output.'.pdf')
+            ->with('reportDoc',$this->RPT_HELLO_WORD.'.pdf');        
+            ;        
     }
     
     public function factura_junta_agua_old($idMovimiento){

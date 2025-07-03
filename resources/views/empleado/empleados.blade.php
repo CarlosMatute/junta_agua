@@ -184,13 +184,13 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_p
 				<x-base.lucide class="mx-auto mt-3 h-16 w-16 text-danger" icon="XCircle" />
 				<div class="mt-5 text-3xl">¡Advertencia!</div>
 				<div class="mt-2 text-slate-500">
-					¿Realmente desea eliminar este Empleados?<br />
+					¿Realmente desea eliminar este Empleado?<br />
 					<div id="id_registro"></div>
 				</div>
 			</div>
-			<div class="px-5 pb-8 text-center">
+			<div class="px-5 pb-8 text-center modal-footer">
 				<x-base.button class="mr-1 w-24" data-tw-dismiss="modal" type="button" variant="outline-secondary">Cancelar</x-base.button>
-				<x-base.button class="w-24" type="button" variant="danger" id="btn_eliminar_per_empleado">Eliminar</x-base.button>
+				<x-base.button class="w-24" type="button" variant="danger" id="btn_modal_eliminar_per_empleado">Eliminar</x-base.button>
 			</div>
 		</x-base.dialog.panel>
 	</x-base.dialog>
@@ -237,72 +237,74 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_p
 	var url_guardar_per_empleado= "{{url('/per-empleado')}}/guardar";
 	var table=null;
 	var rowNumber=null;
-	var uri = "{{url('/')}}";
-	
-			var titleMsg = null;
-            var textMsg = null;
-            var typeMsg = null;
-			var languageOptionsDatatables={
+	var uri = "{{url('/')}}";	
+	var titleMsg = null;
+	var textMsg = null;
+	var typeMsg = null;
+	var languageOptionsDatatables={
 
-			"decimal":        "",
-			"emptyTable":     "Datos no disponibles",
-			"info":           "Mostrando desde _START_ a _END_ de _TOTAL_ registros",
-			"infoEmpty":      "Mostrando desde 0 a 0 de 0 registros",
-			"infoFiltered":   "(Filrado de _MAX_ registros totales)",
-			"infoPostFix":    "",
-			"thousands":      ",",
-			"lengthMenu":     "Mostrar _MENU_ registros",
-			"loadingRecords": "Cargando...",
-			"processing":     "Procesando...",
-			"search":         "Buscar:",
-			"zeroRecords":    "Sin resultados",
-			"paginate": {
-				"first":      "Primero",
-				"last":       "Ultimo",
-				"next":       "Siguiente",
-				"previous":   "Anterior"
-			},
-			"aria": {
-				"sortAscending":  ": activar ordenamiento por columna ascendente",
-				"sortDescending": ": activar ordenamiento por columna descendente"
-			}
-			}
+	"decimal":        "",
+	"emptyTable":     "Datos no disponibles",
+	"info":           "Mostrando desde _START_ a _END_ de _TOTAL_ registros",
+	"infoEmpty":      "Mostrando desde 0 a 0 de 0 registros",
+	"infoFiltered":   "(Filrado de _MAX_ registros totales)",
+	"infoPostFix":    "",
+	"thousands":      ",",
+	"lengthMenu":     "Mostrar _MENU_ registros",
+	"loadingRecords": "Cargando...",
+	"processing":     "Procesando...",
+	"search":         "Buscar:",
+	"zeroRecords":    "Sin resultados",
+	"paginate": {
+		"first":      "Primero",
+		"last":       "Ultimo",
+		"next":       "Siguiente",
+		"previous":   "Anterior"
+	},
+	"aria": {
+		"sortAscending":  ": activar ordenamiento por columna ascendente",
+		"sortDescending": ": activar ordenamiento por columna descendente"
+	}
+	}
 	
 	$(document).ready(function () {
  		$.ajaxSetup({
-                	headers: {
-                    	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                	}
-        		});	
- 	$("#btn_nuevo_per_empleado").on("click", function (event) {                        
-				accion = 1;
-				$("#modal_tbl_per_empleado").show();
-			}); 
- 	$("#btn_eliminar_per_empleado").on("click", function (event) {                        
-				accion = 3;
-				$("#modal_eliminar_per_empleado").show();
-			}); 
-table=$("#tbl_per_empleado" ).DataTable({
-	'language':languageOptionsDatatables,
-	dom: "lfBtipr",
-	buttons: [
-	]
-});
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});	
+
+ 		$("#btn_nuevo_per_empleado").on("click", function (event) {                        
+			accion = 1;
+			$("#modal_tbl_per_empleado").show();
+		}); 
+
+ 		/*$("#btn_eliminar_per_empleado").on("click", function (event) {                        
+			accion = 3;
+			$("#modal_eliminar_per_empleado").show();
+		});*/ 
+
+		table=$("#tbl_per_empleado" ).DataTable({
+			'language':languageOptionsDatatables,
+			dom: "lfBtipr",
+			buttons: [
+			]
+		});
  
 
 	
 $("#tbl_per_empleado").on("click", "#btn_editar_per_empleado", function (e) {
 	$("#modal_tbl_per_empleado").show();
-id=$( this ).data("id");
-primer_nombre=$( this ).data("primer_nombre");
-segundo_nombre=$( this ).data("segundo_nombre");
-primer_apellido=$( this ).data("primer_apellido");
-segundo_apellido=$( this ).data("segundo_apellido");
-identidad=$( this ).data("identidad");
-telefono=$( this ).data("telefono");
-id_pais=$( this ).data("id_pais");
-domicilio=$( this ).data("domicilio");
-correo=$( this ).data("correo");
+	id=$( this ).data("id");
+	primer_nombre=$( this ).data("primer_nombre");
+	segundo_nombre=$( this ).data("segundo_nombre");
+	primer_apellido=$( this ).data("primer_apellido");
+	segundo_apellido=$( this ).data("segundo_apellido");
+	identidad=$( this ).data("identidad");
+	telefono=$( this ).data("telefono");
+	id_pais=$( this ).data("id_pais");
+	domicilio=$( this ).data("domicilio");
+	correo=$( this ).data("correo");
 	$("#id").val(id);
 	$("#primer_nombre").val(primer_nombre);
 	$("#segundo_nombre").val(segundo_nombre);
@@ -315,18 +317,19 @@ correo=$( this ).data("correo");
 	$("#correo").val(correo);
 });
   
-$("#modal_eliminar_per_empleado").on("click", "#btn_eliminar_per_empleado", function (e) {
-	$("#modal_eliminar_per_empleado").show();
-id=$( this ).data("id");
-primer_nombre=$( this ).data("primer_nombre");
-segundo_nombre=$( this ).data("segundo_nombre");
-primer_apellido=$( this ).data("primer_apellido");
-segundo_apellido=$( this ).data("segundo_apellido");
-identidad=$( this ).data("identidad");
-telefono=$( this ).data("telefono");
-id_pais=$( this ).data("id_pais");
-domicilio=$( this ).data("domicilio");
-correo=$( this ).data("correo");
+$("#tbl_per_empleado").on("click", "#btn_eliminar_per_empleado", function (e) {
+	//console.log( $( this ).data("id") )
+	//$("#modal_eliminar_per_empleado").show();
+	id=$( this ).data("id");
+	primer_nombre=$( this ).data("primer_nombre");
+	segundo_nombre=$( this ).data("segundo_nombre");
+	primer_apellido=$( this ).data("primer_apellido");
+	segundo_apellido=$( this ).data("segundo_apellido");
+	identidad=$( this ).data("identidad");
+	telefono=$( this ).data("telefono");
+	id_pais=$( this ).data("id_pais");
+	domicilio=$( this ).data("domicilio");
+	correo=$( this ).data("correo");
 	$("#id").val(id);
 	$("#primer_nombre").val(primer_nombre);
 	$("#segundo_nombre").val(segundo_nombre);
@@ -413,18 +416,19 @@ correo=$("#correo").val();
 	
 	preguardar_per_empleado();
 });
-});
-$(".modal-footer").on("click", "#btn_eliminar_per_empleado", function () {
+
+$(".modal-footer").on("click", "#btn_modal_eliminar_per_empleado", function () {	
 	guardar_per_empleado();
 });
 
-	function preguardar_per_empleado() {
-              
-		  var indexUploadCoincidence=0;
-	  
-$.when(
+});
 
-).done(function (){
+
+
+	function preguardar_per_empleado() {              
+		var indexUploadCoincidence=0;	  
+		$.when(
+		).done(function (){
 		  guardar_per_empleado();
 		});
 	  }
@@ -450,48 +454,48 @@ function guardar_per_empleado(){
 success: function (data) {
 	if(data.msgError!=null){
 		if(accion==1 || accion==2){
-					$("#modal_tbl_per_empleado").show();
-				}else if(accion==3){
-					$("#modal_eliminar_per_empleado").show();
-				}
+			$("#modal_tbl_per_empleado").show();
+		}else if(accion==3){
+			$("#modal_eliminar_per_empleado").show();
+		}
 	mensage({"msgError":'Error, datos no guardados!'});
 	}else{
 		$("#modal_tbl_per_empleado").hide();
 		for(var i = 0; i < data.per_empleado_list.length; i++) {
 		var row= data.per_empleado_list[i];
 		var nuevaFilaDT=[
-row.id,row.primer_nombre,row.segundo_nombre,row.primer_apellido,row.segundo_apellido,row.identidad,row.telefono,row.pais,row.domicilio,row.correo
- ,'<button data-tw-toggle="modal" data-tw-target="#modal_tbl_per_empleado" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1"'+ 
- 'data-id="'+row.id+'" '+ 
- 'data-primer_nombre="'+row.primer_nombre+'" '+ 
- 'data-segundo_nombre="'+row.segundo_nombre+'" '+ 
- 'data-primer_apellido="'+row.primer_apellido+'" '+ 
- 'data-segundo_apellido="'+row.segundo_apellido+'" '+ 
- 'data-identidad="'+row.identidad+'" '+ 
- 'data-telefono="'+row.telefono+'" '+ 
- 'data-id_pais="'+row.id_pais+'" '+ 
- 'data-domicilio="'+row.domicilio+'" '+ 
- 'data-correo="'+row.correo+'" '+ 
- 'data-pais="'+row.pais+'" '+ 
- 'title="Editar" variant="secondary" size="sm" id="btn_editar_per_empleado" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>'+ 
- '&nbsp&nbsp&nbsp<button  data-tw-toggle="modal" data-tw-target="#modal_eliminar_per_empleado" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"'+ 
- 'data-id="'+row.id+'" '+ 
- 'data-primer_nombre="'+row.primer_nombre+'" '+ 
- 'data-segundo_nombre="'+row.segundo_nombre+'" '+ 
- 'data-primer_apellido="'+row.primer_apellido+'" '+ 
- 'data-segundo_apellido="'+row.segundo_apellido+'" '+ 
- 'data-identidad="'+row.identidad+'" '+ 
- 'data-telefono="'+row.telefono+'" '+ 
- 'data-id_pais="'+row.id_pais+'" '+ 
- 'data-domicilio="'+row.domicilio+'" '+ 
- 'data-correo="'+row.correo+'" '+ 
- 'data-pais="'+row.pais+'" '+ 
- 'title="Eliminar" variant="danger" size="sm" id="btn_eliminar_per_empleado" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+ 
- '<a href="'+ uri +'/empleado/permisos/'+row.id+'"  class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="file-text" data-lucide="file-text" class="lucide lucide-file-text stroke-1.5 mx-auto block"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg></a>'+ 
-''
-];
-if(accion==1) {
-	$("#modal_tbl_per_empleado").hide();
+		row.id,row.primer_nombre,row.segundo_nombre,row.primer_apellido,row.segundo_apellido,row.identidad,row.telefono,row.pais,row.domicilio,row.correo
+		,'<button data-tw-toggle="modal" data-tw-target="#modal_tbl_per_empleado" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1"'+ 
+		'data-id="'+row.id+'" '+ 
+		'data-primer_nombre="'+row.primer_nombre+'" '+ 
+		'data-segundo_nombre="'+row.segundo_nombre+'" '+ 
+		'data-primer_apellido="'+row.primer_apellido+'" '+ 
+		'data-segundo_apellido="'+row.segundo_apellido+'" '+ 
+		'data-identidad="'+row.identidad+'" '+ 
+		'data-telefono="'+row.telefono+'" '+ 
+		'data-id_pais="'+row.id_pais+'" '+ 
+		'data-domicilio="'+row.domicilio+'" '+ 
+		'data-correo="'+row.correo+'" '+ 
+		'data-pais="'+row.pais+'" '+ 
+		'title="Editar" variant="secondary" size="sm" id="btn_editar_per_empleado" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>'+ 
+		'&nbsp&nbsp&nbsp<button  data-tw-toggle="modal" data-tw-target="#modal_eliminar_per_empleado" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"'+ 
+		'data-id="'+row.id+'" '+ 
+		'data-primer_nombre="'+row.primer_nombre+'" '+ 
+		'data-segundo_nombre="'+row.segundo_nombre+'" '+ 
+		'data-primer_apellido="'+row.primer_apellido+'" '+ 
+		'data-segundo_apellido="'+row.segundo_apellido+'" '+ 
+		'data-identidad="'+row.identidad+'" '+ 
+		'data-telefono="'+row.telefono+'" '+ 
+		'data-id_pais="'+row.id_pais+'" '+ 
+		'data-domicilio="'+row.domicilio+'" '+ 
+		'data-correo="'+row.correo+'" '+ 
+		'data-pais="'+row.pais+'" '+ 
+		'title="Eliminar" variant="danger" size="sm" id="btn_eliminar_per_empleado" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+ 
+		'<a href="'+ uri +'/empleado/permisos/'+row.id+'"  class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="file-text" data-lucide="file-text" class="lucide lucide-file-text stroke-1.5 mx-auto block"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg></a>'+ 
+		''
+		];
+	if(accion==1) {
+		$("#modal_tbl_per_empleado").hide();
 		table.row.add(nuevaFilaDT).draw();
 	}else if (accion==2) {
 		$("#modal_tbl_per_empleado").hide();
@@ -501,12 +505,12 @@ if(accion==1) {
 		table.row(rowNumber).data(nuevaFilaDT);
 	}
 }
- if (accion == 3){
-     $("#modal_eliminar_per_empleado").hide();
-     table.row(rowNumber).data(nuevaFilaDT);
-} 
+	if (accion == 3){
+		$("#modal_eliminar_per_empleado").hide();
+		//table.row(rowNumber).data(nuevaFilaDT);
+		table.row(rowNumber).remove().draw();
+	} 
 }
-
 
 	mensage({"msgExito":'Exito, datos guardados!'});
 },
