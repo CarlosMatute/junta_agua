@@ -194,8 +194,11 @@ class EmpleadosController extends Controller
         $id_empleado=$request->id_empleado;
         $msgError=null;
         $msgSuccess=null;
+        $msgAlert=null;
         $accion=$request->accion;
         $seg_usuario_permisos_list=null;
+        $sql_permiso_existe=null;
+        $permiso_existe=null;
         $sql_empleado=null;
         $id_usuario=null;
         $clave = '$2y$10$jsPuTA62MG6/p/xC2J8I/OLJVCWd4nJsWzpItHNXse8NzG9rQqrx6';
@@ -207,7 +210,6 @@ class EmpleadosController extends Controller
         try{ 
 
         if($accion==1){
-
 
             $sql_empleado = DB::select("
             select u.id as id_usuario
@@ -224,18 +226,32 @@ class EmpleadosController extends Controller
                 $id_usuario=$r->id_usuario;
             }
 
-            $sql_seg_usuario_permisos = DB::select("insert INTO public.seg_usuario_permisos (permiso, created_at, id_usuario) 
-                values (:permiso, now(), :id_usuario )
-            RETURNING  id
+            $sql_permiso_existe = DB::select("select cast( cast( count(1) filter( where id_usuario = :id_usuario and permiso = :permiso ) as int ) as bool)  permiso_existe 
+            from public.seg_usuario_permisos
+            where deleted_at is null
             ", ['permiso'=>$permiso, 'id_usuario'=>$id_usuario]
             );
-            
-            foreach($sql_seg_usuario_permisos as $r){
-                $id=$r->id;
+
+            foreach($sql_permiso_existe as $rh){
+                $permiso_existe=$rh->permiso_existe;
             }
+
+            if($permiso_existe){
+                $msgAlert="El usuario ya tiene dicho permiso";
+            }else{
+                $sql_seg_usuario_permisos = DB::select("insert INTO public.seg_usuario_permisos (permiso, created_at, id_usuario) 
+                values (:permiso, now(), :id_usuario )
+                RETURNING  id
+                ", ['permiso'=>$permiso, 'id_usuario'=>$id_usuario]
+                );            
             
-            $msgSuccess="Registro creado con el código: ".$id;
-            
+                foreach($sql_seg_usuario_permisos as $r){
+                    $id=$r->id;
+                }
+
+                $msgSuccess="Registro creado con el código: ".$id;
+            }
+                                                
         }else if($accion==2){
             $sql_seg_usuario_permisos = DB::select("update public.seg_usuario_permisos set  updated_at = now(),permiso=:permiso where id=:id
             "
@@ -263,7 +279,7 @@ class EmpleadosController extends Controller
             ]
             );
 
-            $msgSuccess="Contraseña reiniciada a 12345678";
+            $msgSuccess="Contraseña reiniciada a 123456";
 
         }else{
             $msgError="Accion invalida";
@@ -277,7 +293,7 @@ class EmpleadosController extends Controller
                join public.seg_permisos sp on sp.id = sup.permiso 
                join per_empleado pe on pe.id_usuario = u.id
                where sup.deleted_at is null
-               and sup.id_usuario = :id_empleado
+               and pe.id = :id_empleado
                order by 1 desc
            ) x where id=:id
            ",[
@@ -287,7 +303,7 @@ class EmpleadosController extends Controller
         }catch (Exception $e){
             $msgError=$e->getMessage();
         }
-        return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError, "seg_usuario_permisos_list"=>$seg_usuario_permisos_list]);
+        return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError,"msgAlert"=>$msgAlert, "seg_usuario_permisos_list"=>$seg_usuario_permisos_list]);
     }
   
        
