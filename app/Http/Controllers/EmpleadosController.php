@@ -165,7 +165,7 @@ class EmpleadosController extends Controller
         join public.seg_permisos sp on sp.id = sup.permiso 
         join per_empleado pe on pe.id_usuario = u.id
         where sup.deleted_at is null
-        and sup.id_usuario = :id_empleado
+        and pe.id = :id_empleado
         order by 1 desc
         ", ['id_empleado'=>$idEmpleado]
         );
