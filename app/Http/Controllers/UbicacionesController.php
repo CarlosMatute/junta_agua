@@ -98,6 +98,45 @@ class UbicacionesController extends Controller
             ;
     }
 
+    public function getUbicacionesData(){
+         $ubicaciones = DB::select("
+            SELECT U.ID,
+                U.DESCRIPCION_CASA,
+                U.ID_CLIENTE,
+                UPPER(TRIM(COALESCE(TRIM(C.PRIMER_NOMBRE) || ' ','') || COALESCE(TRIM(C.SEGUNDO_NOMBRE) || ' ','') || COALESCE(TRIM(C.PRIMER_APELLIDO) || ' ','') || COALESCE(TRIM(C.SEGUNDO_APELLIDO || ' '),''))) CLIENTE,
+                U.CLIENTE_HABITA,
+                CAST(U.CLIENTE_HABITA AS INTEGER) AS ESTA_CLIENTE_HABITA,
+                U.DIRECCION,
+                U.FOTO,
+                UPPER(P.NOMBRE) PAIS,
+                D.NOMBRE DEPARTAMENTO,
+                M.NOMBRE MUNICIPIO,
+                U.COORDENADAS,
+                U.FECHA_COBRO,
+                U.ACTIVO,
+                CAST(U.ACTIVO AS INTEGER) AS ESTA_ACTIVO,
+                U.CASA_PROPIA,
+                CAST(U.CASA_PROPIA AS INTEGER) AS ES_CASA_PROPIA,
+                U.ID_PAIS,
+                U.ID_DEPARTAMENTO,
+                U.ID_MUNICIPIO,
+                UPPER(P.NOMBRE) || ', ' || D.NOMBRE || ', ' || M.NOMBRE UBICACION
+            FROM TBL_UBICACION U
+            JOIN TBL_PAISES P ON P.ID = U.ID_PAIS
+            JOIN TBL_DEPARTAMENTOS D ON D.ID = U.ID_DEPARTAMENTO
+            JOIN TBL_MUNICIPIOS M ON M.ID = U.ID_MUNICIPIO
+            JOIN TBL_CLIENTES C ON C.ID = U.ID_CLIENTE
+            WHERE U.DELETED_AT IS NULL
+            AND P.DELETED_AT IS NULL
+            AND D.DELETED_AT IS NULL
+            AND M.DELETED_AT IS NULL
+            AND C.DELETED_AT IS NULL
+            ORDER BY U.ID ASC
+            ");
+
+        return response()->json(["data"=>$ubicaciones]);
+    }
+
     public function guardar_ubicaciones(Request $request)
     {
         $accion=$request->accion;
