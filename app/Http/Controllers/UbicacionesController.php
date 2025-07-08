@@ -111,7 +111,7 @@ class UbicacionesController extends Controller
                 UPPER(P.NOMBRE) PAIS,
                 D.NOMBRE DEPARTAMENTO,
                 M.NOMBRE MUNICIPIO,
-                U.COORDENADAS,
+                CASE WHEN U.COORDENADAS IS NULL THEN '{\"lat\": 0,\"lng\": 0}' ELSE U.COORDENADAS END AS COORDENADAS,
                 U.FECHA_COBRO,
                 U.ACTIVO,
                 CAST(U.ACTIVO AS INTEGER) AS ESTA_ACTIVO,

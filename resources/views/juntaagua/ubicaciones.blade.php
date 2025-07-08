@@ -581,8 +581,8 @@
                                 targets: 5,
                                 createdCell: function (td, cellData, rowData) {
                                     var cargar_foto = '<div class="image-fit relative h-20 w-20 flex-none sm:h-24 sm:w-24 lg:h-32 lg:w-32">'+
-                                        '<img data-action="zoom" src="http://junta_agua.test/img/ubicaciones/'+rowData.foto+'" '+
-                                        'onerror="this.src=\'http://junta_agua.test/img/ubicaciones/default.jpg\'" '+
+                                        '<img data-action="zoom" src="https://www.juntaagua.lat/img/ubicaciones/'+rowData.foto+'" '+
+                                        'onerror="this.src=\'https://www.juntaagua.lat/img/ubicaciones/default.jpg\'" '+
                                         'alt="Midone Tailwind HTML Admin Template" class="rounded-full" style="">'+
                                     '</div>';                                                                    
                                     $(td).html(`${cargar_foto}`);                                                                
