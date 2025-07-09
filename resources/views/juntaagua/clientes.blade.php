@@ -181,6 +181,7 @@
                                 class="w-full" 
                                 data-placeholder="Selección de Género"
                             >
+                            <option value=""></option>
                             @foreach($generos as $row)
                             <option value="{{$row->id}}">{{$row->nombre}}</option>
                             @endforeach
@@ -202,7 +203,7 @@
                         <x-base.form-label class="font-extrabold" for="modal_input_identidad">
                             Identidad
                         </x-base.form-label>
-                        <x-base.form-input id="modal_input_identidad" type="number" placeholder="Escriba la identidad" />
+                        <x-base.form-input class="validatornumber" id="modal_input_identidad" type="number" placeholder="Escriba la identidad" />
                     </div>
                     <div class="col-span-12 md:col-span-12 lg:col-span-6">
                         <x-base.form-label class="font-extrabold" for="modal_input_departamento">
@@ -213,8 +214,9 @@
                                 aria-label=".form-select-lg example"
                                 id="modal_input_departamento" 
                                 class="w-full" 
-                                data-placeholder="Selección de Género"
+                                data-placeholder="Selección de Departamento"
                             >
+                            <option value=""></option>
                             @foreach($departamentos as $row)
                             <option value="{{$row->id}}">{{$row->nombre}}</option>
                             @endforeach
@@ -229,7 +231,7 @@
                                 aria-label=".form-select-lg example"
                                 id="modal_input_municipio" 
                                 class="w-full" 
-                                data-placeholder="Selección de Género"
+                                data-placeholder="Selección de Municipio"
                             >
                             <option id="opc"></option>
                         </x-base.form-select>
@@ -374,6 +376,15 @@
                     
                 });	 
 
+                $('.validatornumber').keypress(function (){
+
+                    var keynum = window.event ? window.event.keyCode : e.which;
+                    if ((keynum == 8) || (keynum == 46))
+                        return true;
+
+                    return /\d/.test(String.fromCharCode(keynum));
+                });
+
                 //$('#sdatatable').DataTable().destroy();
 
                 //$.fn.dataTable.isDataTable('#sdatatable')
@@ -466,8 +477,8 @@
                 var fila = $('#sdatatable').DataTable().row($(this).parents('tr'));
                 var data = fila.data();
                 accion = 3;
-                numerofila = fila.index();
-                id = data[0];
+                numerofila = fila.index();                
+                id = $(this).data('id');                
                 const el = document.querySelector("#modal_eliminar");
                 const modal = tailwind.Modal.getOrCreateInstance(el);
                 modal.show(); 
@@ -542,13 +553,13 @@
                     return false;
                 }
 
-                if(correo == null || correo == ''){
+                /*if(correo == null || correo == ''){
                     titleMsg = 'Valor Requerido'
                     textMsg = 'Debe especificar un valor para Correo Electrónico.';
                     typeMsg = 'error';
                     notificacion()
                     return false;
-                }
+                }*/
 
                 if(identidad == null || identidad == ''){
                     titleMsg = 'Valor Requerido'

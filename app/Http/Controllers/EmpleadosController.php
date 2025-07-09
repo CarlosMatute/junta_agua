@@ -58,7 +58,9 @@ class EmpleadosController extends Controller
        try{ 
        
        if($accion==1){
-            $sql_per_empleado_existente =collect( DB::select("select count(1) empleado_existe from per_empleado where identidad = :identidad",['identidad'=>$identidad]) )->first();
+            $sql_per_empleado_existente =collect( DB::select("select count(1) empleado_existe from per_empleado
+            where btrim(regexp_replace(identidad::text, '-| '::text, ''::text, 'g'::text)) = btrim(regexp_replace(:identidad::text, '-| '::text, ''::text, 'g'::text))
+            and deleted_at is null",['identidad'=>$identidad]) )->first();
 
             $empleado_existe = intval(isset($sql_per_empleado_existente->empleado_existe) ? $sql_per_empleado_existente->empleado_existe : null);
             
@@ -105,10 +107,7 @@ class EmpleadosController extends Controller
             }else if( $empleado_existe ==  $empleado_existe_permitido ){
                 $msgError="Registro duplicado, ya existe un empleado!";
             }
-            
-            
-            
-            
+                                                
             foreach($sql_per_empleado as $r){
                 $id=$r->id;
             }

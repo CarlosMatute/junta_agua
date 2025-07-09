@@ -160,9 +160,12 @@ class ClientesController extends Controller
         $departamento=$request->departamento;
         $municipio=$request->municipio;
         $domicilio=$request->domicilio;
+        $cliente_existe=null;
+        $sql_cliente_existe=null;
         $clientes_list = null;
         $msgSuccess = null;
         $msgError = null;
+        $msgAlert = null;
 
         if ($id == null && $accion == 2) {
             $accion = 1;
@@ -171,7 +174,23 @@ class ClientesController extends Controller
         try {
             //throw New Exception($identidad, true);
             if ($accion == 1) {
-                $cliente = collect(\DB::select("INSERT INTO public.tbl_clientes(
+
+                $sql_cliente_existe = DB::select("select 
+                cast ( count(1) 
+                filter( where btrim(regexp_replace(identidad::text, '-| '::text, ''::text, 'g'::text)) = 
+                btrim(regexp_replace(:identidad, '-| '::text, ''::text, 'g'::text)) )::int as bool ) as cliente_existe
+                from tbl_clientes
+                where deleted_at is null",[
+                    "identidad" => $identidad
+                ]);
+
+                foreach($sql_cliente_existe as $row){
+                    $cliente_existe=$row->cliente_existe;
+                }
+                if($cliente_existe){
+                    $msgError = "Cliente ya tiene registro";
+                }else{
+                    $cliente = collect(\DB::select("INSERT INTO public.tbl_clientes(
                     identidad, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, id_genero, celular, domicilio, id_departamento, id_municipio, correo_electronico)
                     VALUES (:identidad, :primer_nombre, :segundo_nombre, :primer_apellido, :segundo_apellido, :id_genero, :celular, :domicilio, :id_departamento, :id_municipio, :correo_electronico)
                     returning id;",
@@ -180,8 +199,10 @@ class ClientesController extends Controller
                     "celular" => $celular, "domicilio" => $domicilio, "id_departamento" => $departamento, 
                     "id_municipio" => $municipio, "correo_electronico" => $correo]))->first();
 
-                $id = $cliente->id;
-                $msgSuccess = "Cliente ".$id." registrado exitosamente.";
+                    $id = $cliente->id;
+                    $msgSuccess = "Cliente ".$id." registrado exitosamente.";
+                }
+                
             }else if ($accion == 2) {
                 DB::select("UPDATE public.tbl_clientes
                     SET identidad=:identidad, primer_nombre=:primer_nombre, segundo_nombre=:segundo_nombre, primer_apellido=:primer_apellido, 

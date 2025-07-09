@@ -147,7 +147,7 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_p
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
                 <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Segundo apellido</x-base.form-label><x-base.form-input placeholder="Escriba un dato para Segundo apellido" type="text" id="segundo_apellido" name="segundo_apellido"/></div>
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
-                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Identidad</x-base.form-label><x-base.form-input placeholder="Escriba un dato para Identidad" type="text" id="identidad" name="identidad"/></div>
+                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Identidad</x-base.form-label><x-base.form-input class="validatornumber" placeholder="Escriba un dato para Identidad" type="text" id="identidad" name="identidad"/></div>
 <div class="col-span-12 md:col-span-12 lg:col-span-6">
                 <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">telefono</x-base.form-label><x-base.form-input placeholder="Escriba un dato para telefono" type="text" id="telefono" name="telefono"/></div>
 
@@ -272,6 +272,15 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_p
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			}
+		});	
+
+		$('.validatornumber').keypress(function (){
+
+			var keynum = window.event ? window.event.keyCode : e.which;
+			if ((keynum == 8) || (keynum == 46))
+				return true;
+
+			return /\d/.test(String.fromCharCode(keynum));
 		});	
 
  		$("#btn_nuevo_per_empleado").on("click", function (event) {                        
@@ -408,11 +417,11 @@ correo=$("#correo").val();
 		return false;
 	}
 	
- 
+	/*
 	if(correo== null || correo == ''){
 		mensage({"msgError":'Ingrese un dato para Correo!'});
 		return false;
-	}
+	}*/
 	
 	preguardar_per_empleado();
 });

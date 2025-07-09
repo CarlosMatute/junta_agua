@@ -262,8 +262,9 @@
                                 aria-label=".form-select-lg example"
                                 id="modal_input_departamento" 
                                 class="w-full" 
-                                data-placeholder="Selección de Género"
+                                data-placeholder="Selección de Departamento"
                             >
+                            <option value=""></option>
                             @foreach($departamentos as $row)
                             <option value="{{$row->id}}">{{$row->nombre}}</option>
                             @endforeach
@@ -278,7 +279,7 @@
                                 aria-label=".form-select-lg example"
                                 id="modal_input_municipio" 
                                 class="w-full" 
-                                data-placeholder="Selección de Género"
+                                data-placeholder="Selección de Municipio"
                             >
                             <option id="opc"></option>
                         </x-base.form-select>
@@ -535,7 +536,30 @@
             var map = null;
             var marker = null;
             var ubicacion_casa = null;
-            var id_seleccionar = localStorage.getItem("sdatatable_id_seleccionar");            
+            var id_seleccionar = localStorage.getItem("sdatatable_id_seleccionar");  
+            
+            var lenguaje = {
+                "decimal": "",
+                "emptyTable": "Datos no disponibles",
+                "info": "Mostrando desde _START_ a _END_ de _TOTAL_ registros",
+                "infoEmpty": "Mostrando desde 0 a 0 de 0 registros",
+                "infoFiltered": "(Filtrado de _MAX_ registros totales)",
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "aria": {
+                    "sortAscending": ": activar ordenamiento ascendente",
+                    "sortDescending": ": activar ordenamiento descendente"
+                }
+            };
 
             $(document).ready(function () {
                 $.ajaxSetup({
@@ -549,7 +573,7 @@
                     // Inicializa el DataTable
                     table = $('#sdatatable').DataTable({
                         processing: true,
-                        serverSide: true,
+                        serverSide: false,
                         "ajax": url_ubicaciones_data,
                         columns: [
                             { data: 'id' },
@@ -650,29 +674,7 @@
                                 }                                
                             }
                         ],
-                        language: { 
-                            "decimal": ",", 
-                            "thousands": ".", 
-                            "lengthMenu": "Mostrar _MENU_ registros", 
-                            "zeroRecords": "No se encontraron resultados", 
-                            "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros", 
-                            "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros", 
-                            "infoFiltered": "(filtrado de un total de _MAX_ registros)", 
-                            "sSearch": "Buscar:", 
-                            "oPaginate": { 
-                                "sFirst": "Primero", 
-                                "sLast":"Último", 
-                                "sNext":"Siguiente", 
-                                "sPrevious": "Anterior" 
-                            }, 
-            
-                            "oAria": { 
-                                "sSortAscending": ": Activar para ordenar la columna de manera ascendente", 
-                                "sSortDescending": ": Activar para ordenar la columna de manera descendente" 
-                            }, 
-            
-                            "sProcessing":"Cargando..." 
-                        },
+                        language: lenguaje                        
                         
                     });
 
@@ -732,11 +734,11 @@
     });
 
             $("#sdatatable tbody").on( "click", "tr", function () { 
-                                     rowNumber=parseInt(table.row( this ).index()); 
-                                     table.$('tr.selected').removeClass('selected'); 
-                                     $(this).addClass('selected'); 
-                                     localStorage.setItem("sdatatable_id_seleccionar",table.row( this ).data()[0]); 
-                                     }); 
+                rowNumber=parseInt(table.row( this ).index()); 
+                table.$('tr.selected').removeClass('selected'); 
+                $(this).addClass('selected'); 
+                localStorage.setItem("sdatatable_id_seleccionar",table.row( this ).data()[0]); 
+            }); 
 
                
 
@@ -815,7 +817,8 @@
                 $("#modal_input_casa_propia").val('');
                 // $("#modal_input_fecha_cobro").val('');
                 $("#modal_input_departamento").val(id_departamento);
-                $("#modal_input_cliente").val(id_cliente);
+                //$("#modal_input_cliente").val('');
+                $('#modal_input_cliente')[0].tomselect.setValue( '' ); 
                 //$("#modal_input_municipio").val('');
                 $("#modal_input_activo").val('');
                 consultar_municipios(id_departamento);
