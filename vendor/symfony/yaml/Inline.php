@@ -116,7 +116,11 @@ class Inline
                     default => 'Y-m-d\TH:i:s.uP',
                 });
             case $value instanceof \UnitEnum:
+<<<<<<< HEAD
                 return \sprintf('!php/enum %s::%s', $value::class, $value->name);
+=======
+                return sprintf('!php/const %s::%s', $value::class, $value->name);
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
             case \is_object($value):
                 if ($value instanceof TaggedValue) {
                     return '!'.$value->getTag().' '.self::dump($value->getValue(), $flags);
@@ -657,31 +661,42 @@ class Inline
                             }
 
                             $i = 0;
+<<<<<<< HEAD
                             $enumName = self::parseScalar(substr($scalar, 10), 0, null, $i, false);
                             $useName = str_contains($enumName, '::');
                             $enum = $useName ? strstr($enumName, '::', true) : $enumName;
 
                             if (!enum_exists($enum)) {
                                 throw new ParseException(\sprintf('The enum "%s" is not defined.', $enum), self::$parsedLineNumber + 1, $scalar, self::$parsedFilename);
+=======
+                            $enum = self::parseScalar(substr($scalar, 10), 0, null, $i, false);
+                            if ($useValue = str_ends_with($enum, '->value')) {
+                                $enum = substr($enum, 0, -7);
                             }
-                            if (!$useName) {
-                                return $enum::cases();
-                            }
-                            if ($useValue = str_ends_with($enumName, '->value')) {
-                                $enumName = substr($enumName, 0, -7);
+                            if (!\defined($enum)) {
+                                throw new ParseException(sprintf('The enum "%s" is not defined.', $enum), self::$parsedLineNumber + 1, $scalar, self::$parsedFilename);
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
                             }
 
+<<<<<<< HEAD
                             if (!\defined($enumName)) {
                                 throw new ParseException(\sprintf('The string "%s" is not the name of a valid enum.', $enumName), self::$parsedLineNumber + 1, $scalar, self::$parsedFilename);
+=======
+                            $value = \constant($enum);
+
+                            if (!$value instanceof \UnitEnum) {
+                                throw new ParseException(sprintf('The string "%s" is not the name of a valid enum.', $enum), self::$parsedLineNumber + 1, $scalar, self::$parsedFilename);
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
                             }
-
-                            $value = \constant($enumName);
-
                             if (!$useValue) {
                                 return $value;
                             }
                             if (!$value instanceof \BackedEnum) {
+<<<<<<< HEAD
                                 throw new ParseException(\sprintf('The enum "%s" defines no value next to its name.', $enumName), self::$parsedLineNumber + 1, $scalar, self::$parsedFilename);
+=======
+                                throw new ParseException(sprintf('The enum "%s" defines no value next to its name.', $enum), self::$parsedLineNumber + 1, $scalar, self::$parsedFilename);
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
                             }
 
                             return $value->value;

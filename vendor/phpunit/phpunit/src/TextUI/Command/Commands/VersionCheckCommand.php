@@ -9,15 +9,17 @@
  */
 namespace PHPUnit\TextUI\Command;
 
+<<<<<<< HEAD
 use const PHP_EOL;
 use function assert;
+=======
+use function file_get_contents;
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 use function sprintf;
 use function version_compare;
 use PHPUnit\Util\Http\Downloader;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class VersionCheckCommand implements Command

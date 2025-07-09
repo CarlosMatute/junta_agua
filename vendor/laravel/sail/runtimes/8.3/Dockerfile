@@ -3,9 +3,14 @@ FROM ubuntu:24.04
 LABEL maintainer="Taylor Otwell"
 
 ARG WWWGROUP
+<<<<<<< HEAD
 ARG NODE_VERSION=22
 ARG MYSQL_CLIENT="mysql-client"
 ARG POSTGRES_VERSION=17
+=======
+ARG NODE_VERSION=20
+ARG POSTGRES_VERSION=15
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 
 WORKDIR /var/www/html
 
@@ -49,7 +54,7 @@ RUN apt-get update && apt-get upgrade -y \
     && echo "deb [signed-by=/etc/apt/keyrings/pgdg.gpg] http://apt.postgresql.org/pub/repos/apt noble-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
     && apt-get update \
     && apt-get install -y yarn \
-    && apt-get install -y $MYSQL_CLIENT \
+    && apt-get install -y mysql-client \
     && apt-get install -y postgresql-client-$POSTGRES_VERSION \
     && apt-get -y autoremove \
     && apt-get clean \
@@ -66,6 +71,6 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.3/cli/conf.d/99-sail.ini
 RUN chmod +x /usr/local/bin/start-container
 
-EXPOSE 80/tcp
+EXPOSE 8000
 
 ENTRYPOINT ["start-container"]

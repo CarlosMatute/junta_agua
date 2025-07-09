@@ -10,11 +10,13 @@
             class="mr-auto flex"
             href=""
         >
-            <img
-                class="w-6"
-                src="{{ Vite::asset('resources/images/logo.svg') }}"
-                alt="Midone Tailwind HTML Admin Template"
-            />
+            <lord-icon
+                                        src="https://cdn.lordicon.com/ymgusxed.json"
+                                        trigger="loop"
+                                        delay="500"
+                                        colors="primary:#ffffff,secondary:#848484"
+                                        style="width:28px;height:28px">
+                                    </lord-icon>
         </a>
         <a
             class="mobile-menu-toggler"
@@ -51,6 +53,7 @@
                     <li class="menu__divider my-6"></li>
                 @else
                     <li>
+                        @if ($menu['permiso'] == 'true')
                         <a
                             class="{{ $firstLevelActiveIndex == $menuKey ? 'menu menu--active' : 'menu' }}"
                             href="{{ isset($menu['route_name']) ? route($menu['route_name'], $menu['params']) : 'javascript:;' }}"
@@ -68,6 +71,7 @@
                                 @endif
                             </div>
                         </a>
+                    @endif
                         @if (isset($menu['sub_menu']))
                             <ul class="{{ $firstLevelActiveIndex == $menuKey ? 'menu__sub-open' : '' }}">
                                 @foreach ($menu['sub_menu'] as $subMenuKey => $subMenu)

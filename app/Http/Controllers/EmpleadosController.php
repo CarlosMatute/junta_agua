@@ -18,13 +18,12 @@ class EmpleadosController extends Controller
         $pais_list = DB::select("select id, nombre as pais from public.tbl_paises where deleted_at is null");
         $per_empleado_list = DB::select("
         select pe.id, pe.primer_nombre, pe.segundo_nombre, pe.primer_apellido, pe.segundo_apellido, pe.identidad,
-       pe.telefono, pe.id_pais, tp.nombre as pais, pe.domicilio, pe.id_usuario, pe.correo 
-       from public.per_empleado pe 
-       join public.tbl_paises tp on tp.id = pe.id_pais
-       join public.users uu on uu.id = pe.id_usuario
-       where pe.deleted_at is null
-       order by 1 desc
-       
+        pe.telefono, pe.id_pais, tp.nombre as pais, pe.domicilio, pe.id_usuario, pe.correo 
+        from public.per_empleado pe 
+        join public.tbl_paises tp on tp.id = pe.id_pais
+        join public.users uu on uu.id = pe.id_usuario
+        where pe.deleted_at is null
+        order by 1 desc       
        "
        );
        return view("empleado.empleados")->with("per_empleado_list", $per_empleado_list)
@@ -59,7 +58,9 @@ class EmpleadosController extends Controller
        try{ 
        
        if($accion==1){
-            $sql_per_empleado_existente =collect( DB::select("select count(1) empleado_existe from per_empleado where identidad = :identidad",['identidad'=>$identidad]) )->first();
+            $sql_per_empleado_existente =collect( DB::select("select count(1) empleado_existe from per_empleado
+            where btrim(regexp_replace(identidad::text, '-| '::text, ''::text, 'g'::text)) = btrim(regexp_replace(:identidad::text, '-| '::text, ''::text, 'g'::text))
+            and deleted_at is null",['identidad'=>$identidad]) )->first();
 
             $empleado_existe = intval(isset($sql_per_empleado_existente->empleado_existe) ? $sql_per_empleado_existente->empleado_existe : null);
             
@@ -106,10 +107,7 @@ class EmpleadosController extends Controller
             }else if( $empleado_existe ==  $empleado_existe_permitido ){
                 $msgError="Registro duplicado, ya existe un empleado!";
             }
-            
-            
-            
-            
+                                                
             foreach($sql_per_empleado as $r){
                 $id=$r->id;
             }
@@ -136,24 +134,24 @@ class EmpleadosController extends Controller
        }else{
                    $msgError="Accion invalida";
                }
-       if($msgError==null){
-        $per_empleado_list = DB::select("select * from (
-        select pe.id, pe.primer_nombre, pe.segundo_nombre, pe.primer_apellido, pe.segundo_apellido, pe.identidad,
-       pe.telefono, pe.id_pais, tp.nombre as pais, pe.domicilio, pe.id_usuario, pe.correo 
-       from public.per_empleado pe 
-       join public.tbl_paises tp on tp.id = pe.id_pais
-       join public.users uu on uu.id = pe.id_usuario
-       where pe.deleted_at is null
-       order by 1 desc
-       
-       ) x where id=:id
-       ",[
-       "id"=>$id
-       ]);
-       }
-       }catch (Exception $e){
-                   $msgError=$e->getMessage();
-               }
+        if($msgError==null){
+            $per_empleado_list = DB::select("select * from (
+            select pe.id, pe.primer_nombre, pe.segundo_nombre, pe.primer_apellido, pe.segundo_apellido, pe.identidad,
+                pe.telefono, pe.id_pais, tp.nombre as pais, pe.domicilio, pe.id_usuario, pe.correo 
+                from public.per_empleado pe 
+                join public.tbl_paises tp on tp.id = pe.id_pais
+                join public.users uu on uu.id = pe.id_usuario
+                where pe.deleted_at is null
+                order by 1 desc       
+            ) x where id=:id
+            ",[
+            "id"=>$id
+            ]);
+        }
+
+        }catch (Exception $e){
+            $msgError=$e->getMessage();
+        }
        return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError, "per_empleado_list"=>$per_empleado_list]);
        }
        
@@ -166,7 +164,7 @@ class EmpleadosController extends Controller
         join public.seg_permisos sp on sp.id = sup.permiso 
         join per_empleado pe on pe.id_usuario = u.id
         where sup.deleted_at is null
-        and sup.id_usuario = :id_empleado
+        and pe.id = :id_empleado
         order by 1 desc
         ", ['id_empleado'=>$idEmpleado]
         );
@@ -195,8 +193,11 @@ class EmpleadosController extends Controller
         $id_empleado=$request->id_empleado;
         $msgError=null;
         $msgSuccess=null;
+        $msgAlert=null;
         $accion=$request->accion;
         $seg_usuario_permisos_list=null;
+        $sql_permiso_existe=null;
+        $permiso_existe=null;
         $sql_empleado=null;
         $id_usuario=null;
         $clave = '$2y$10$jsPuTA62MG6/p/xC2J8I/OLJVCWd4nJsWzpItHNXse8NzG9rQqrx6';
@@ -208,7 +209,6 @@ class EmpleadosController extends Controller
         try{ 
 
         if($accion==1){
-
 
             $sql_empleado = DB::select("
             select u.id as id_usuario
@@ -225,18 +225,32 @@ class EmpleadosController extends Controller
                 $id_usuario=$r->id_usuario;
             }
 
-            $sql_seg_usuario_permisos = DB::select("insert INTO public.seg_usuario_permisos (permiso, created_at, id_usuario) 
-                values (:permiso, now(), :id_usuario )
-            RETURNING  id
+            $sql_permiso_existe = DB::select("select cast( cast( count(1) filter( where id_usuario = :id_usuario and permiso = :permiso ) as int ) as bool)  permiso_existe 
+            from public.seg_usuario_permisos
+            where deleted_at is null
             ", ['permiso'=>$permiso, 'id_usuario'=>$id_usuario]
             );
-            
-            foreach($sql_seg_usuario_permisos as $r){
-                $id=$r->id;
+
+            foreach($sql_permiso_existe as $rh){
+                $permiso_existe=$rh->permiso_existe;
             }
+
+            if($permiso_existe){
+                $msgAlert="El usuario ya tiene dicho permiso";
+            }else{
+                $sql_seg_usuario_permisos = DB::select("insert INTO public.seg_usuario_permisos (permiso, created_at, id_usuario) 
+                values (:permiso, now(), :id_usuario )
+                RETURNING  id
+                ", ['permiso'=>$permiso, 'id_usuario'=>$id_usuario]
+                );            
             
-            $msgSuccess="Registro creado con el código: ".$id;
-            
+                foreach($sql_seg_usuario_permisos as $r){
+                    $id=$r->id;
+                }
+
+                $msgSuccess="Registro creado con el código: ".$id;
+            }
+                                                
         }else if($accion==2){
             $sql_seg_usuario_permisos = DB::select("update public.seg_usuario_permisos set  updated_at = now(),permiso=:permiso where id=:id
             "
@@ -264,7 +278,7 @@ class EmpleadosController extends Controller
             ]
             );
 
-            $msgSuccess="Contraseña reiniciada a 12345678";
+            $msgSuccess="Contraseña reiniciada a 123456";
 
         }else{
             $msgError="Accion invalida";
@@ -278,7 +292,7 @@ class EmpleadosController extends Controller
                join public.seg_permisos sp on sp.id = sup.permiso 
                join per_empleado pe on pe.id_usuario = u.id
                where sup.deleted_at is null
-               and sup.id_usuario = :id_empleado
+               and pe.id = :id_empleado
                order by 1 desc
            ) x where id=:id
            ",[
@@ -288,7 +302,7 @@ class EmpleadosController extends Controller
         }catch (Exception $e){
             $msgError=$e->getMessage();
         }
-        return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError, "seg_usuario_permisos_list"=>$seg_usuario_permisos_list]);
+        return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError,"msgAlert"=>$msgAlert, "seg_usuario_permisos_list"=>$seg_usuario_permisos_list]);
     }
   
        

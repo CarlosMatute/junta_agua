@@ -87,7 +87,7 @@
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
+           {{--   <tbody>
                 @foreach ($listarContratos as $item)
                 <tr>    
                     <td>{{$item->id}}</td>
@@ -125,7 +125,7 @@
                     </td>
                 </tr>
                 @endforeach
-            </tbody>
+            </tbody>--}}
         </table>
     </div>
 </div>
@@ -160,65 +160,118 @@
     @vite('resources/js/pages/modal/index.js')
     @vite('resources/js/vendor/toastify/index.js')
     @vite('resources/js/pages/notification/index.js')
-<script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+
     <script type="module">
         var table = null;
+        var urlListarContratos = "{{ route('dataListarContratos') }}";
+
+        var lenguaje = {
+            "decimal": "",
+            "emptyTable": "Datos no disponibles",
+            "info": "Mostrando desde _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty": "Mostrando desde 0 a 0 de 0 registros",
+            "infoFiltered": "(Filtrado de _MAX_ registros totales)",
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+            "aria": {
+                "sortAscending": ": activar ordenamiento ascendente",
+                "sortDescending": ": activar ordenamiento descendente"
+            }
+        };
 
         $(document).ready(function () {
-            console.log('Loading');
             table = $('#tablaContrato').DataTable({
-                language: {
-                    "decimal": ",",
-                    "thousands": ".",
-                    "lengthMenu": "Mostrar _MENU_ registros",
-                    "zeroRecords": "No se encontraron resultados",
-                    "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "sSearch": "Buscar:",
-                    "oPaginate": {
-                        "sFirst": "Primero",
-                        "sLast":"Último",
-                        "sNext":"Siguiente",
-                        "sPrevious": "Anterior"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                    },
-                    "sProcessing":"Cargando..."
-                },
-                "processing": true,
+                processing: true,
                 serverSide: false,
+                ajax: {
+                    url: urlListarContratos,
+                    dataSrc: 'data'
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'servicio' },
+                    { data: 'monto' },
+                    { data: 'nombre_cliente' },
+                    { data: 'descripcion_casa' },
+                    { data: 'fecha_inicio' },
+                    { data: 'fecha_fin' },
+                    { data: 'created_at' },
+                    { data: 'updated_at' },
+                    { data: null, orderable: false, searchable: false }
+                ],
+                columnDefs: [{
+                    targets: 9,
+                    createdCell: function (td, cellData, rowData) {
+                        var urlEditar = "{{ route('editar_contrato', ':id') }}".replace(':id', rowData.id);
+                        var urlPago = "{{ route('pago_contrato', ':id') }}".replace(':id', rowData.id);
+
+                        var iconEdit = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M15.232 5.232l3.536 3.536M4 13.5V19h5.5l9.79-9.79a1 1 0 000-1.42l-3.08-3.08a1 1 0 00-1.42 0L4 13.5z"/></svg>`;
+                        var iconEliminar = `
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2m3 0v14a2 2 0 01-2 2H8a2 2 0 01-2-2V6h14z" />
+                                            </svg>`;
+                        var iconPagar = `
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7H14a3.5 3.5 0 110 7H6" />
+                                            </svg>`;
+
+                        var btnEditar = `<a href="${urlEditar}" class="bg-warning hover:bg-yellow-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center" title="Editar">${iconEdit}</a>`;
+                        var btnEliminar = `<button type="button" class="bg-danger hover:bg-red-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center btn-eliminar" data-id="${rowData.id}">${iconEliminar}</button>`;
+                        var btnPago = `<a href="${urlPago}" class="bg-success hover:bg-success-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">${iconPagar}</a>`;
+
+                        $(td).html(`
+                            <div class="flex gap-2 justify-center">
+                                ${btnEditar}
+                                ${btnEliminar}
+                                ${btnPago}
+                            </div>
+                        `);
+                        
+                    }
+                }],
+                deferRender: true,
+                language: lenguaje
             });
 
-             // Manejar clic en botón eliminar
-            $('.btn-eliminar').on('click', function() {
-                var id = $(this).data('id');
-                const el = document.querySelector("#modal_eliminar");
-                const modal = tailwind.Modal.getOrCreateInstance(el);
+            // Delegación del evento para botones de eliminación
+            $('#tablaContrato').on('click', '.btn-eliminar', function () {
+                const id = $(this).data('id');
+                const modalElement = document.querySelector("#modal_eliminar");
+                const modal = tailwind.Modal.getOrCreateInstance(modalElement);
                 $('#btn_eliminar_confirmar').data('id', id);
+                $('#id_registro').html(`ID: <strong>${id}</strong>`);
                 modal.show();
             });
 
             // Confirmar eliminación
-            $('#btn_eliminar_confirmar').on('click', function() {
-                var id = $(this).data('id');
-                var form = $('<form>', {
-                    'method': 'GET',
-                    'action': '{{ url("/")}}/contrato/eliminar/' + id
+            $('#btn_eliminar_confirmar').on('click', function () {
+                const id = $(this).data('id');
+                const form = $('<form>', {
+                    method: 'GET',
+                    action: `{{ url('/') }}/contrato/eliminar/${id}`
                 });
-                form.appendTo('body');
+                $('body').append(form);
                 form.submit();
             });
 
-            // Cerrar modal al cancelar
-            $('[data-modal-hide="modal_eliminar"]').on('click', function() {
-                const el = document.querySelector("#modal_eliminar");
-                const modal = Modal.getOrCreateInstance(el);
+            // Ocultar modal al hacer clic en "Cancelar"
+            $('[data-tw-dismiss="modal"]').on('click', function () {
+                const modalElement = document.querySelector("#modal_eliminar");
+                const modal = tailwind.Modal.getOrCreateInstance(modalElement);
                 modal.hide();
             });
         });
     </script>
     @endpush
 @endonce
+

@@ -12,8 +12,6 @@ namespace PHPUnit\Framework;
 use const PHP_EOL;
 use function array_keys;
 use function array_map;
-use function array_pop;
-use function array_reverse;
 use function assert;
 use function call_user_func;
 use function class_exists;
@@ -53,8 +51,6 @@ use Throwable;
 /**
  * @template-implements IteratorAggregate<int, Test>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
@@ -84,7 +80,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     private ?array $providedTests    = null;
     private ?Factory $iteratorFilter = null;
-    private bool $wasRun             = false;
 
     /**
      * @psalm-param non-empty-string $name
@@ -139,8 +134,13 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $testSuite->addTestMethod($class, $method);
         }
 
+<<<<<<< HEAD
         if ($testSuite->isEmpty()) {
             Event\Facade::emitter()->testRunnerTriggeredPhpunitWarning(
+=======
+        if (count($testSuite) === 0) {
+            Event\Facade::emitter()->testRunnerTriggeredWarning(
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
                 sprintf(
                     'No tests found in class "%s".',
                     $class->getName(),
@@ -286,13 +286,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     public function isEmpty(): bool
     {
-        foreach ($this as $test) {
-            if (count($test) !== 0) {
-                return false;
-            }
-        }
-
-        return true;
+        return empty($this->tests);
     }
 
     /**
@@ -331,15 +325,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function run(): void
     {
-        if ($this->wasRun) {
-            // @codeCoverageIgnoreStart
-            throw new Exception('The tests aggregated by this TestSuite were already run');
-            // @codeCoverageIgnoreEnd
-        }
-
-        $this->wasRun = true;
-
-        if ($this->isEmpty()) {
+        if (count($this) === 0) {
             return;
         }
 
@@ -352,19 +338,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return;
         }
 
-        /** @psalm-var list<Test> $tests */
-        $tests = [];
-
         foreach ($this as $test) {
-            $tests[] = $test;
-        }
-
-        $tests = array_reverse($tests);
-
-        $this->tests  = [];
-        $this->groups = [];
-
-        while (($test = array_pop($tests)) !== null) {
             if (TestResultFacade::shouldStop()) {
                 $emitter->testRunnerExecutionAborted();
 

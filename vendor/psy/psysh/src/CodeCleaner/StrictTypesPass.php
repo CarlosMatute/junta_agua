@@ -12,8 +12,11 @@
 namespace Psy\CodeCleaner;
 
 use PhpParser\Node;
+<<<<<<< HEAD
 use PhpParser\Node\DeclareItem;
 use PhpParser\Node\Scalar\Int_;
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 use PhpParser\Node\Scalar\LNumber;
 use PhpParser\Node\Stmt\Declare_;
 use PhpParser\Node\Stmt\DeclareDeclare;
@@ -79,12 +82,17 @@ class StrictTypesPass extends CodeCleanerPass
             $first = \reset($nodes);
             if (!$first instanceof Declare_) {
                 // @todo Switch to PhpParser\Node\DeclareItem once we drop support for PHP-Parser 4.x
+<<<<<<< HEAD
                 // @todo Remove LNumber once we drop support for PHP-Parser 4.x
                 $arg = \class_exists('PhpParser\Node\Scalar\Int_') ? new Int_(1) : new LNumber(1);
                 $declareItem = \class_exists('PhpParser\Node\DeclareItem') ?
                     new DeclareItem('strict_types', $arg) :
                     new DeclareDeclare('strict_types', $arg);
                 $declare = new Declare_([$declareItem]);
+=======
+                // @todo Rename LNumber to Int_ once we drop support for PHP-Parser 4.x
+                $declare = new Declare_([new DeclareDeclare('strict_types', new LNumber(1))]);
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
                 \array_unshift($nodes, $declare);
             }
         }

@@ -23,6 +23,7 @@
         "ext-xml": "*"
     },
     "require-dev": {
+<<<<<<< HEAD
         "friendsofphp/php-cs-fixer": "^3.75.0",
         "illuminate/view": "^11.44.7",
         "larastan/larastan": "^3.4.0",
@@ -30,6 +31,15 @@
         "mockery/mockery": "^1.6.12",
         "nunomaduro/termwind": "^2.3.1",
         "pestphp/pest": "^2.36.0"
+=======
+        "friendsofphp/php-cs-fixer": "^3.52.1",
+        "illuminate/view": "^10.48.4",
+        "larastan/larastan": "^2.9.2",
+        "laravel-zero/framework": "^10.3.0",
+        "mockery/mockery": "^1.6.11",
+        "nunomaduro/termwind": "^1.15.1",
+        "pestphp/pest": "^2.34.5"
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
     },
     "autoload": {
         "psr-4": {

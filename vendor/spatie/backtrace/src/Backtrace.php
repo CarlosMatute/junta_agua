@@ -3,7 +3,6 @@
 namespace Spatie\Backtrace;
 
 use Closure;
-use Laravel\SerializableClosure\Support\ClosureStream;
 use Spatie\Backtrace\Arguments\ArgumentReducers;
 use Spatie\Backtrace\Arguments\ReduceArgumentsAction;
 use Spatie\Backtrace\Arguments\Reducers\ArgumentReducer;
@@ -157,8 +156,12 @@ class Backtrace
             $options = 0;
         }
 
+<<<<<<< HEAD
         // Populate object
         if ($this->withObject) {
+=======
+        if ($this->withObject()) {
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
             $options = $options | DEBUG_BACKTRACE_PROVIDE_OBJECT;
         }
 
@@ -185,6 +188,7 @@ class Backtrace
         $reduceArgumentsAction = new ReduceArgumentsAction($this->resolveArgumentReducers());
 
         foreach ($rawFrames as $rawFrame) {
+<<<<<<< HEAD
             $textSnippet = null;
 
             if (
@@ -200,18 +204,23 @@ class Backtrace
                 $trimmedFilePath = str_replace($this->applicationPath, '', $currentFile);
             }
             $frame = new Frame(
+=======
+            $frames[] = new Frame(
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
                 $currentFile,
                 $currentLine,
                 $arguments,
                 $rawFrame['function'] ?? null,
                 $rawFrame['class'] ?? null,
+<<<<<<< HEAD
                 $rawFrame['object'] ?? null,
                 $this->isApplicationFrame($currentFile),
                 $textSnippet,
                 $trimmedFilePath ?? null,
+=======
+                $this->isApplicationFrame($currentFile)
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
             );
-
-            $frames[] = $frame;
 
             $arguments = $this->withArguments
                 ? $rawFrame['args'] ?? null

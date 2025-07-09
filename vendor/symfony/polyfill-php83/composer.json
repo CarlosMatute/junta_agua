@@ -16,7 +16,12 @@
         }
     ],
     "require": {
+<<<<<<< HEAD
         "php": ">=7.2"
+=======
+        "php": ">=7.1",
+        "symfony/polyfill-php80": "^1.14"
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
     },
     "autoload": {
         "psr-4": { "Symfony\\Polyfill\\Php83\\": "" },

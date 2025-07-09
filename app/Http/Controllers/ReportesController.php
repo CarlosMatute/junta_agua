@@ -22,7 +22,7 @@ class ReportesController extends Controller
         $this->RPT_HELLO_WORD='hello_world';
         $this->RPT_FACTURA_JUNTA_AGUA='factura_junta_agua';
         $this->INPUT_RPT_PATH=app_path().'/Documentos/Reportes/';
-        $this->OUTPUT_RPT_PATH=public_path().'/documentos/reportes/';
+        $this->OUTPUT_RPT_PATH='/documentos/reportes/';
         //$this->OUTPUT_RPT_PATH='/home/tdmxafft/public_html/documentos/reportes/';
         $this->dbConnection= [
                 'driver' => 'postgres', //env('DB_CONNECTION') //mysql, ....
@@ -51,7 +51,7 @@ class ReportesController extends Controller
         if(!file_exists($inputCompile)){
             $jasper = new PHPJasper;
             $jasper->compile($input)->execute();
-        }
+        }        
         
         $options = [
             'format' => ['pdf']
@@ -59,15 +59,18 @@ class ReportesController extends Controller
 
         $jasper = new PHPJasper;
 
+        //$jasper->debug = true;
+
         $jasper->process(
             $inputCompile,
-            $output,
+            public_path().$output,
             $options
         )->execute();
-        
-        //return response()->file($pathToFile);
-        return view('reportes.generico')->with('reportName',$output.'.pdf');
-        
+
+        return view('reportes.reporteria')
+            ->with('reportName',$output.'.pdf')
+            ->with('reportDoc',$this->RPT_HELLO_WORD.'.pdf');        
+            ;        
     }
     
     public function factura_junta_agua_old($idMovimiento){

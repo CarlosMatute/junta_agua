@@ -7,16 +7,14 @@ use Spatie\Backtrace\Arguments\ArgumentReducers;
 use Spatie\Backtrace\Arguments\Reducers\ArgumentReducer;
 use Spatie\Backtrace\Backtrace;
 use Spatie\Backtrace\Frame as SpatieFrame;
-use Spatie\ErrorSolutions\Contracts\Solution;
 use Spatie\FlareClient\Concerns\HasContext;
 use Spatie\FlareClient\Concerns\UsesTime;
 use Spatie\FlareClient\Context\ContextProvider;
 use Spatie\FlareClient\Contracts\ProvidesFlareContext;
 use Spatie\FlareClient\Glows\Glow;
 use Spatie\FlareClient\Solutions\ReportSolution;
-use Spatie\Ignition\Contracts\Solution as IgnitionSolution;
-use Spatie\LaravelFlare\Exceptions\ViewException;
-use Spatie\LaravelIgnition\Exceptions\ViewException as IgnitionViewException;
+use Spatie\Ignition\Contracts\Solution;
+use Spatie\LaravelIgnition\Exceptions\ViewException;
 use Throwable;
 
 class Report
@@ -67,6 +65,7 @@ class Report
 
     public static ?string $fakeTrackingUuid = null;
 
+<<<<<<< HEAD
     protected ?bool $handled = null;
 
     protected ?string $overriddenGrouping = null;
@@ -75,6 +74,9 @@ class Report
      * @param array<class-string<ArgumentReducer>|ArgumentReducer>|ArgumentReducers|null $argumentReducers
      * @param array<class-string, string> $overriddenGroupings
      */
+=======
+    /** @param array<class-string<ArgumentReducer>|ArgumentReducer>|ArgumentReducers|null $argumentReducers */
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
     public static function createForThrowable(
         Throwable $throwable,
         ContextProvider $context,
@@ -111,7 +113,7 @@ class Report
     protected static function getClassForThrowable(Throwable $throwable): string
     {
         /** @phpstan-ignore-next-line */
-        if ($throwable::class === IgnitionViewException::class || $throwable::class === ViewException::class) {
+        if ($throwable::class === ViewException::class) {
             /** @phpstan-ignore-next-line */
             if ($previous = $throwable->getPrevious()) {
                 return get_class($previous);
@@ -275,7 +277,7 @@ class Report
         return $this;
     }
 
-    public function addSolution(Solution|IgnitionSolution $solution): self
+    public function addSolution(Solution $solution): self
     {
         $this->solutions[] = ReportSolution::fromSolution($solution)->toArray();
 
@@ -318,6 +320,7 @@ class Report
         return array_merge_recursive_distinct($context, $this->userProvidedContext);
     }
 
+<<<<<<< HEAD
     public function handled(?bool $handled = true): self
     {
         $this->handled = $handled;
@@ -332,6 +335,8 @@ class Report
         return $this;
     }
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
     protected function exceptionContext(Throwable $throwable): self
     {
         if ($throwable instanceof ProvidesFlareContext) {
@@ -408,8 +413,11 @@ class Report
             'application_path' => $this->applicationPath,
             'application_version' => $this->applicationVersion,
             'tracking_uuid' => $this->trackingUuid,
+<<<<<<< HEAD
             'handled' => $this->handled,
             'overridden_grouping' => $this->overriddenGrouping,
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
         ];
     }
 

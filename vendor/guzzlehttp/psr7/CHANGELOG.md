@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<<<<<<< HEAD
 ## 2.7.1 - 2025-03-27
 
 ### Fixed
@@ -32,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - PHP 8.4 support
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 ## 2.6.2 - 2023-12-03
 
 ### Fixed

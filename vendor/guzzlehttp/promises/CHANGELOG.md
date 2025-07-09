@@ -1,6 +1,7 @@
 # CHANGELOG
 
 
+<<<<<<< HEAD
 ## 2.2.0 - 2025-03-27
 
 ### Fixed
@@ -29,6 +30,8 @@
 - PHP 8.4 support
 
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 ## 2.0.2 - 2023-12-03
 
 ### Changed

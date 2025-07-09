@@ -82,7 +82,7 @@ class LineFormatter extends NormalizerFormatter
     /**
      * Indent stack traces to separate them a bit from the main log record messages
      *
-     * @param  string $indent The string used to indent, for example "    "
+     * @param string $indent The string used to indent, for example "    "
      * @return $this
      */
     public function indentStacktraces(string $indent): self
@@ -115,7 +115,7 @@ class LineFormatter extends NormalizerFormatter
     /**
      * Allows cutting the level name to get fixed-length levels like INF for INFO, ERR for ERROR if you set this to 3 for example
      *
-     * @param  int|null $maxLevelNameLength Maximum characters for the level name. Set null for infinite length (default)
+     * @param int|null $maxLevelNameLength Maximum characters for the level name. Set null for infinite length (default)
      * @return $this
      */
     public function setMaxLevelNameLength(?int $maxLevelNameLength = null): self
@@ -223,11 +223,11 @@ class LineFormatter extends NormalizerFormatter
      */
     protected function convertToString($data): string
     {
-        if (null === $data || \is_bool($data)) {
+        if (null === $data || is_bool($data)) {
             return var_export($data, true);
         }
 
-        if (\is_scalar($data)) {
+        if (is_scalar($data)) {
             return (string) $data;
         }
 
@@ -241,8 +241,12 @@ class LineFormatter extends NormalizerFormatter
                 $str = preg_replace('/(?<!\\\\)\\\\[rn]/', "\n", $str);
                 if (null === $str) {
                     $pcreErrorCode = preg_last_error();
+<<<<<<< HEAD
 
                     throw new \RuntimeException('Failed to run preg_replace: ' . $pcreErrorCode . ' / ' . preg_last_error_msg());
+=======
+                    throw new \RuntimeException('Failed to run preg_replace: ' . $pcreErrorCode . ' / ' . Utils::pcreLastErrorMessage($pcreErrorCode));
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
                 }
             }
 
@@ -265,9 +269,9 @@ class LineFormatter extends NormalizerFormatter
             }
 
             if (isset($e->detail)) {
-                if (\is_string($e->detail)) {
+                if (is_string($e->detail)) {
                     $str .= ' detail: ' . $e->detail;
-                } elseif (\is_object($e->detail) || \is_array($e->detail)) {
+                } elseif (is_object($e->detail) || is_array($e->detail)) {
                     $str .= ' detail: ' . $this->toJson($e->detail, true);
                 }
             }

@@ -67,8 +67,11 @@ class ContratoController extends Controller
             ) as cliente
         from 
             tbl_clientes c
+            join tbl_ubicacion tu on tu.id_cliente = c.id
         where 
             c.deleted_at is null
+            and tu.deleted_at is null
+        group by 1,2
         ");
 
         //
@@ -101,7 +104,16 @@ class ContratoController extends Controller
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
             'monto' => 'required|numeric',
-        ], [], [
+        ],        
+        [
+            'id_cliente.required' => 'Debe ingresar un valor para el campo "Cliente"',
+            'id_ubicacion.required' => 'Debe seleccionar un valor para el campo "Ubicación"',
+            'id_servicio.required' => 'Debe seleccionar un valor para el campo "Servicio"',
+            'fecha_inicio.required' => 'Debe ingresar un valor para el campo "Fecha Inicio"',
+            'fecha_fin.required' => 'Debe ingresar un valor para el campo "Fecha Final"',
+            'monto.required' => 'Debe ingresar un valor para el campo "Monto"',
+        ],
+        [
             'id_cliente' => 'cliente',
             'id_ubicacion' => 'ubicación',
             'id_servicio' => 'servicio',
@@ -517,6 +529,43 @@ class ContratoController extends Controller
    return response()->json(["msgSuccess" => $msgSuccess,"msgError"=>$msgError,"msgAlert" => $msgAlert, 
    "tbl_movimientos_list"=>$tbl_movimientos_list, "saldos"=>$saldos
 ]);
+   }
+
+   public function dataListarContratos(){
+    //Obtener lsita de contratos
+        $listarContratos = DB::select("
+        SELECT
+            tc.id,
+            tc.id_cliente,
+            TRIM(
+                COALESCE(TRIM(c.primer_nombre)||' ','')||
+                COALESCE(TRIM(c.segundo_nombre)||' ','')||
+                COALESCE(TRIM(c.primer_apellido)||' ','')||
+                COALESCE(TRIM(c.segundo_apellido||' '),'')
+
+            ) as nombre_cliente,
+            tc.id_ubicacion,
+            tu.descripcion_casa,
+            tc.id_servicio,
+            ts.descripcion as servicio,
+            tc.fecha_inicio,
+            tc.fecha_fin,
+            tc.created_at,
+            tc.updated_at,
+            tc.deleted_at,
+            to_char(tc.monto,'LFM999,999,999.00') monto
+        FROM public.tbl_contrato tc
+        JOIN tbl_clientes c on tc.id_cliente = c.id
+        JOIN tbl_ubicacion tu on tc.id_ubicacion = tu.id
+        JOIN tbl_servicio ts on tc.id_servicio = ts.id
+        WHERE
+            tc.deleted_at is null
+            and c.deleted_at is null
+            and tu.deleted_at is null
+            and ts.deleted_at is null");
+
+    return response()->json(["data"=>$listarContratos]);
+
    }
 
 

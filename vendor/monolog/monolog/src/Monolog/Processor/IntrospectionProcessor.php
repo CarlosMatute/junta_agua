@@ -47,7 +47,7 @@ class IntrospectionProcessor implements ProcessorInterface
 
     /**
      * @param string|int|Level $level               The minimum logging level at which this Processor will be triggered
-     * @param string[]         $skipClassesPartials
+     * @param string[]                   $skipClassesPartials
      *
      * @phpstan-param value-of<Level::VALUES>|value-of<Level::NAMES>|Level|LogLevel::* $level
      */
@@ -86,7 +86,7 @@ class IntrospectionProcessor implements ProcessorInterface
                         continue 2;
                     }
                 }
-            } elseif (\in_array($trace[$i]['function'], self::SKIP_FUNCTIONS, true)) {
+            } elseif (in_array($trace[$i]['function'], self::SKIP_FUNCTIONS, true)) {
                 $i++;
 
                 continue;
@@ -121,6 +121,6 @@ class IntrospectionProcessor implements ProcessorInterface
             return false;
         }
 
-        return isset($trace[$index]['class']) || \in_array($trace[$index]['function'], self::SKIP_FUNCTIONS, true);
+        return isset($trace[$index]['class']) || in_array($trace[$index]['function'], self::SKIP_FUNCTIONS, true);
     }
 }

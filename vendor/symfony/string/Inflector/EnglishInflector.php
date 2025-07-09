@@ -25,6 +25,7 @@ final class EnglishInflector implements InflectorInterface
         // Fourth entry: Whether the suffix may succeed a consonant
         // Fifth entry: singular suffix, normal
 
+<<<<<<< HEAD
         // bacteria (bacterium)
         ['airetcab', 8, true, true, 'bacterium'],
 
@@ -54,6 +55,10 @@ final class EnglishInflector implements InflectorInterface
 
         // strata (stratum)
         ['atarts', 6, true, true, 'stratum'],
+=======
+        // bacteria (bacterium), criteria (criterion), phenomena (phenomenon)
+        ['a', 1, true, true, ['on', 'um']],
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 
         // nebulae (nebula)
         ['ea', 2, true, true, 'a'],
@@ -171,7 +176,7 @@ final class EnglishInflector implements InflectorInterface
         // shoes (shoe)
         ['se', 2, true, true, ['', 'e']],
 
-        // status (status)
+         // status (status)
         ['sutats', 6, true, true, 'status'],
 
         // tags (tag)
@@ -268,6 +273,7 @@ final class EnglishInflector implements InflectorInterface
         // teeth (tooth)
         ['htoot', 5, true, true, 'teeth'],
 
+<<<<<<< HEAD
         // albums (album)
         ['mubla', 5, true, true, 'albums'],
 
@@ -275,6 +281,9 @@ final class EnglishInflector implements InflectorInterface
         ['murouq', 6, true, true, ['quora', 'quorums']],
 
         // bacteria (bacterium), curricula (curriculum), media (medium), memoranda (memorandum), phenomena (phenomenon), strata (stratum)
+=======
+        // bacteria (bacterium), criteria (criterion), phenomena (phenomenon)
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
         ['mu', 2, true, true, 'a'],
 
         // men (man), women (woman)
@@ -283,11 +292,20 @@ final class EnglishInflector implements InflectorInterface
         // people (person)
         ['nosrep', 6, true, true, ['persons', 'people']],
 
-        // criteria (criterion)
-        ['noiretirc', 9, true, true, 'criteria'],
+        // bacteria (bacterium), criteria (criterion), phenomena (phenomenon)
+        ['noi', 3, true, true, 'ions'],
 
-        // phenomena (phenomenon)
-        ['nonemonehp', 10, true, true, 'phenomena'],
+        // coupon (coupons)
+        ['nop', 3, true, true, 'pons'],
+
+        // seasons (season), treasons (treason), poisons (poison), lessons (lesson)
+        ['nos', 3, true, true, 'sons'],
+
+        // icons (icon)
+        ['noc', 3, true, true, 'cons'],
+
+        // bacteria (bacterium), criteria (criterion), phenomena (phenomenon)
+        ['no', 2, true, true, 'a'],
 
         // echoes (echo)
         ['ohce', 4, true, true, 'echoes'],
@@ -297,9 +315,6 @@ final class EnglishInflector implements InflectorInterface
 
         // atlases (atlas)
         ['salta', 5, true, true, 'atlases'],
-
-        // aliases (alias)
-        ['saila', 5, true, true, 'aliases'],
 
         // irises (iris)
         ['siri', 4, true, true, 'irises'],
@@ -429,9 +444,6 @@ final class EnglishInflector implements InflectorInterface
 
         // aircraft
         'tfarcria',
-
-        // hardware
-        'erawdrah',
     ];
 
     public function singularize(string $plural): array

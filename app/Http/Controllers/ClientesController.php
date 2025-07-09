@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use DB;
 use Session;
 use Exception;
+use Yajra\DataTables\DataTables;
 
 class ClientesController extends Controller
 {
@@ -67,6 +68,83 @@ class ClientesController extends Controller
             ->with('departamentos', $departamentos);
     }
 
+    public function getClientesData(){
+
+        $clientesQuery= DB::SELECT("
+        SELECT
+            TC.ID,
+            TC.IDENTIDAD,
+            TRIM(
+                COALESCE(TRIM(TC.PRIMER_NOMBRE)||' ','')||
+                COALESCE(TRIM(TC.SEGUNDO_NOMBRE)||' ','')||
+                COALESCE(TRIM(TC.PRIMER_APELLIDO)||' ','')||
+                COALESCE(TRIM(TC.SEGUNDO_APELLIDO||' '),'')
+            ) as cliente,
+            TC.PRIMER_NOMBRE,
+            COALESCE(TC.SEGUNDO_NOMBRE, '') SEGUNDO_NOMBRE,
+            TC.PRIMER_APELLIDO,
+            COALESCE(TC.SEGUNDO_APELLIDO, '') SEGUNDO_APELLIDO,
+            TC.ID_GENERO,
+            TG.NOMBRE GENERO,
+            TC.CELULAR,
+            TC.DOMICILIO,
+            TC.ID_DEPARTAMENTO,
+            TD.NOMBRE DEPARTAMENTO,
+            TC.ID_MUNICIPIO,
+            TM.NOMBRE MUNICIPIO,
+            TC.CORREO_ELECTRONICO,
+            TC.CREATED_AT,
+            TD.NOMBRE||', '||TM.NOMBRE||', '||TC.DOMICILIO as domicilio_completa
+        FROM
+            PUBLIC.TBL_CLIENTES TC
+            JOIN PUBLIC.TBL_GENEROS TG ON TC.ID_GENERO = TG.ID
+            JOIN PUBLIC.TBL_DEPARTAMENTOS TD ON TC.ID_DEPARTAMENTO = TD.ID
+            JOIN PUBLIC.TBL_MUNICIPIOS TM ON TC.ID_MUNICIPIO = TM.ID
+        WHERE
+            TC.DELETED_AT IS NULL
+        ORDER BY
+            TC.PRIMER_NOMBRE,
+            TC.SEGUNDO_NOMBRE,
+            TC.PRIMER_APELLIDO,
+            TC.SEGUNDO_APELLIDO
+        ");
+                                         
+        return Datatables($clientesQuery)                
+            ->addColumn('opciones', '
+            <button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"
+                data-id="{{$id}}"
+                data-primer_nombre="{{$primer_nombre}}" 
+                data-segundo_nombre="{{$segundo_nombre}}" 
+                data-primer_apellido="{{$primer_apellido}}" 
+                data-segundo_apellido="{{$segundo_apellido}}" 
+                data-identidad="{{$identidad}}"
+                data-celular="{{$celular}}"
+                data-correo_electronico="{{$correo_electronico}}"
+                data-genero="{{$id_genero}}"
+                data-departamento="{{$id_departamento}}"
+                data-municipio="{{$id_municipio}}"
+                data-domicilio="{{$domicilio}}"
+            ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">
+            </path></svg></button>
+            <button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"
+                data-id="{{$id}}"
+                data-primer_nombre="{{$primer_nombre}}" 
+                data-segundo_nombre="{{$segundo_nombre}}" 
+                data-primer_apellido="{{$primer_apellido}}" 
+                data-segundo_apellido="{{$segundo_apellido}}" 
+                data-identidad="{{$identidad}}"
+                data-celular="{{$celular}}"
+                data-correo_electronico="{{$correo_electronico}}"
+                data-genero="{{$id_genero}}"
+                data-departamento="{{$id_departamento}}"
+                data-municipio="{{$id_municipio}}"
+                data-domicilio="{{$domicilio}}"
+            ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>
+            ')                                          
+            ->rawColumns(['opciones'])
+            ->make(true);
+    }
+
     public function guardar_clientes(Request $request)
     {
         $accion=$request->accion;
@@ -82,9 +160,12 @@ class ClientesController extends Controller
         $departamento=$request->departamento;
         $municipio=$request->municipio;
         $domicilio=$request->domicilio;
+        $cliente_existe=null;
+        $sql_cliente_existe=null;
         $clientes_list = null;
         $msgSuccess = null;
         $msgError = null;
+        $msgAlert = null;
 
         if ($id == null && $accion == 2) {
             $accion = 1;
@@ -93,7 +174,23 @@ class ClientesController extends Controller
         try {
             //throw New Exception($identidad, true);
             if ($accion == 1) {
-                $cliente = collect(\DB::select("INSERT INTO public.tbl_clientes(
+
+                $sql_cliente_existe = DB::select("select 
+                cast ( count(1) 
+                filter( where btrim(regexp_replace(identidad::text, '-| '::text, ''::text, 'g'::text)) = 
+                btrim(regexp_replace(:identidad, '-| '::text, ''::text, 'g'::text)) )::int as bool ) as cliente_existe
+                from tbl_clientes
+                where deleted_at is null",[
+                    "identidad" => $identidad
+                ]);
+
+                foreach($sql_cliente_existe as $row){
+                    $cliente_existe=$row->cliente_existe;
+                }
+                if($cliente_existe){
+                    $msgError = "Cliente ya tiene registro";
+                }else{
+                    $cliente = collect(\DB::select("INSERT INTO public.tbl_clientes(
                     identidad, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, id_genero, celular, domicilio, id_departamento, id_municipio, correo_electronico)
                     VALUES (:identidad, :primer_nombre, :segundo_nombre, :primer_apellido, :segundo_apellido, :id_genero, :celular, :domicilio, :id_departamento, :id_municipio, :correo_electronico)
                     returning id;",
@@ -102,8 +199,10 @@ class ClientesController extends Controller
                     "celular" => $celular, "domicilio" => $domicilio, "id_departamento" => $departamento, 
                     "id_municipio" => $municipio, "correo_electronico" => $correo]))->first();
 
-                $id = $cliente->id;
-                $msgSuccess = "Cliente ".$id." registrado exitosamente.";
+                    $id = $cliente->id;
+                    $msgSuccess = "Cliente ".$id." registrado exitosamente.";
+                }
+                
             }else if ($accion == 2) {
                 DB::select("UPDATE public.tbl_clientes
                     SET identidad=:identidad, primer_nombre=:primer_nombre, segundo_nombre=:segundo_nombre, primer_apellido=:primer_apellido, 

@@ -2,6 +2,7 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+<<<<<<< HEAD
 ## [10.1.16] - 2024-08-22
 
 ### Changed
@@ -14,6 +15,8 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * [#967](https://github.com/sebastianbergmann/php-code-coverage/issues/967): Identification of executable lines for `match` expressions does not work correctly
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 ## [10.1.14] - 2024-03-12
 
 ### Fixed
@@ -113,8 +116,11 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * The `SebastianBergmann\CodeCoverage\Filter::includeDirectory()`, `SebastianBergmann\CodeCoverage\Filter::excludeDirectory()`, and `SebastianBergmann\CodeCoverage\Filter::excludeFile()` methods are now deprecated
 
+<<<<<<< HEAD
 [10.1.16]: https://github.com/sebastianbergmann/php-code-coverage/compare/10.1.15...10.1.16
 [10.1.15]: https://github.com/sebastianbergmann/php-code-coverage/compare/10.1.14...10.1.15
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 [10.1.14]: https://github.com/sebastianbergmann/php-code-coverage/compare/10.1.13...10.1.14
 [10.1.13]: https://github.com/sebastianbergmann/php-code-coverage/compare/10.1.12...10.1.13
 [10.1.12]: https://github.com/sebastianbergmann/php-code-coverage/compare/10.1.11...10.1.12

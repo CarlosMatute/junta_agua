@@ -104,7 +104,7 @@ class GelfMessageFormatter extends NormalizerFormatter
             ->setLevel($this->getGraylog2Priority($record->level));
 
         // message length + system name length + 200 for padding / metadata
-        $len = 200 + \strlen($record->message) + \strlen($this->systemName);
+        $len = 200 + strlen($record->message) + strlen($this->systemName);
 
         if ($len > $this->maxLength) {
             $message->setShortMessage(Utils::substr($record->message, 0, $this->maxLength));
@@ -115,9 +115,14 @@ class GelfMessageFormatter extends NormalizerFormatter
         }
 
         foreach ($extra as $key => $val) {
+<<<<<<< HEAD
             $key = (string) preg_replace('#[^\w.-]#', '-', (string) $key);
             $val = \is_scalar($val) || null === $val ? $val : $this->toJson($val);
             $len = \strlen($this->extraPrefix . $key . $val);
+=======
+            $val = is_scalar($val) || null === $val ? $val : $this->toJson($val);
+            $len = strlen($this->extraPrefix . $key . $val);
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
             if ($len > $this->maxLength) {
                 $message->setAdditional($this->extraPrefix . $key, Utils::substr((string) $val, 0, $this->maxLength));
 
@@ -127,9 +132,14 @@ class GelfMessageFormatter extends NormalizerFormatter
         }
 
         foreach ($context as $key => $val) {
+<<<<<<< HEAD
             $key = (string) preg_replace('#[^\w.-]#', '-', (string) $key);
             $val = \is_scalar($val) || null === $val ? $val : $this->toJson($val);
             $len = \strlen($this->contextPrefix . $key . $val);
+=======
+            $val = is_scalar($val) || null === $val ? $val : $this->toJson($val);
+            $len = strlen($this->contextPrefix . $key . $val);
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
             if ($len > $this->maxLength) {
                 $message->setAdditional($this->contextPrefix . $key, Utils::substr((string) $val, 0, $this->maxLength));
 

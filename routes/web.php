@@ -110,11 +110,14 @@ Route::middleware('auth')->group(function () {
     });
     //Inicia Junta de agua
         Route::get('/clientes', [ClientesController::class, 'ver_clientes'])->name('clientes');
+        Route::get('/clientes/data', [ClientesController::class, 'getClientesData']);
         Route::post('/clientes/guardar', [ClientesController::class, 'guardar_clientes']);
         Route::get('/ubicaciones', [UbicacionesController::class, 'ver_ubicaciones'])->name('ubicaciones');
         Route::post('/ubicaciones/guardar', [UbicacionesController::class, 'guardar_ubicaciones']);
+        Route::post('/ubicaciones/foto/guardar', [UbicacionesController::class, 'guardar_foto_ubicacion']);
         Route::post('/departamentos-municipios', [DepartamentosMunicipiosController::class, 'ver_departamento_municipios']);
         Route::get('/reportes', [ReportesController::class, 'imprimir_reporte']);
+        Route::get('/ubicaciones/data', [UbicacionesController::class, 'getUbicacionesData']);
 
         Route::get("/per-empleado",[EmpleadosController::class, "ver_per_empleado"])->name('per-empleado');
         Route::post("/per-empleado/guardar",[EmpleadosController::class, "guardar_per_empleado"]);
@@ -130,12 +133,14 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/ubicaciones/{id_cliente}', [ContratoController::class, 'getUbicaciones'])->name('getUbicaciones');
 
+        Route::get('/contrato/data', [ContratoController::class, 'dataListarContratos'])->name('dataListarContratos');
+
         //Finaliza Modulo Contrato
         
         Route::get('/servicio', [ServicioController::class, 'ver_servicio'])->name('servicio');
         Route::post('/servicio/guardar', [ServicioController::class, 'guardar_servicio']);
         
-        Route::get("/movimientos/{idContrato}",[ContratoController::class, "ver_tbl_movimientos"]);
+        Route::get("/movimientos/{idContrato}",[ContratoController::class, "ver_tbl_movimientos"])->name('pago_contrato');
         Route::post("/movimientos/guardar",[ContratoController::class, "guardar_tbl_movimientos"]);
         Route::get("/movimientos/{idMovimiento}/pago/factura",[ReportesController::class, "ver_factura_junta_agua"]);
         Route::post("/movimientos/factura",[ReportesController::class, "factura_junta_agua"]);

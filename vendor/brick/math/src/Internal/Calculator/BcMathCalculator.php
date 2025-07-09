@@ -40,7 +40,14 @@ class BcMathCalculator extends Calculator
         return \bcdiv($a, $b, 0);
     }
 
+<<<<<<< HEAD
     #[Override]
+=======
+    /**
+     * @psalm-suppress InvalidNullableReturnType
+     * @psalm-suppress NullableReturnStatement
+     */
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
     public function divR(string $a, string $b) : string
     {
         return \bcmod($a, $b, 0);
@@ -51,6 +58,8 @@ class BcMathCalculator extends Calculator
     {
         $q = \bcdiv($a, $b, 0);
         $r = \bcmod($a, $b, 0);
+
+        assert($r !== null);
 
         return [$q, $r];
     }
@@ -67,7 +76,14 @@ class BcMathCalculator extends Calculator
         return \bcpowmod($base, $exp, $mod, 0);
     }
 
+<<<<<<< HEAD
     #[Override]
+=======
+    /**
+     * @psalm-suppress InvalidNullableReturnType
+     * @psalm-suppress NullableReturnStatement
+     */
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
     public function sqrt(string $n) : string
     {
         return \bcsqrt($n, 0);

@@ -23,7 +23,11 @@ use League\CommonMark\Util\RegexHelper;
  */
 final class AttributesHelper
 {
+<<<<<<< HEAD
     private const SINGLE_ATTRIBUTE = '\s*([.]-?[_a-z][^\s.}]*|[#][^\s}]+|' . RegexHelper::PARTIAL_ATTRIBUTENAME . RegexHelper::PARTIAL_ATTRIBUTEVALUESPEC . ')\s*';
+=======
+    private const SINGLE_ATTRIBUTE = '\s*([.#][_a-z0-9-]+|' . RegexHelper::PARTIAL_ATTRIBUTENAME . RegexHelper::PARTIAL_ATTRIBUTEVALUESPEC . ')\s*';
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
     private const ATTRIBUTE_LIST   = '/^{:?(' . self::SINGLE_ATTRIBUTE . ')+}/i';
 
     /**
@@ -75,11 +79,14 @@ final class AttributesHelper
             /** @psalm-suppress PossiblyUndefinedArrayOffset */
             [$name, $value] = \explode('=', $attribute, 2);
 
+<<<<<<< HEAD
             if ($value === 'true') {
                 $attributes[$name] = true;
                 continue;
             }
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
             $first = $value[0];
             $last  = \substr($value, -1);
             if (($first === '"' && $last === '"') || ($first === "'" && $last === "'") && \strlen($value) > 1) {

@@ -10,9 +10,13 @@
 namespace PHPUnit\Framework;
 
 /**
+<<<<<<< HEAD
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @internal This interface is not covered by the backward compatibility promise for PHPUnit
+=======
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
  */
 interface SelfDescribing
 {

@@ -11,7 +11,11 @@
     "require": {
         "php": "^8.0",
         "ext-json": "*",
+<<<<<<< HEAD
         "brick/math": "^0.8.8 || ^0.9 || ^0.10 || ^0.11 || ^0.12 || ^0.13",
+=======
+        "brick/math": "^0.8.8 || ^0.9 || ^0.10 || ^0.11",
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
         "ramsey/collection": "^1.2 || ^2.0"
     },
     "require-dev": {

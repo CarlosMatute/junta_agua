@@ -2,12 +2,6 @@
 
 namespace Spatie\Backtrace;
 
-use Spatie\Backtrace\CodeSnippets\CodeSnippet;
-use Spatie\Backtrace\CodeSnippets\FileSnippetProvider;
-use Spatie\Backtrace\CodeSnippets\LaravelSerializableClosureSnippetProvider;
-use Spatie\Backtrace\CodeSnippets\NullSnippetProvider;
-use Spatie\Backtrace\CodeSnippets\SnippetProvider;
-
 class Frame
 {
     /** @var string */
@@ -31,22 +25,31 @@ class Frame
     /** @var string|null */
     public $class;
 
+<<<<<<< HEAD
     /** @var object|null */
     public $object;
 
     /** @var string|null */
     protected $textSnippet;
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
     public function __construct(
         string $file,
         int $lineNumber,
         ?array $arguments,
+<<<<<<< HEAD
         ?string $method = null,
         ?string $class = null,
         ?object $object = null,
         bool $isApplicationFrame = false,
         ?string $textSnippet = null,
         ?string $trimmedFilePath = null
+=======
+        string $method = null,
+        string $class = null,
+        bool $isApplicationFrame = false
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
     ) {
         $this->file = $file;
 
@@ -63,8 +66,6 @@ class Frame
         $this->object = $object;
 
         $this->applicationFrame = $isApplicationFrame;
-
-        $this->textSnippet = $textSnippet;
     }
 
     public function getSnippet(int $lineCount): array
@@ -72,7 +73,7 @@ class Frame
         return (new CodeSnippet())
             ->surroundingLine($this->lineNumber)
             ->snippetLineCount($lineCount)
-            ->get($this->getCodeSnippetProvider());
+            ->get($this->file);
     }
 
     public function getSnippetAsString(int $lineCount): string
@@ -80,7 +81,7 @@ class Frame
         return (new CodeSnippet())
             ->surroundingLine($this->lineNumber)
             ->snippetLineCount($lineCount)
-            ->getAsString($this->getCodeSnippetProvider());
+            ->getAsString($this->file);
     }
 
     public function getSnippetProperties(int $lineCount): array
@@ -94,6 +95,7 @@ class Frame
             ];
         }, array_keys($snippet));
     }
+<<<<<<< HEAD
 
     protected function getCodeSnippetProvider(): SnippetProvider
     {
@@ -107,4 +109,6 @@ class Frame
 
         return new NullSnippetProvider();
     }
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 }

@@ -1,6 +1,7 @@
 CHANGELOG
 =========
 
+<<<<<<< HEAD
 7.3
 ---
 
@@ -17,6 +18,8 @@ CHANGELOG
 
  * Add `localeLower()`, `localeUpper()`, `localeTitle()` methods to `AbstractUnicodeString`
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 6.2
 ---
 

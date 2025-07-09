@@ -6,6 +6,7 @@ Updates should follow the [Keep a CHANGELOG](https://keepachangelog.com/) princi
 
 ## [Unreleased][unreleased]
 
+<<<<<<< HEAD
 ## [2.7.0]
 
 This is a **security release** to address a potential cross-site scripting (XSS) vulnerability when using the `AttributesExtension` with untrusted user input.
@@ -120,6 +121,8 @@ malicious input from untrusted sources (like user input).
 - Fixed `UrlAutolinkParser` incorrectly parsing text containing `www` anywhere before an autolink (#1025)
 
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 ## [2.4.2] - 2024-02-02
 
 ### Fixed
@@ -700,6 +703,7 @@ No changes were introduced since the previous release.
     - Alternative 1: Use `CommonMarkConverter` or `GithubFlavoredMarkdownConverter` if you don't need to customize the environment
     - Alternative 2: Instantiate a new `Environment` and add the necessary extensions yourself
 
+<<<<<<< HEAD
 [unreleased]: https://github.com/thephpleague/commonmark/compare/2.7.0...HEAD
 [2.7.0]: https://github.com/thephpleague/commonmark/compare/2.6.2...2.7.0
 [2.6.2]: https://github.com/thephpleague/commonmark/compare/2.6.1...2.6.2
@@ -711,6 +715,9 @@ No changes were introduced since the previous release.
 [2.5.0]: https://github.com/thephpleague/commonmark/compare/2.4.4...2.5.0
 [2.4.4]: https://github.com/thephpleague/commonmark/compare/2.4.3...2.4.4
 [2.4.3]: https://github.com/thephpleague/commonmark/compare/2.4.2...2.4.3
+=======
+[unreleased]: https://github.com/thephpleague/commonmark/compare/2.4.2...main
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 [2.4.2]: https://github.com/thephpleague/commonmark/compare/2.4.1...2.4.2
 [2.4.1]: https://github.com/thephpleague/commonmark/compare/2.4.0...2.4.1
 [2.4.0]: https://github.com/thephpleague/commonmark/compare/2.3.9...2.4.0

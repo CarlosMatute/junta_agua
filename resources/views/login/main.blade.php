@@ -18,25 +18,30 @@
                         class="-intro-x flex items-center pt-5"
                         href=""
                     >
-                        <img
-                            class="w-6"
-                            src="{{ Vite::asset('resources/images/logo.svg') }}"
-                            alt="Midone Tailwind HTML Admin Template"
-                        />
+                        <lord-icon
+                                        src="https://cdn.lordicon.com/ymgusxed.json"
+                                        trigger="loop"
+                                        delay="500"
+                                        colors="primary:#ffffff,secondary:#848484"
+                                        style="width:28px;height:28px">
+                                    </lord-icon>
                         <span class="ml-3 text-lg text-white"> Cobro Móvil </span>
                     </a>
                     <div class="my-auto">
-                        <img
-                            class="-intro-x -mt-16 w-1/2"
-                            src="{{ Vite::asset('resources/images/illustration.svg') }}"
-                            alt="Midone Tailwind HTML Admin Template"
-                        />
+                        <lord-icon
+                                        src="https://cdn.lordicon.com/rhmhivzj.json"
+                                        trigger="loop"
+                                        state="loop-spin"
+                                        delay="500"
+                                        colors="primary:#848484,secondary:#e4e4e4"
+                                        style="width:250px;height:250px">
+                                    </lord-icon>
                         <div class="-intro-x mt-10 text-4xl font-medium leading-tight text-white">
-                            A few more clicks to <br />
-                            sign in to your account.
+                            Bienvenido a tu sistema de <br />
+                            cobros, ingresa con tu cuenta.
                         </div>
                         <div class="-intro-x mt-5 text-lg text-white text-opacity-70 dark:text-slate-400">
-                            Manage all your e-commerce accounts in one place
+                            Administra tus cobros de forma fácil y rapida.
                         </div>
                     </div>
                 </div>
@@ -49,8 +54,8 @@
                             Iniciar Sesión
                         </h2>
                         <div class="intro-x mt-2 text-center text-slate-400 xl:hidden">
-                            A few more clicks to sign in to your account. Manage all your
-                            e-commerce accounts in one place
+                            Bienvenido a tu sistema de cobros, ingresa con tu cuenta.
+                            Administra tus cobros de forma fácil y rapida.
                         </div>
                         <div class="intro-x mt-8">
                             <form id="login-form">
@@ -130,6 +135,7 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
 @endsection
 
 @once

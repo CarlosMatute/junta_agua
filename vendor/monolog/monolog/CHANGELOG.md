@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### 3.9.0 (2025-03-24)
 
   * BC Warning: Fixed SendGridHandler to use the V3 API as V2 is now shut down, but this requires a new API key (#1952)
@@ -33,6 +34,8 @@
   * Fixed JsonFormatter handling of incomplete classes (#1834)
   * Fixed private error handlers causing problems with custom StreamHandler implementations (#1866)
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 ### 3.6.0 (2024-04-12)
 
   * Added `LineFormatter->setBasePath(...)` that allows removing the project's path from the stack trace output (#1873)

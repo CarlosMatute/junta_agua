@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
-use const PHP_VERSION;
 use function is_file;
 use function is_readable;
 use function printf;
@@ -34,7 +33,6 @@ use PHPUnit\Runner\Baseline\Generator as BaselineGenerator;
 use PHPUnit\Runner\Baseline\Reader;
 use PHPUnit\Runner\Baseline\Writer;
 use PHPUnit\Runner\CodeCoverage;
-use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\Runner\ErrorHandler;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
@@ -79,8 +77,6 @@ use SebastianBergmann\Timer\Timer;
 use Throwable;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Application
@@ -216,6 +212,7 @@ final class Application
 
             if ($testDoxResult !== null &&
                 $configuration->hasLogfileTestdoxHtml()) {
+<<<<<<< HEAD
                 try {
                     OutputFacade::printerFor($configuration->logfileTestdoxHtml())->print(
                         (new TestDoxHtmlRenderer)->render($testDoxResult),
@@ -229,10 +226,16 @@ final class Application
                         ),
                     );
                 }
+=======
+                OutputFacade::printerFor($configuration->logfileTestdoxHtml())->print(
+                    (new TestDoxHtmlRenderer)->render($testDoxResult),
+                );
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
             }
 
             if ($testDoxResult !== null &&
                 $configuration->hasLogfileTestdoxText()) {
+<<<<<<< HEAD
                 try {
                     OutputFacade::printerFor($configuration->logfileTestdoxText())->print(
                         (new TestDoxTextRenderer)->render($testDoxResult),
@@ -246,6 +249,11 @@ final class Application
                         ),
                     );
                 }
+=======
+                OutputFacade::printerFor($configuration->logfileTestdoxText())->print(
+                    (new TestDoxTextRenderer)->render($testDoxResult),
+                );
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
             }
 
             $result = TestResultFacade::result();
@@ -292,40 +300,15 @@ final class Application
         // @codeCoverageIgnoreEnd
     }
 
-    private function execute(Command\Command $command, bool $requiresResultCollectedFromEvents = false): never
+    private function execute(Command\Command $command): never
     {
-        if ($requiresResultCollectedFromEvents) {
-            try {
-                TestResultFacade::init();
-                EventFacade::instance()->seal();
-
-                $resultCollectedFromEvents = TestResultFacade::result();
-            } catch (EventFacadeIsSealedException|UnknownSubscriberTypeException) {
-            }
-        }
-
         print Version::getVersionString() . PHP_EOL . PHP_EOL;
 
         $result = $command->execute();
 
         print $result->output();
 
-        $shellExitCode = $result->shellExitCode();
-
-        if (isset($resultCollectedFromEvents) &&
-            $resultCollectedFromEvents->hasTestTriggeredPhpunitErrorEvents()) {
-            $shellExitCode = Result::EXCEPTION;
-
-            print PHP_EOL . PHP_EOL . 'There were errors:' . PHP_EOL;
-
-            foreach ($resultCollectedFromEvents->testTriggeredPhpunitErrorEvents() as $events) {
-                foreach ($events as $event) {
-                    print PHP_EOL . trim($event->message()) . PHP_EOL;
-                }
-            }
-        }
-
-        exit($shellExitCode);
+        exit($result->shellExitCode());
     }
 
     private function loadBootstrapScript(string $filename): void
@@ -465,11 +448,11 @@ final class Application
     private function executeCommandsThatRequireCliConfigurationAndTestSuite(CliConfiguration $cliConfiguration, TestSuite $testSuite): void
     {
         if ($cliConfiguration->listGroups()) {
-            $this->execute(new ListGroupsCommand($testSuite), true);
+            $this->execute(new ListGroupsCommand($testSuite));
         }
 
         if ($cliConfiguration->listTests()) {
-            $this->execute(new ListTestsAsTextCommand($testSuite), true);
+            $this->execute(new ListTestsAsTextCommand($testSuite));
         }
 
         if ($cliConfiguration->hasListTestsXml()) {
@@ -478,7 +461,6 @@ final class Application
                     $cliConfiguration->listTestsXml(),
                     $testSuite,
                 ),
-                true,
             );
         }
     }
@@ -597,6 +579,7 @@ final class Application
         }
 
         if ($configuration->hasLogfileJunit()) {
+<<<<<<< HEAD
             try {
                 new JunitXmlLogger(
                     OutputFacade::printerFor($configuration->logfileJunit()),
@@ -630,6 +613,21 @@ final class Application
                     ),
                 );
             }
+=======
+            new JunitXmlLogger(
+                OutputFacade::printerFor($configuration->logfileJunit()),
+                EventFacade::instance(),
+            );
+        }
+
+        if ($configuration->hasLogfileTeamcity()) {
+            new TeamCityLogger(
+                DefaultPrinter::from(
+                    $configuration->logfileTeamcity(),
+                ),
+                EventFacade::instance(),
+            );
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
         }
     }
 

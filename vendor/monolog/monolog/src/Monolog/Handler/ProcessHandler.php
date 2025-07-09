@@ -100,7 +100,7 @@ class ProcessHandler extends AbstractProcessingHandler
      */
     private function ensureProcessIsStarted(): void
     {
-        if (\is_resource($this->process) === false) {
+        if (is_resource($this->process) === false) {
             $this->startProcess();
 
             $this->handleStartupErrors();
@@ -133,7 +133,7 @@ class ProcessHandler extends AbstractProcessingHandler
 
         $errors = $this->readProcessErrors();
 
-        if (\is_resource($this->process) === false || $errors !== '') {
+        if (is_resource($this->process) === false || $errors !== '') {
             throw new \UnexpectedValueException(
                 sprintf('The process "%s" could not be opened: ' . $errors, $this->command)
             );
@@ -180,7 +180,7 @@ class ProcessHandler extends AbstractProcessingHandler
      */
     public function close(): void
     {
-        if (\is_resource($this->process)) {
+        if (is_resource($this->process)) {
             foreach ($this->pipes as $pipe) {
                 fclose($pipe);
             }

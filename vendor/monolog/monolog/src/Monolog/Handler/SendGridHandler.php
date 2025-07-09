@@ -38,6 +38,7 @@ class SendGridHandler extends MailHandler
      * @param non-empty-string $apiHost Allows you to use another endpoint (e.g. api.eu.sendgrid.com)
      * @throws MissingExtensionException If the curl extension is missing
      */
+<<<<<<< HEAD
     public function __construct(
         string|null $apiUser,
         protected string $apiKey,
@@ -50,6 +51,11 @@ class SendGridHandler extends MailHandler
         private readonly string $apiHost = 'api.sendgrid.com',
     ) {
         if (!\extension_loaded('curl')) {
+=======
+    public function __construct(string $apiUser, string $apiKey, string $from, string|array $to, string $subject, int|string|Level $level = Level::Error, bool $bubble = true)
+    {
+        if (!extension_loaded('curl')) {
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
             throw new MissingExtensionException('The curl extension is needed to use the SendGridHandler');
         }
 

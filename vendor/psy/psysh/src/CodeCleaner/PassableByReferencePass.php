@@ -60,6 +60,7 @@ class PassableByReferencePass extends CodeCleanerPass
                 return;
             }
 
+<<<<<<< HEAD
             $args = [];
             foreach ($node->args as $position => $arg) {
                 if ($arg instanceof VariadicPlaceholder) {
@@ -69,9 +70,11 @@ class PassableByReferencePass extends CodeCleanerPass
                 $args[$arg->name !== null ? $arg->name->name : $position] = $arg;
             }
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
             foreach ($refl->getParameters() as $key => $param) {
-                if (\array_key_exists($key, $args) || \array_key_exists($param->name, $args)) {
-                    $arg = $args[$param->name] ?? $args[$key];
+                if (\array_key_exists($key, $node->args)) {
+                    $arg = $node->args[$key];
                     if ($param->isPassedByReference() && !$this->isPassableByReference($arg)) {
                         throw new FatalErrorException(self::EXCEPTION_MESSAGE, 0, \E_ERROR, null, $node->getStartLine());
                     }

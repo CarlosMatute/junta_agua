@@ -3,6 +3,7 @@
 Please refer to [UPGRADING](UPGRADING.md) guide for upgrading to a major version.
 
 
+<<<<<<< HEAD
 ## 7.9.3 - 2025-03-27
 
 ### Changed
@@ -42,6 +43,8 @@ Please refer to [UPGRADING](UPGRADING.md) guide for upgrading to a major version
 - Support for PHP 8.4
 
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 ## 7.8.1 - 2023-12-03
 
 ### Changed

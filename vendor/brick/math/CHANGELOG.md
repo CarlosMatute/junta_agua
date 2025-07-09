@@ -2,6 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
+<<<<<<< HEAD
 ## [0.12.3](https://github.com/brick/math/releases/tag/0.12.3) - 2025-02-28
 
 ✨ **New features**
@@ -36,6 +37,8 @@ All notable changes to this project will be documented in this file.
   - `BigNumber` has a new abstract method `from()`
   - all `public` and `protected` functions of `BigNumber` are now `final`
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 ## [0.11.0](https://github.com/brick/math/releases/tag/0.11.0) - 2023-01-16
 
 💥 **Breaking changes**

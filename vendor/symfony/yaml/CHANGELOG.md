@@ -1,6 +1,7 @@
 CHANGELOG
 =========
 
+<<<<<<< HEAD
 7.3
 ---
 
@@ -23,6 +24,8 @@ CHANGELOG
 
  * Remove the `!php/const:` tag, use `!php/const` instead (without the colon)
 
+=======
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d
 6.3
 ---
 

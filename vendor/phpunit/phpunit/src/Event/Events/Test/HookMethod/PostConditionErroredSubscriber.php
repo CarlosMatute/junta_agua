@@ -12,7 +12,11 @@ namespace PHPUnit\Event\Test;
 use PHPUnit\Event\Subscriber;
 
 /**
+<<<<<<< HEAD:vendor/phpunit/phpunit/src/Event/Events/Test/HookMethod/PostConditionErroredSubscriber.php
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+=======
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+>>>>>>> af3220020a35046e3fbe63c13a1df52bccccf17d:vendor/phpunit/phpunit/src/Runner/Exception/NoIgnoredEventException.php
  */
 interface PostConditionErroredSubscriber extends Subscriber
 {

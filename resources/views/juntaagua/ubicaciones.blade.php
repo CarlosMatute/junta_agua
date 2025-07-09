@@ -91,7 +91,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($ubicaciones as $row)
+                {{-- @foreach($ubicaciones as $row)
                     <tr>
                         <td>{{$row->id}}</td>
                         <td>{{$row->cliente}}</td>
@@ -116,9 +116,9 @@
                             
                         </td>
                         
-                        <td>{{$row->ubicacion}}</td>
+                        <td>{{$row->ubicacion}}</td>--}}
                         {{-- <td>{{$row->fecha_cobro}}</td> --}}
-                        <td class="text-center">
+                        {{-- <td class="text-center">
                             @if($row->activo)
                                 <i data-lucide="Check" class="w-4 h-4 text-green-500" style="color: #10B981;"></i>
                             @else
@@ -146,9 +146,9 @@
                                 data-pais="{{$row->id_pais}}"
                                 data-departamento="{{$row->id_departamento}}"
                                 data-municipio="{{$row->id_municipio}}"
-                                data-coordenadas="{{$row->coordenadas}}"
+                                data-coordenadas="{{$row->coordenadas}}"--}}
                                 {{-- data-fecha_cobro="{{$row->fecha_cobro}}" --}}
-                                data-activo="{{$row->activo ? '1' : '0'}}"
+                                {{-- data-activo="{{$row->activo ? '1' : '0'}}"
                                 data-casa_propia="{{$row->casa_propia ? '1' : '0'}}"
                             >
                                 <x-base.lucide
@@ -169,9 +169,9 @@
                                 data-pais="{{$row->id_pais}}"
                                 data-departamento="{{$row->id_departamento}}"
                                 data-municipio="{{$row->id_municipio}}"
-                                data-coordenadas="{{$row->coordenadas}}"
+                                data-coordenadas="{{$row->coordenadas}}"--}}
                                 {{-- data-fecha_cobro="{{$row->fecha_cobro}}" --}}
-                                data-activo="{{$row->activo ? '1' : '0'}}"
+                                {{-- data-activo="{{$row->activo ? '1' : '0'}}"
                                 data-casa_propia="{{$row->casa_propia ? '1' : '0'}}"
                             >
                                 <x-base.lucide
@@ -192,9 +192,9 @@
                                 data-pais="{{$row->id_pais}}"
                                 data-departamento="{{$row->id_departamento}}"
                                 data-municipio="{{$row->id_municipio}}"
-                                data-coordenadas="{{$row->coordenadas}}"
+                                data-coordenadas="{{$row->coordenadas}}"--}}
                                 {{-- data-fecha_cobro="{{$row->fecha_cobro}}" --}}
-                                data-activo="{{$row->activo ? '1' : '0'}}"
+                                {{-- data-activo="{{$row->activo ? '1' : '0'}}"
                                 data-casa_propia="{{$row->casa_propia ? '1' : '0'}}"
                                 id="btn_subir_foto"
                             >
@@ -203,7 +203,7 @@
                                     icon="Camera"
                                     
                                 />
-                            </x-base.button>
+                            </x-base.button>--}}
 
                             {{-- <div
                         class="absolute bottom-0 right-0 mb-1 mr-1 flex items-center justify-center rounded-full bg-primary p-2">
@@ -213,9 +213,9 @@
                             id="btn_subir_foto"
                         />
                     </div> --}}
-                        </td>
+                        {{-- </td>
                     </tr>
-                @endforeach
+                @endforeach --}}
                 </tbody>
             </table>
         </div>
@@ -262,8 +262,9 @@
                                 aria-label=".form-select-lg example"
                                 id="modal_input_departamento" 
                                 class="w-full" 
-                                data-placeholder="Selección de Género"
+                                data-placeholder="Selección de Departamento"
                             >
+                            <option value=""></option>
                             @foreach($departamentos as $row)
                             <option value="{{$row->id}}">{{$row->nombre}}</option>
                             @endforeach
@@ -278,7 +279,7 @@
                                 aria-label=".form-select-lg example"
                                 id="modal_input_municipio" 
                                 class="w-full" 
-                                data-placeholder="Selección de Género"
+                                data-placeholder="Selección de Municipio"
                             >
                             <option id="opc"></option>
                         </x-base.form-select>
@@ -288,17 +289,22 @@
                         <x-base.form-label class="font-extrabold" for="modal_input_cliente">
                             Cliente
                         </x-base.form-label>
-                        <x-base.form-select
+                            {{-- <x-base.form-select
                                 class="sm:mt-2 sm:mr-2"
                                 aria-label=".form-select-lg example"
                                 id="modal_input_cliente" 
                                 class="w-full" 
                                 data-placeholder="Selección de cliente"
-                            >
-                            @foreach($clientes as $row)
-                            <option value="{{$row->id}}">{{$row->cliente}}</option>
-                            @endforeach
-                            </x-base.form-select>
+                            >                            
+                            <option value=""></option>                            
+                            </x-base.form-select> --}}
+
+                            <x-base.tom-select id="modal_input_cliente" name="modal_input_cliente" class="w-full" >
+                                <option></option>
+                                @foreach ($clientes as $row)
+                                    <option value="{{$row->id}}">{{$row->cliente}}</option>
+                                @endforeach
+                            </x-base.tom-select>
                     </div>
                     
 
@@ -518,6 +524,7 @@
             var id_departamento = null;
             var url_consultar_municipios = "{{url('/departamentos-municipios')}}";
             var url_guardar_ubicaciones = "{{url('/ubicaciones/guardar')}}";
+            var url_ubicaciones_data = "{{url('/ubicaciones/data')}}";
             var onTomSelect = false;
             var tomSelect = null;
             var titleMsg = null;
@@ -529,7 +536,30 @@
             var map = null;
             var marker = null;
             var ubicacion_casa = null;
-            var id_seleccionar = localStorage.getItem("sdatatable_id_seleccionar");
+            var id_seleccionar = localStorage.getItem("sdatatable_id_seleccionar");  
+            
+            var lenguaje = {
+                "decimal": "",
+                "emptyTable": "Datos no disponibles",
+                "info": "Mostrando desde _START_ a _END_ de _TOTAL_ registros",
+                "infoEmpty": "Mostrando desde 0 a 0 de 0 registros",
+                "infoFiltered": "(Filtrado de _MAX_ registros totales)",
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "Sin resultados",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "aria": {
+                    "sortAscending": ": activar ordenamiento ascendente",
+                    "sortDescending": ": activar ordenamiento descendente"
+                }
+            };
 
             $(document).ready(function () {
                 $.ajaxSetup({
@@ -537,42 +567,128 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                     
-                });	 
+                });	                         
 
                 //$.fn.dataTable.isDataTable('#sdatatable')
                     // Inicializa el DataTable
                     table = $('#sdatatable').DataTable({
-                        language: { 
-                            "decimal": ",", 
-                            "thousands": ".", 
-                            "lengthMenu": "Mostrar _MENU_ registros", 
-                            "zeroRecords": "No se encontraron resultados", 
-                            "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros", 
-                            "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros", 
-                            "infoFiltered": "(filtrado de un total de _MAX_ registros)", 
-                            "sSearch": "Buscar:", 
-                            "oPaginate": { 
-                                "sFirst": "Primero", 
-                                "sLast":"Último", 
-                                "sNext":"Siguiente", 
-                                "sPrevious": "Anterior" 
-                            }, 
-            
-                            "oAria": { 
-                                "sSortAscending": ": Activar para ordenar la columna de manera ascendente", 
-                                "sSortDescending": ": Activar para ordenar la columna de manera descendente" 
-                            }, 
-            
-                            "sProcessing":"Cargando..." 
-                        },
-                        "processing": true,
+                        processing: true,
                         serverSide: false,
+                        "ajax": url_ubicaciones_data,
+                        columns: [
+                            { data: 'id' },
+                            { data: 'cliente' },
+                            { data: 'descripcion_casa' },
+                            { data: null },
+                            { data: 'direccion' },
+                            { data: null },
+                            { data: 'ubicacion' },
+                            { data: null },
+                            { data: null },
+                            { data: null, orderable: false, searchable: false }
+                        ],
+                        columnDefs: [
+                            {
+                                targets: 3,
+                                createdCell: function (td, cellData, rowData) {
+                                var cliente_habita_icono = null;
+                                if (rowData.cliente_habita) {
+                                        cliente_habita_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="Check" data-lucide="Check" class="lucide lucide-Check w-4 h-4 text-green-500" style="color: #10B981;"><polyline points="20 6 9 17 4 12"></polyline></svg>';                                    
+                                    }else{
+                                        cliente_habita_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="X" data-lucide="X" class="lucide lucide-X w-4 h-4 text-red-500" style="color: #EF4444;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';                                    
+                                    }
+                                    //var iconEdit = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M15.232 5.232l3.536 3.536M4 13.5V19h5.5l9.79-9.79a1 1 0 000-1.42l-3.08-3.08a1 1 0 00-1.42 0L4 13.5z"/></svg>`;                                                               
+                                    $(td).html(`${cliente_habita_icono}`);                                
+                                }
+                            },
+                            {
+                                targets: 5,
+                                createdCell: function (td, cellData, rowData) {
+                                    var cargar_foto = '<div class="image-fit relative h-20 w-20 flex-none sm:h-24 sm:w-24 lg:h-32 lg:w-32">'+
+                                        '<img data-action="zoom" src="https://www.juntaagua.lat/img/ubicaciones/'+rowData.foto+'" '+
+                                        'onerror="this.src=\'https://www.juntaagua.lat/img/ubicaciones/default.jpg\'" '+
+                                        'alt="Midone Tailwind HTML Admin Template" class="rounded-full" style="">'+
+                                    '</div>';                                                                    
+                                    $(td).html(`${cargar_foto}`);                                                                
+                                }
+                            },
+                            {
+                                targets: 7,
+                                createdCell: function (td, cellData, rowData) {
+                                var activo_icono = null;                                                                                          
+                                    if (rowData.activo) {
+                                        activo_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="Check" data-lucide="Check" class="lucide lucide-Check w-4 h-4 text-green-500" style="color: #10B981;"><polyline points="20 6 9 17 4 12"></polyline></svg>';                                     
+                                    }else{
+                                        activo_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="X" data-lucide="X" class="lucide lucide-X w-4 h-4 text-red-500" style="color: #EF4444;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';                                    
+                                    }
+                                    $(td).html(`${activo_icono}`); 
+                                }                                
+                            },
+                            {
+                                targets: 8,
+                                createdCell: function (td, cellData, rowData) {
+                                var casa_propia_icono = null;                                                                                          
+                                    if (rowData.casa_propia) {
+                                        casa_propia_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="Check" data-lucide="Check" class="lucide lucide-Check w-4 h-4 text-green-500" style="color: #10B981;"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                                    }else{
+                                        casa_propia_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="X" data-lucide="X" class="lucide lucide-X w-4 h-4 text-red-500" style="color: #EF4444;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+                                    }
+                                    $(td).html(`${casa_propia_icono}`); 
+                                }                                
+                            },
+                            {
+                                targets: 9,
+                                createdCell: function (td, cellData, rowData) {
+                                    var objetoUbicacion = JSON.parse(rowData.coordenadas);
+                                    
+                                    var botones_opcion = '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-warning border-warning text-slate-900 dark:border-warning editar mb-2 mr-1 editar"'+
+                                        'data-id="'+rowData.id+'"'+ 
+                                        'data-cliente="'+rowData.id_cliente+'"'+ 
+                                        'data-descripcion_casa="'+rowData.descripcion_casa+'"'+ 
+                                        'data-direccion="'+rowData.direccion+'"'+ 
+                                        'data-cliente_habita="'+rowData.esta_cliente_habita+'"'+                                         
+                                        'data-coordenadas="'+"{&quot;lat&quot;: "+objetoUbicacion.lat+", &quot;lng&quot;: "+objetoUbicacion.lng+"}"+'"'+ 
+                                        'data-casa_propia="'+rowData.es_casa_propia+'"'+
+                                        'data-pais="'+rowData.id_pais+'"'+
+                                        'data-departamento="'+rowData.id_departamento+'"'+
+                                        'data-municipio="'+rowData.id_municipio+'"'+
+                                        'data-activo="'+rowData.esta_activo+'"'+
+                                    '><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="edit" data-lucide="edit" class="lucide lucide-edit stroke-1.5 h-4 w-4"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">'+
+                                    '</path></svg></button>'+
+                                    '<button class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 bg-danger border-danger text-white dark:border-danger eliminar mb-2 mr-1 eliminar"'+
+                                        'data-id="'+rowData.id+'"'+ 
+                                        'data-descripcion_casa="'+rowData.descripcion_casa+'"'+ 
+                                        'data-direccion="'+rowData.direccion+'"'+ 
+                                        'data-cliente_habita="'+rowData.esta_cliente_habita+'"'+                                     
+                                        'data-coordenadas="'+"{&quot;lat&quot;: "+objetoUbicacion.lat+", &quot;lng&quot;: "+objetoUbicacion.lng+"}"+'"'+ 
+                                        'data-casa_propia="'+rowData.es_casa_propia+'"'+
+                                        'data-pais="'+rowData.id_pais+'"'+
+                                        'data-departamento="'+rowData.id_departamento+'"'+
+                                        'data-cliente="'+rowData.id_cliente+'"'+
+                                        'data-municipio="'+rowData.id_municipio+'"'+
+                                        'data-activo="'+rowData.esta_activo+'"'+
+                                    '><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+
+                                    '<button data-id="' + rowData.id + '" data-cliente="' + rowData.id_cliente + '" data-descripcion_casa="' + rowData.descripcion_casa + '" data-cliente_habita="' + rowData.esta_cliente_habita + '" data-direccion="' + rowData.direccion + '" data-foto="' + rowData.foto + '" data-pais="' + rowData.id_pais + '" data-departamento="' + rowData.id_departamento + '" data-municipio="' + rowData.id_municipio + '" data-coordenadas="' + JSON.stringify({lat: objetoUbicacion.lat, lng: objetoUbicacion.lng}) +  '" data-activo="' + rowData.esta_activo + '" data-casa_propia="' + rowData.es_casa_propia + '" id="btn_subir_foto" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 foto mb-2 mr-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="camera" data-lucide="camera" class="lucide lucide-camera stroke-1.5 h-4 w-4"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg></button>';                                
+
+                                    $(td).html(`${botones_opcion}`); 
+                                }                                
+                            }
+                        ],
+                        language: lenguaje                        
+                        
                     });
 
                     id_departamento = $("#modal_input_departamento").val();
                     id_cliente = $("#modal_input_cliente").val();
                     
-                    
+                    /*setTimeout(function() {
+                        var $select = $('#modal_input_cliente');
+                        if ($select[0] && $select[0].tomselect) {
+                            $select[0].tomselect.setValue('valor-inicial');
+                        }
+                    }, 50);*/
+
+                   //console.log( $("#modal_input_cliente").tomselect ) 
             });
 
             document.addEventListener('DOMContentLoaded', function() {
@@ -618,11 +734,11 @@
     });
 
             $("#sdatatable tbody").on( "click", "tr", function () { 
-                                     rowNumber=parseInt(table.row( this ).index()); 
-                                     table.$('tr.selected').removeClass('selected'); 
-                                     $(this).addClass('selected'); 
-                                     localStorage.setItem("sdatatable_id_seleccionar",table.row( this ).data()[0]); 
-                                     }); 
+                rowNumber=parseInt(table.row( this ).index()); 
+                table.$('tr.selected').removeClass('selected'); 
+                $(this).addClass('selected'); 
+                localStorage.setItem("sdatatable_id_seleccionar",table.row( this ).data()[0]); 
+            }); 
 
                
 
@@ -666,8 +782,8 @@
                 $("#modal_input_coordenadas").val(coordenadas);
                 $("#modal_input_casa_propia").val(casa_propia);
                 // $("#modal_input_fecha_cobro").val(fecha_cobro);
-                $("#modal_input_departamento").val(departamento);
-                $("#modal_input_cliente").val(cliente);
+                $("#modal_input_departamento").val(departamento);                
+                $('#modal_input_cliente')[0].tomselect.setValue( cliente );            
                 $("#modal_input_municipio").val(municipio);
                 $("#modal_input_activo").val(activo);
                 const el = document.querySelector("#modal_nuevo_cliente");
@@ -679,8 +795,8 @@
                 var fila = $('#sdatatable').DataTable().row($(this).parents('tr'));
                 var data = fila.data();
                 accion = 3;
-                numerofila = fila.index();
-                id = data[0];
+                numerofila = fila.index();                
+                id = $(this).data('id'); 
                 const el = document.querySelector("#modal_eliminar");
                 const modal = tailwind.Modal.getOrCreateInstance(el);
                 modal.show(); 
@@ -701,7 +817,8 @@
                 $("#modal_input_casa_propia").val('');
                 // $("#modal_input_fecha_cobro").val('');
                 $("#modal_input_departamento").val(id_departamento);
-                $("#modal_input_cliente").val(id_cliente);
+                //$("#modal_input_cliente").val('');
+                $('#modal_input_cliente')[0].tomselect.setValue( '' ); 
                 //$("#modal_input_municipio").val('');
                 $("#modal_input_activo").val('');
                 consultar_municipios(id_departamento);
@@ -871,8 +988,9 @@
                             titleMsg = "Datos Guardados";
                             textMsg = data.msgSuccess;
                             typeMsg = "success";
-                            if(accion != 3){
-                                var row = data.ubicaciones_list;
+                            table.ajax.reload();
+                            //if(accion != 3){
+                                /*var row = data.ubicaciones_list;
                                 var cliente_habita_icono = null;
                                 var casa_propia_icono = null;
                                 var activo_icono = null;
@@ -901,11 +1019,12 @@
                                 }else{
                                     casa_propia_icono = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="X" data-lucide="X" class="lucide lucide-X w-4 h-4 text-red-500" style="color: #EF4444;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
                                     row.casa_propia = 0;
-                                }
+                                }*/
 
                                 /*
                                 <button data-id="1" data-cliente="1" data-descripcion_casa="Casa dos plantas Amarilla" data-cliente_habita="1" data-direccion="Contiguo a la maxidespensa" data-foto="foto_ubicacion_1.jpg" data-pais="102" data-departamento="15" data-municipio="227" data-coordenadas="{&quot;lat&quot;: 14.583583455156525, &quot;lng&quot;: -88.54980468750001}" data-fecha_cobro="2024-04-22" data-activo="1" data-casa_propia="1" id="btn_subir_foto" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 foto mb-2 mr-1 foto"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="camera" data-lucide="camera" class="lucide lucide-camera stroke-1.5 h-4 w-4"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg></button>
                                 */
+                               /*
                                 var objetoUbicacion = JSON.parse(row.coordenadas); 
                                 var nuevoFila = [
                                     row.id, row.cliente,row.descripcion_casa,cliente_habita_icono ,row.direccion, '<div class="image-fit relative h-20 w-20 flex-none sm:h-24 sm:w-24 lg:h-32 lg:w-32">'+
@@ -946,15 +1065,15 @@
                                     '><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="trash" data-lucide="trash" class="lucide lucide-trash stroke-1.5 h-4 w-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg></button>'+
 
                                     '<button data-id="' + row.id + '" data-cliente="' + row.id_cliente + '" data-descripcion_casa="' + row.descripcion_casa + '" data-cliente_habita="' + row.cliente_habita + '" data-direccion="' + row.direccion + '" data-foto="' + row.foto + '" data-pais="' + row.id_pais + '" data-departamento="' + row.id_departamento + '" data-municipio="' + row.id_municipio + '" data-coordenadas="' + JSON.stringify({lat: objetoUbicacion.lat, lng: objetoUbicacion.lng}) +  '" data-activo="' + row.activo + '" data-casa_propia="' + row.casa_propia + '" id="btn_subir_foto" class="transition duration-200 border shadow-sm inline-flex items-center justify-center rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&amp;:hover:not(:disabled)]:bg-opacity-90 [&amp;:hover:not(:disabled)]:border-opacity-90 [&amp;:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed text-xs py-1.5 px-2 foto mb-2 mr-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" icon-name="camera" data-lucide="camera" class="lucide lucide-camera stroke-1.5 h-4 w-4"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg></button>'
-                                ]; 
-                            }
-                            if (accion == 1) { 
+                                ]; */
+                            //}
+                            /*if (accion == 1) { 
                                 $('#sdatatable').DataTable().row.add(nuevoFila).draw();
                             } else if (accion == 2) { 
                                 $('#sdatatable').DataTable().row(rowNumber).data(nuevoFila);
                             } else if (accion == 3) {
                                 $('#sdatatable').DataTable().row(rowNumber).remove().draw();
-                            }
+                            }*/
                             
                         }
                         notificacion(); 

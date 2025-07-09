@@ -16,11 +16,13 @@
                     class="intro-x flex items-center pt-4 pl-5"
                     href=""
                 >
-                    <img
-                        class="w-6"
-                        src="{{ Vite::asset('resources/images/logo.svg') }}"
-                        alt="Midone Tailwind HTML Admin Template"
-                    />
+                    <lord-icon
+                                        src="https://cdn.lordicon.com/ymgusxed.json"
+                                        trigger="loop"
+                                        delay="500"
+                                        colors="primary:#ffffff,secondary:#848484"
+                                        style="width:28px;height:28px">
+                                    </lord-icon>
                     <span class="ml-3 hidden text-lg text-white xl:block"> Cobro Móvil </span>
                 </a>
                 <div class="side-nav__divider my-6"></div>
