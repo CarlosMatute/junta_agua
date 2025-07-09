@@ -101,7 +101,16 @@ class ContratoController extends Controller
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
             'monto' => 'required|numeric',
-        ], [], [
+        ],        
+        [
+            'id_cliente.required' => 'Debe ingresar un valor para el campo "Cliente"',
+            'id_ubicacion.required' => 'Debe seleccionar un valor para el campo "Ubicación"',
+            'id_servicio.required' => 'Debe seleccionar un valor para el campo "Servicio"',
+            'fecha_inicio.required' => 'Debe ingresar un valor para el campo "Fecha Inicio"',
+            'fecha_fin.required' => 'Debe ingresar un valor para el campo "Fecha Final"',
+            'monto.required' => 'Debe ingresar un valor para el campo "Monto"',
+        ],
+        [
             'id_cliente' => 'cliente',
             'id_ubicacion' => 'ubicación',
             'id_servicio' => 'servicio',
