@@ -795,8 +795,8 @@
                 var fila = $('#sdatatable').DataTable().row($(this).parents('tr'));
                 var data = fila.data();
                 accion = 3;
-                numerofila = fila.index();
-                id = data[0];
+                numerofila = fila.index();                
+                id = $(this).data('id'); 
                 const el = document.querySelector("#modal_eliminar");
                 const modal = tailwind.Modal.getOrCreateInstance(el);
                 modal.show(); 
