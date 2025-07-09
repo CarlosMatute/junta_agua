@@ -67,8 +67,11 @@ class ContratoController extends Controller
             ) as cliente
         from 
             tbl_clientes c
+            join tbl_ubicacion tu on tu.id_cliente = c.id
         where 
             c.deleted_at is null
+            and tu.deleted_at is null
+        group by 1,2
         ");
 
         //
