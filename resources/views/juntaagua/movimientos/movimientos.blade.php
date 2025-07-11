@@ -82,6 +82,14 @@
                 ><i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
                         Registrar Pago
                 </x-base.button>                                               
+                <x-base.button
+                    class="mb-2 mr-1"
+                    variant="primary"
+                    id="btn_deuda_historica_tbl_movimientos"
+                    data-tw-toggle="modal" data-tw-target="#modal_deuda_historica_tbl_movimientos"
+                ><i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
+                        Registrar Deuda Historica
+                </x-base.button>                                               
             </div>
         </div>
     </div>
@@ -216,6 +224,29 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 </x-base.dialog>
 <!-- END: Modal Content -->	
 
+<!-- BEGIN: Modal Content -->
+<x-base.dialog id="modal_deuda_historica_tbl_movimientos" size="md">
+    <x-base.dialog.panel>
+        <x-base.dialog.title class="bg-primary">
+            <h2 class="mr-auto text-white font-medium">
+                <div class="flex items-center">
+                <i data-lucide="Plus" class="w-4 h-4 mr-1"></i>
+                    <span class="text-white-700"> Registrar Deuda Historica - cobros
+                </div>
+            </h2>
+        </x-base.dialog.title>
+        <x-base.dialog.description class="grid grid-cols-12 gap-4 gap-y-3">
+                <div class="col-span-12 md:col-span-12 lg:col-span-12">
+                <x-base.form-label class="font-extrabold" for="modal_input_primer_nombre">Monto Deuda Historica</x-base.form-label><x-base.form-input class="validatornumber" placeholder="Escriba un dato para la deuda historica" type="text" id="deuda_historica" name="deuda_historica"/></div>
+        </x-base.dialog.description>
+        <x-base.dialog.footer class="bg-dark modal-footer">
+            <x-base.button size="sm" class="mr-1 w-20" data-tw-dismiss="modal" type="button" variant="danger">Cancelar</x-base.button>
+            <x-base.button size="sm" class="w-20" type="button" variant="primary" id="modal_btn_guardar_deuda_historica_tbl_movimientos">Guardar</x-base.button>
+        </x-base.dialog.footer>
+    </x-base.dialog.panel>
+</x-base.dialog>
+<!-- END: Modal Content -->	
+
 
 	<!-- BEGIN: Modal Content -->
 	<x-base.dialog id="modal_eliminar_tbl_movimientos">
@@ -279,6 +310,7 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
 	var rowNumber=null;
         var id_contrato = {{$id_contrato}};
         var id_movimiento = null;
+        var deuda_historica = null;
 	
         var titleMsg = null;
         var textMsg = null;
@@ -327,6 +359,12 @@ title="Eliminar" class="mb-2 mr-1" variant="danger" size="sm" id="btn_eliminar_t
             accion = 4;
             $("#modal_pago_tbl_movimientos").show();
             $("#haber_pago").val();
+        }); 
+
+        $("#btn_deuda_historica_tbl_movimientos").on("click", function (event) {                        
+            accion = 6;
+            id_tipo_movimiento = 3;
+            $("#modal_deuda_historica_tbl_movimientos").show();
         }); 
         
         $('.validatornumber').keypress(function ()
@@ -383,7 +421,7 @@ $("#tbl_tbl_movimientos").on("click", "#btn_editar_tbl_movimientos", function (e
   
 $("#tbl_tbl_movimientos").on("click", "#btn_factura_tbl_movimientos", function (e) {
     id_movimiento=$( this ).data("id_movimiento");
-    console.log(id_movimiento)
+    //console.log(id_movimiento)
     generarFactura();
 });
 
@@ -392,6 +430,14 @@ $("#tbl_tbl_movimientos").on("click", "#btn_eliminar_tbl_movimientos", function 
     id=$( this ).data("id");    
     //console.log(rowNumber)
     accion=3;
+});
+
+$("#tbl_tbl_movimientos").on("click", "#btn_deuda_historica_tbl_movimientos", function (e) {
+    $("#modal_deuda_historica_tbl_movimientos").show();
+    id=$( this ).data("id");    
+    id_tipo_movimiento=$( this ).data("id_tipo_movimiento");    
+    //console.log(rowNumber)
+    accion=6;
 });
   
 $("#btn_cobro_tbl_movimientos").on( "click", function () {
@@ -469,6 +515,20 @@ $(".modal-footer").on("click", "#modal_btn_guardar_pago_tbl_movimientos", functi
     preguardar_tbl_movimientos();
 });
 
+$(".modal-footer").on("click", "#modal_btn_guardar_deuda_historica_tbl_movimientos", function () {
+
+    deuda_historica=$("#deuda_historica").val();
+
+    if(deuda_historica== null || deuda_historica == ''){
+        mensage({"msgError":'Ingrese un dato para la deuda historica!'});
+        return false;
+    }
+    
+    $( this ).attr("disabled","disabled");
+
+    preguardar_tbl_movimientos();
+});
+
 
 $(".modal-footer").on("click", "#modal_btn_eliminar_tbl_movimientos", function () {
     guardar_tbl_movimientos();
@@ -500,6 +560,7 @@ function guardar_tbl_movimientos(){
  		"haber": haber,
  		"id_tipo_movimiento": id_tipo_movimiento,
  		"id_contrato": id_contrato,
+ 		"deuda_historica": deuda_historica,
 		accion:accion
 	},
     success: function (data) {        
@@ -513,6 +574,9 @@ function guardar_tbl_movimientos(){
                 $("#modal_pago_tbl_movimientos").show();
             }else if(accion==5){
                 
+            }else if(accion==6){
+                $("#modal_btn_guardar_deuda_historica_tbl_movimientos" ).removeAttr("disabled","disabled");
+                $("#modal_deuda_historica_tbl_movimientos").show();
             }
             mensage({"msgError":data.msgError});
         }else if(data.msgAlert!=null){
@@ -564,6 +628,8 @@ function guardar_tbl_movimientos(){
                 $("#modal_pago_tbl_movimientos").hide();           
                 table.row.add(nuevaFilaDT).draw();
             }else if(accion==5){
+                table.row.add(nuevaFilaDT).draw();              
+            }else if(accion==6){
                 table.row.add(nuevaFilaDT).draw();
             }                
             

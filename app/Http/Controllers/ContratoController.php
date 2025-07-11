@@ -375,6 +375,7 @@ class ContratoController extends Controller
     $concepto=$request->concepto;
     $debe=$request->debe;
     $haber=$request->haber;
+    $deuda_historica=$request->deuda_historica;
     $id_tipo_movimiento=$request->id_tipo_movimiento;
     $msgError=null;
     $msgSuccess=null;
@@ -473,6 +474,21 @@ class ContratoController extends Controller
                 $msgSuccess="Registro de cobro creado: ".$sql_tbl_movimientos->id_movimiento;
             }else{
                 $msgAlert="¡Ya existe un cobro para el mes actual!";
+            }
+                        
+        }else if ($accion == 6){
+            $sql_tbl_movimientos = collect(db::select("select cast(s.resultado as bool ), s.id_movimiento from public.f_registro_movimiento_cliente( :id_contrato, :id_tipo_movimiento, :deuda_historica  ) as s(resultado)",[
+                'id_contrato'=>$id_contrato,
+                'id_tipo_movimiento'=>$id_tipo_movimiento,
+                'deuda_historica'=>$deuda_historica
+            ]))->first();
+            
+            $resultado = isset($sql_tbl_movimientos->resultado) ? $sql_tbl_movimientos->resultado : null;
+            $id = $sql_tbl_movimientos->id_movimiento;
+            if($resultado){
+                $msgSuccess="Registro de deuda historica creado: ".$sql_tbl_movimientos->id_movimiento;
+            }else{
+                $msgAlert="¡Ya existe una deuda historica!";
             }
                         
         }else{
