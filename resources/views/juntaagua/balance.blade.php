@@ -59,6 +59,7 @@
 			<th scope="col">Haber</th>			
 			<th scope="col">Deuda total</th>			
 			<th scope="col">Estado</th>			
+			<th scope="col">Contrato</th>			
 		</tr>
 	</thead>
 <tbody>
@@ -69,6 +70,14 @@
 <td scope="row">{{$row->haber}}</td>
 <td scope="row">{{$row->total}}</td>
 <td scope="row">{{$row->estado_cuenta}}</td>
+<td scope="row">
+    <a href="{{url('/movimientos/'.$row->id_contrato)}}" class="bg-warning hover:bg-green-700 text-white font-bold h-10 w-10 rounded flex items-center justify-center">
+        <x-base.lucide
+            class="h-4 w-4"
+            icon="DollarSign"
+        />
+    </a>
+</td>
 </tr>
 @endforeach
 </tbody>

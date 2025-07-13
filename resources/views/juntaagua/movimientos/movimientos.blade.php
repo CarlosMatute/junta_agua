@@ -117,7 +117,7 @@
 <td scope="row">{{$row->tipo_movimiento}}</td>
 <td>
     
-@if( $row->id_tipo_movimiento == 2)
+@if( $row->id_tipo_movimiento == 2 || $row->id_tipo_movimiento == 3 )
 <x-base.button class="btn btn-primary" data-tw-toggle="modal" data-tw-target="#modal_tbl_tbl_movimientos"
 data-id="{{$row->id}}"
 data-fecha_hora="{{$row->fecha_hora}}"
@@ -409,6 +409,23 @@ $("#tbl_tbl_movimientos").on("click", "#btn_editar_tbl_movimientos", function (e
     debe=$( this ).data("debe");
     haber=$( this ).data("haber");
     id_tipo_movimiento=$( this ).data("id_tipo_movimiento");
+
+    if( id_tipo_movimiento == 2 ){
+        $("#fecha_hora").prop("readonly", true);
+        $("#concepto").prop("readonly", true);
+        $("#debe").prop("readonly", true);
+        //$("#id_tipo_movimiento").attr("readonly", true);
+        $("#id_tipo_movimiento").attr("disabled", "disabled"); 
+    }else if( id_tipo_movimiento == 3 ){        
+        $("#fecha_hora").prop("readonly", true);
+        $("#concepto").prop("readonly", true);
+        $("#haber").prop("readonly", true);
+        //$("#id_tipo_movimiento").attr("readonly", true);
+        $("#id_tipo_movimiento").attr("disabled", "disabled"); 
+    }else{
+
+    }
+    
     $("#id").val(id);
     $("#fecha_hora").val(fecha_hora);
     $("#concepto").val(concepto);
@@ -450,12 +467,7 @@ $("#tbl_tbl_movimientos tbody").on( "click", "tr", function () {
 	accion=2;
 	table.$('tr.selected').removeClass('selected');
 	$(this).addClass('selected');
-                
-        $("#fecha_hora").prop("readonly", true);
-        $("#concepto").prop("readonly", true);
-        $("#debe").prop("readonly", true);
-        //$("#id_tipo_movimiento").attr("readonly", true);
-        $("#id_tipo_movimiento").attr("disabled", "disabled"); 
+    
     
 });
   
@@ -492,10 +504,18 @@ id_tipo_movimiento=$("#id_tipo_movimiento").val();
 		return false;
 	}
     }else if(accion == 2){
-        if(haber== null || haber == ''){
-		mensage({"msgError":'Ingrese un dato para haber!'});
-		return false;
-	}
+
+        if(id_tipo_movimiento == 2){
+            if(haber== null || haber == ''){
+                mensage({"msgError":'Ingrese un dato para haber!'});
+                return false;
+            }
+            }else if(id_tipo_movimiento == 3){
+                if(debe== null || debe == ''){
+                mensage({"msgError":'Ingrese un dato para debe!'});
+                return false;
+            }
+        }
     }
     
     preguardar_tbl_movimientos();
@@ -630,12 +650,16 @@ function guardar_tbl_movimientos(){
             }else if(accion==5){
                 table.row.add(nuevaFilaDT).draw();              
             }else if(accion==6){
+                $( "#modal_btn_guardar_deuda_historica_tbl_movimientos" ).removeAttr("disabled","disabled");
+                $("#modal_deuda_historica_tbl_movimientos").hide();
                 table.row.add(nuevaFilaDT).draw();
             }                
             
             mensage({"msgExito":data.msgSuccess});
-        }            
+        }    
 
+        $("#debe").prop("readonly", false);        
+        $("#haber").prop("readonly", false);
         $("#msg_estado_cuenta").text('Estado: '+data.saldos[0].estado_cuenta);
         $("#msg_total").text('Estado: '+data.saldos[0].total);
     
