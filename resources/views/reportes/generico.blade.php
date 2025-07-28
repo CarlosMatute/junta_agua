@@ -171,7 +171,7 @@ $.ajax({
                     {text: row.pago_servicio, style: "subheader", alignment: 'center',fontSize: 40},
                     {text: '\n', style: "subheader", alignment: 'center'},
                     {text: 'Monto pagado en Lempiras:', style: 'subheader', alignment: 'center',fontSize: 40}, 
-                    {text: 'L '+row.monto_pago, style: "subheader", alignment: 'center',fontSize: 40},
+                    {text: row.monto_pago, style: "subheader", alignment: 'center',fontSize: 40},
                     {text: '\n', style: "subheader", alignment: 'center'},
                     {text: 'Fecha y hora del pago:', style: 'subheader', alignment: 'center',fontSize: 40}, 
                     {text: row.fecha_hora_pago, style: "subheader", alignment: 'center',fontSize: 40},
