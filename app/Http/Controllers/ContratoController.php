@@ -436,7 +436,7 @@ class ContratoController extends Controller
             )
             select
                 now() as fecha_hora,
-                concat('PAGO DE ', upper(cma.nombre_espanol),' - ', ts.descripcion  )	concepto,
+                concat('PAGO DE ', upper(cma.nombre_espanol),' ',to_char(now(), 'YYYY')  )	concepto,
                 :haber as haber,
                 :id_haber as id_tipo_movimiento,
                 tc.id_cliente,
