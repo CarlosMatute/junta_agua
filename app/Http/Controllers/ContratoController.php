@@ -569,7 +569,7 @@ class ContratoController extends Controller
             tc.created_at,
             tc.updated_at,
             tc.deleted_at,
-            to_char(tc.monto,'LFM999,999,999.00') monto
+            'L.'||to_char(tc.monto,'FM999G999G999D00') monto
         FROM public.tbl_contrato tc
         JOIN tbl_clientes c on tc.id_cliente = c.id
         JOIN tbl_ubicacion tu on tc.id_ubicacion = tu.id

@@ -126,15 +126,15 @@ class ReportesController extends Controller
 
         $tbl_movimientos_list=DB::select("select
             ts.descripcion as servicio,
-            to_char( now() , 'YYYY-MM-DD HH:MM:SS' ) as fecha_hora_genera,
+            to_char( now() , 'DD-MM-YYYY HH:MM:SS' ) as fecha_hora_genera,
             coalesce(tc1.primer_nombre,'')||' '||coalesce(tc1.segundo_nombre,'')||' '||coalesce(tc1.primer_apellido,'')||' '||coalesce(tc1.segundo_apellido,'') as cliente,
             tu.descripcion_casa as contrato, 
             tts.nombre as concepto_pago_servicio,
             tm.concepto as pago_servicio,
-            tm.haber as monto_pago,
-            to_char( tm.fecha_hora , 'YYYY-MM-DD HH:MM:SS' ) as fecha_hora_pago,
+            'L.'||to_char(tm.haber,'FM999G999G999D00') as monto_pago,
+            to_char( tm.fecha_hora , 'DD-MM-YYYY HH:MM:SS' ) as fecha_hora_pago,
             u.name as cobrador,
-            cast(tm.id_contrato as text ) as id_contrato 
+            cast(tm.id_contrato as text ) as id_contrato
             from
             public.tbl_movimientos tm
             join public.tbl_contrato tc on tc.id_cliente = tm.id_cliente and tc.id = tm.id_contrato
