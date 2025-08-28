@@ -253,7 +253,7 @@
                             </x-base.form-select>
                     </div>
 
-                    <div class="col-span-12 md:col-span-12 lg:col-span-6">
+                    {{-- <div class="col-span-12 md:col-span-12 lg:col-span-6">
                         <x-base.form-label class="font-extrabold" for="modal_input_departamento">
                             Departamento
                         </x-base.form-label>
@@ -269,8 +269,8 @@
                             <option value="{{$row->id}}">{{$row->nombre}}</option>
                             @endforeach
                             </x-base.form-select>
-                    </div>
-                    <div class="col-span-12 md:col-span-12 lg:col-span-6">
+                    </div> --}}
+                    {{-- <div class="col-span-12 md:col-span-12 lg:col-span-6">
                         <x-base.form-label class="font-extrabold" for="modal_input_municipio">
                             Municipio
                         </x-base.form-label>
@@ -283,7 +283,7 @@
                             >
                             <option id="opc"></option>
                         </x-base.form-select>
-                    </div>
+                    </div> --}}
 
                     <div class="col-span-12 md:col-span-12 lg:col-span-6">
                         <x-base.form-label class="font-extrabold" for="modal_input_cliente">
@@ -854,7 +854,7 @@
                     return false;
                 }
 
-                if(departamento == null || departamento == ''){
+                /*if(departamento == null || departamento == ''){
                     titleMsg = 'Valor Requerido'
                     textMsg = 'Debe especificar un valor para departamento.';
                     typeMsg = 'error';
@@ -870,7 +870,7 @@
                     typeMsg = 'error';
                     notificacion()
                     return false;
-                }
+                }*/
 
                 if(cliente == null || cliente == ''){
                     titleMsg = 'Valor Requerido'

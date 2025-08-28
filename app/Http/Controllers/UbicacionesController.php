@@ -148,9 +148,11 @@ class UbicacionesController extends Controller
         $pais=$request->pais;
         $coordenadas=$request->coordenadas;
         $casa_propia=$request->casa_propia;
-        $departamento=$request->departamento;
+        //$departamento=$request->departamento;
+        $departamento=15;
         $cliente=$request->cliente;
-        $municipio=$request->municipio;
+        //$municipio=$request->municipio;
+        $municipio=243;
         $activo=$request->activo;
         $ubicacion_casa = $request->ubicacion_casa;
         $ubicaciones_list = null;
